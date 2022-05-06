@@ -12,7 +12,7 @@ namespace EksamensProjekt2022
         private Texture2D sprite;
         private Color spriteColor = Color.White;
         private Color edgeColor = Color.Black;
-
+        
         private bool isWalkable;
 
         private int height;
@@ -23,6 +23,7 @@ namespace EksamensProjekt2022
 
         private bool isHovering;
 
+        public Vector2 cellVector;
         public Vector2 Pos { get; set; }
         public Rectangle Rectangle 
         {
@@ -57,7 +58,7 @@ namespace EksamensProjekt2022
             this.width = width;
             this.height = height;
             IsWalkable = true;
-            
+            this.cellVector = new Vector2(position.X * width, position.Y * height);
         }
         public void Update(GameTime gameTime)
         {
