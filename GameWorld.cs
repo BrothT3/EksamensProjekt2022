@@ -13,6 +13,11 @@ namespace EksamensProjekt2022
         private List<GameObject> gameObjects = new List<GameObject>();
         private List<GameObject> newGameObjects = new List<GameObject>();
         private List<GameObject> destroyedGameObjects = new List<GameObject>();
+        public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
+
+        private Grid _grid;
+        public List<Cell> grid;
+
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
 
@@ -35,6 +40,12 @@ namespace EksamensProjekt2022
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            //opret gid, skal måske gøres på en anden måde
+            _grid = new Grid(45, 25, 25);
+            grid = _grid.CreateGrid();
+
+
         }
 
         protected override void Initialize()
@@ -45,6 +56,7 @@ namespace EksamensProjekt2022
             gameObjects.Add(player);
 
 
+
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Awake();
@@ -52,6 +64,7 @@ namespace EksamensProjekt2022
 
             base.Initialize();
         }
+
 
         protected override void LoadContent()
         {
@@ -61,6 +74,11 @@ namespace EksamensProjekt2022
             {
                 gameObjects[i].Start();
             }
+            foreach (Cell item in grid)
+            {
+                item.LoadContent();
+            }
+
 
 
         }
@@ -85,10 +103,18 @@ namespace EksamensProjekt2022
 
             _spriteBatch.Begin();
 
+            if (grid != null)
+                foreach (Cell item in grid)
+                {
+                    item.Draw(_spriteBatch);
+                }
+
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Draw(_spriteBatch);
             }
+
+
 
 
             _spriteBatch.End();
