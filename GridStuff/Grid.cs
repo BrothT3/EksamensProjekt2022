@@ -8,11 +8,11 @@ namespace EksamensProjekt2022
 
 
         private int cellCount;
-        private float cellSizeX;
-        private float cellSizeY;
+        private int cellSizeX;
+        private int cellSizeY;
 
 
-        public Grid(int cellcount, float cellsizex, float cellsizey)
+        public Grid(int cellcount, int cellsizex, int cellsizey)
         {
             this.cellCount = cellcount;
             this.cellSizeX = cellsizex;
@@ -26,7 +26,7 @@ namespace EksamensProjekt2022
             {
                 for (int x = 0; x < cellCount; x++)
                 {
-                    grid.Add(new Point(x, y), new Cell(new Point(x, y), (int)cellSizeX, cellCount));
+                    grid.Add(new Point(x, y), new Cell(new Point(x, y), (int)cellSizeX, cellSizeY));
                 }
             }
 
