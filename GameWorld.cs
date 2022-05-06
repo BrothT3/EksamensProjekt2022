@@ -42,7 +42,7 @@ namespace EksamensProjekt2022
             IsMouseVisible = true;
 
             //opret gid, skal måske gøres på en anden måde
-            _grid = new Grid(45, 25, 25);
+            _grid = new Grid(20, 35, 35);
             grid = _grid.CreateGrid();
 
 
@@ -89,10 +89,15 @@ namespace EksamensProjekt2022
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            foreach (Cell item in grid)
+            {
+                item.Update(gameTime);
+            }
             for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].Update(gameTime);
             }
+            
 
             base.Update(gameTime);
         }
