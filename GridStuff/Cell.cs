@@ -57,6 +57,7 @@ namespace EksamensProjekt2022
             this.width = width;
             this.height = height;
             IsWalkable = true;
+            
         }
         public void Update(GameTime gameTime)
         {
@@ -67,6 +68,7 @@ namespace EksamensProjekt2022
                 isHovering = true;
                              
             }
+
             
         }
 

@@ -13,7 +13,7 @@ namespace EksamensProjekt2022
         private List<GameObject> gameObjects = new List<GameObject>();
         private List<GameObject> newGameObjects = new List<GameObject>();
         private List<GameObject> destroyedGameObjects = new List<GameObject>();
-        public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
+        static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
 
         private Grid _grid;
         public List<Cell> grid;
@@ -35,6 +35,8 @@ namespace EksamensProjekt2022
             }
 
         }
+
+
         private GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,12 +46,13 @@ namespace EksamensProjekt2022
             //opret gid, skal måske gøres på en anden måde
             _grid = new Grid(20, 35, 35);
             grid = _grid.CreateGrid();
-
+            Cells = _grid.CreateCells();
 
         }
 
         protected override void Initialize()
         {
+
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());

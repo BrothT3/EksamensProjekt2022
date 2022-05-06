@@ -6,6 +6,7 @@ namespace EksamensProjekt2022
     {
         private Vector2 velocity;
 
+
         public MoveCommand(Vector2 _velocity)
         {
             velocity = _velocity;
