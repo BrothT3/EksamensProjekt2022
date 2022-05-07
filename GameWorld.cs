@@ -15,6 +15,10 @@ namespace EksamensProjekt2022
         private List<GameObject> destroyedGameObjects = new List<GameObject>();
         static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
 
+        private Astar pathfinder;
+        private Cell start, goal;
+        public List<Node> finalPath;
+
         private Grid _grid;
         public List<Cell> grid;
 
@@ -66,6 +70,13 @@ namespace EksamensProjekt2022
             }
 
             base.Initialize();
+
+            //instans af Astar, start og slut punkt (som så bliver spillerens position og hvor end man vil hen
+            pathfinder = new Astar();
+            start = Cells[new Point(15, 0)];
+            goal = Cells[new Point(1, 12)];
+            //kører algoritmen, den flyttes også ind i input/movement senere men bare for at det virker
+            FindPath();
         }
 
 
@@ -180,5 +191,36 @@ namespace EksamensProjekt2022
 
 
         }
+
+        public void FindPath()
+        {
+            finalPath = pathfinder.FindPath(start.Position, goal.Position, _grid.CreateNodes());
+            ColorNodes();
+        }
+
+        /// <summary>
+        /// Colors nodes to display the checked tiles
+        /// </summary>
+        public void ColorNodes()
+        {
+            foreach (Cell item in grid)
+            {
+                if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
+                {
+                    item.BackGroundColor = Color.Blue;
+                }
+                if (pathfinder.Closed.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
+                {
+                    item.BackGroundColor = Color.Orange;
+                }
+                if (finalPath.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
+                {
+                    item.BackGroundColor = Color.GreenYellow;
+                }
+            }
+        }
+
+
+
     }
 }

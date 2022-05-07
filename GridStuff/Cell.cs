@@ -35,7 +35,7 @@ namespace EksamensProjekt2022
 
         public Point Position { get => position; set => position = value; }
         public Node MyNode { get => myNode; set => myNode = value; }
-        public Color SpriteColor { get => spriteColor; set => spriteColor = value; }
+        public Color BackGroundColor { get; set; } = Color.White * 0.1f;
         public CellType MyType { get { return myType; } }
         public bool IsWalkable { get => isWalkable; set => isWalkable = value; }
 
@@ -91,14 +91,18 @@ namespace EksamensProjekt2022
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var color = Color.White * 0.01f;
+            var color = Color.White * 0.1f;
             if (isHovering)
             {
                 color = Color.Green * 0.5f;
             }
-           
+            //bare for at at man kan se hvor man har musen og selve pathen, men pathen er også bare et debug tool
+            //mouseover
             spriteBatch.Draw(sprite, background, color);
+
 #if DEBUG
+            //path
+            spriteBatch.Draw(sprite, background, BackGroundColor);
             spriteBatch.Draw(sprite, topLine, edgeColor);
             spriteBatch.Draw(sprite, bottomLine, edgeColor);
             spriteBatch.Draw(sprite, rightLine, edgeColor);
