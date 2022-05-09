@@ -62,6 +62,13 @@ namespace EksamensProjekt2022
             player.AddComponent(new SpriteRenderer());
             gameObjects.Add(player);
 
+            GameObject fishingSpot = new GameObject();
+            fishingSpot.AddComponent(new FishingSpot(new Point(3, 3), 10));
+            gameObjects.Add(fishingSpot);
+
+            GameObject crop = new GameObject();
+            crop.AddComponent(new Crop(new Point(5, 5), 10));
+            gameObjects.Add(crop);
 
 
             for (int i = 0; i < gameObjects.Count; i++)
