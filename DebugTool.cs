@@ -9,20 +9,21 @@ namespace EksamensProjekt2022
 
         public DebugTool()
         {
-            font = GameWorld.Instance.Content.Load<SpriteFont>("Font");           
+            font = GameWorld.Instance.Content.Load<SpriteFont>("Font");
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null)
-           {
+            {
                 int x = (int)player.GameObject.Transform.Position.X;
                 int y = (int)player.GameObject.Transform.Position.Y;
 
+                spriteBatch.DrawString(font, $"({x}, {y})", new Vector2(player.GameObject.Transform.Position.X - 40,
+                    player.GameObject.Transform.Position.Y +50), Color.White);
+            }
 
-       }
-           
-        
+
         }
     }
 }
