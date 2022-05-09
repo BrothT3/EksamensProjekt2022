@@ -38,7 +38,7 @@ namespace EksamensProjekt2022
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");
             currentCell = GameWorld.Cells[start.ToPoint()];
-            GameObject.Transform.Position = new Vector2(currentCell.cellVector.X - 19, currentCell.cellVector.Y + 37);
+            GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
 
 
@@ -50,17 +50,18 @@ namespace EksamensProjekt2022
         {
             InputHandler.Instance.Execute(this);
             InputHandler.Instance.Update(gameTime);
-            //  currentCell = GameWorld.Cells[start.ToPoint()];
-            //  nextCell = GameWorld.Cells[end.ToPoint()];
+            //currentCell = GameWorld.Cells[start.ToPoint()];
+            //nextCell = GameWorld.Cells[end.ToPoint()];
             //currentVector = new Vector2(currentCell.Position.X * 35 - 19, currentCell.Position.Y * 35 - 37);
             //nextVector = new Vector2(nextCell.Position.X * 35 - 19, nextCell.Position.Y * 35 - 37);
+            
             FollowPath();
- 
+
             //if (InputHandler.Instance.finalPath != null)
             //{
-               
+
             //    InputHandler.Instance.finalPath.Reverse();
-                
+
             //    int iMax = InputHandler.Instance.finalPath.Count;
 
             //    nextVector = new Vector2(InputHandler.Instance.finalPath[step].NodeVector.X, InputHandler.Instance.finalPath[step].NodeVector.Y);
@@ -95,23 +96,38 @@ namespace EksamensProjekt2022
 
 
 
-
         }
 
         public void FollowPath()
         {
             if (InputHandler.Instance.finalPath != null)
             {
-                InputHandler.Instance.finalPath.Reverse();
-                currentCell = InputHandler.Instance.finalPath[step].CellParent;
-                nextCell = InputHandler.Instance.finalPath[step+1].CellParent;
-                moveDir = nextCell.cellVector - currentCell.cellVector;
+                if (step + 1 < InputHandler.Instance.finalPath.Count)
+                {
+                    currentCell = InputHandler.Instance.finalPath[step].CellParent;
+                    nextCell = InputHandler.Instance.finalPath[step + 1].CellParent;
+                }
+                else
+                {
+                    moveDir = Vector2.Zero;
+                    InputHandler.Instance.finalPath.Clear();
+                }
+                
+                moveDir = (nextCell.cellVector) - (currentCell.cellVector);
                 moveDir.Normalize();
                 GameObject.Transform.Position += moveDir;
-                if (Vector2.Distance(GameObject.Transform.Position, nextVector) < 10)
+                if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 10 )
                 {
                     step++;
                 }
+                else if (step >= InputHandler.Instance.finalPath.Count)
+                {
+                    
+                }
+            }
+            if (InputHandler.Instance.finalPath == null)
+            {
+
             }
         }
         //public void FollowPath()
