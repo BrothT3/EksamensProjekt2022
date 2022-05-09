@@ -4,17 +4,19 @@ namespace EksamensProjekt2022
 {
     public class MoveCommand : ICommand
     {
-        private Vector2 velocity;
+        private Vector2 target;
 
 
-        public MoveCommand(Vector2 _velocity)
+        public MoveCommand(Point target)
         {
-            velocity = _velocity;
+            this.target = target.ToVector2();
         }
+
+
 
         public void Execute(Player player)
         {
-            player.Move(velocity);
+            player.Move(target);
         }
     }
 }
