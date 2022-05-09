@@ -6,6 +6,8 @@ namespace EksamensProjekt2022
 {
     public class InputHandler
     {
+        private MouseState mouseState;
+        private Point target;
         private static InputHandler instance;
 
         public static InputHandler Instance
@@ -19,38 +21,41 @@ namespace EksamensProjekt2022
                 return instance;
             }
         }
-
-        private Dictionary<KeyInfo, ICommand> keybinds = new Dictionary<KeyInfo, ICommand>();
+        //kan bruges til at styre interface måske?
+        private Dictionary<KeyState, ICommand> keybinds = new Dictionary<KeyState, ICommand>();
+        private Dictionary<ButtonState, ICommand> movement = new Dictionary<ButtonState, ICommand>();
 
         public InputHandler()
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
-            //example of keybinds
-            keybinds.Add(new KeyInfo(Keys.D), new MoveCommand(new Vector2(1, 0)));
-            keybinds.Add(new KeyInfo(Keys.W), new MoveCommand(new Vector2(0, -1)));
-            keybinds.Add(new KeyInfo(Keys.A), new MoveCommand(new Vector2(-1, 0)));
-            keybinds.Add(new KeyInfo(Keys.S), new MoveCommand(new Vector2(0, 1)));
+
         }
 
+        public void Update(GameTime gameTime)
+        {
+            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            foreach (Cell c in GameWorld.Cells.Values)
+            {
+
+                if (c.background.Intersects(new Rectangle(mouseState.X, mouseState.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed)
+                {
+
+                    target = c.Position;
+                    player.nextCell = c;
+
+
+                }
+
+            }
+
+        }
         public void Execute(Player player)
         {
             KeyboardState keyState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
 
 
-            foreach (KeyInfo k in keybinds.Keys)
-            {
-                if (keyState.IsKeyDown(k.Key))
-                {
-                    keybinds[k].Execute(player);
-                    k.IsDown = true;
-                }
-
-                if (!keyState.IsKeyDown(k.Key) && k.IsDown == true)
-                {
-
-                }
-            }
         }
     }
 

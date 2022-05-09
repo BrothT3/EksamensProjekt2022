@@ -48,7 +48,13 @@ namespace EksamensProjekt2022
 
         private Rectangle leftLine;
 
-        private Rectangle background;
+        public Rectangle background
+        {
+            get
+            {
+                return new Rectangle(Position.X * width, Position.Y * height, width, height);
+            }
+        }
         #endregion
 
 
@@ -62,15 +68,15 @@ namespace EksamensProjekt2022
         }
         public void Update(GameTime gameTime)
         {
-        
+
             isHovering = false;
             if (background.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)))
             {
                 isHovering = true;
-                             
+
             }
 
-            
+
         }
 
         public void LoadContent()
@@ -85,7 +91,7 @@ namespace EksamensProjekt2022
 
             leftLine = new Rectangle(Position.X * width, Position.Y * height, 1, height);
 
-            background = new Rectangle(Position.X * width, Position.Y * height, width, height);
+           // background = new Rectangle(Position.X * width, Position.Y * height, width, height);
         }
 
 
