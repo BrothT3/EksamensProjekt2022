@@ -9,7 +9,7 @@ namespace EksamensProjekt2022
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Camera2D _camera;
+        public Camera2D _camera;
         private DebugTool _debugTools;
 
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -63,7 +63,7 @@ namespace EksamensProjekt2022
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
-            gameObjects.Add(player);
+            Instantiate(player);          
             _debugTools = new DebugTool();
 
            
@@ -133,8 +133,8 @@ namespace EksamensProjekt2022
             {
                 gameObjects[i].Update(gameTime);
             }
-            
 
+            CleanUp();
             base.Update(gameTime);
         }
 
@@ -151,7 +151,7 @@ namespace EksamensProjekt2022
             if (grid != null)
                 foreach (Cell item in grid)
                 {
-                    item.Draw(_spriteBatch);
+                    item.Draw(_spriteBatch);                 
                 }
 
             //for (int i = 0; i < gameObjects.Count; i++)
@@ -164,8 +164,8 @@ namespace EksamensProjekt2022
             {
                
                 go.Draw(_spriteBatch);
-                
-                go.Transform.Position += new Vector2(_camera.Position.X - go.Transform.Position.X, _camera.Position.Y - go.Transform.Position.Y);
+                if (go.GetComponent<Player>() as Player == null)
+                    go.Transform.Position = new Vector2( go.Transform.Position.X- _camera.Position.X , go.Transform.Position.Y - _camera.Position.Y);
 
             }
 

@@ -12,6 +12,7 @@ namespace EksamensProjekt2022
         private Texture2D sprite;
         private Color spriteColor = Color.White;
         private Color edgeColor = Color.Black;
+        public MouseState mstate { get; set; }
         
         private bool isWalkable;
 
@@ -68,9 +69,9 @@ namespace EksamensProjekt2022
         }
         public void Update(GameTime gameTime)
         {
-
+            mstate = Mouse.GetState();
             isHovering = false;
-            if (background.Contains(new Point(Mouse.GetState().X, Mouse.GetState().Y)))
+            if (background.Contains(new Point(mstate.X - (int)GameWorld.Instance._camera.Position.X, mstate.Y - (int)GameWorld.Instance._camera.Position.Y)))
             {
                 isHovering = true;
 
