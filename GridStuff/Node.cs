@@ -16,14 +16,19 @@ namespace EksamensProjekt2022
 
         private Point position;
         private Node parent;
+        private Cell cellParent;
+        private Vector2 nodeVector;
 
         public int G {  get; set; }
         public Point Position { get => position; set => position = value; }
         public Node Parent { get => parent; set => parent = value; }
+        public Vector2 NodeVector { get => nodeVector; set => nodeVector = value; }
+        public Cell CellParent { get => cellParent; set => cellParent = value; }
 
         public Node(Point position)
         {
             this.position = position;
+            this.NodeVector = new Vector2(position.X*35, position.Y*35);
         }
 
 

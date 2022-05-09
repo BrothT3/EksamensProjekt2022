@@ -16,7 +16,7 @@ namespace EksamensProjekt2022
 
         public void Execute(Player player)
         {
-            player.Move(target);
+            //player.Move(target);
         }
     }
 }
