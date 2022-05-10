@@ -2,16 +2,16 @@
 
 namespace EksamensProjekt2022
 {
-    public class Camera2D
+    public class Camera
     {
         public float Zoom { get; set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Vector2 Origin = Vector2.Zero;
 
-        public Camera2D()
+        public Camera()
         {
-            Zoom = 1;
+            Zoom = 1f;
             Rotation = 0;
             Position = Vector2.Zero;
             
