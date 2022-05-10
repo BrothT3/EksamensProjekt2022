@@ -45,35 +45,39 @@ namespace EksamensProjekt2022
 
         public void FollowPath()
         {
+
             if (InputHandler.Instance.finalPath != null)
             {
                 if (step + 1 < InputHandler.Instance.finalPath.Count)
                 {
                     currentCell = InputHandler.Instance.finalPath[step].CellParent;
                     nextCell = InputHandler.Instance.finalPath[step + 1].CellParent;
+                    moveDir = (nextCell.cellVector) - (currentCell.cellVector);
+                    moveDir.Normalize();
+                    GameObject.Transform.Position += moveDir;
                 }
-                else
+                if (step + 1 >= InputHandler.Instance.finalPath.Count)
                 {
-                    moveDir = Vector2.Zero;
+                    
+                    //currentCell = InputHandler.Instance.finalPath.LastIndexOf.CellParent;
+                    moveDir = currentCell.cellVector - GameObject.Transform.Position;
+                    moveDir.Normalize();
+                    GameObject.Transform.Position += moveDir;
                     InputHandler.Instance.finalPath.Clear();
-                }
+                }               
                 
-                moveDir = (nextCell.cellVector) - (currentCell.cellVector);
-                moveDir.Normalize();
-                GameObject.Transform.Position += moveDir;
-                if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 10 )
+                if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 4 )
                 {
                     step++;
                 }
-                else if (step >= InputHandler.Instance.finalPath.Count)
-                {
-                    
-                }
+
             }
             if (InputHandler.Instance.finalPath == null)
             {
+                
 
             }
+            
         }
 
     }

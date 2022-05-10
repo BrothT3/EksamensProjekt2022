@@ -46,7 +46,7 @@ namespace EksamensProjekt2022
 
                 if (c.background.Intersects(new Rectangle(mouseState.X, mouseState.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                 {
-                    player.step = 0;
+                    player.step = 1;
                     mLeftReleased = false;
                     start = GameWorld.Cells[player.currentCell.Position];
                     goal = c;                   
