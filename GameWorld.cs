@@ -53,6 +53,14 @@ namespace EksamensProjekt2022
             //opret gid, skal måske gøres på en anden måde
             _grid = new Grid(80, 36, 36);
             grid = _grid.CreateGrid();
+          
+
+
+            for (int i = 0; i < 50; i++)
+            {
+                grid[250 + i].IsWalkable = false;
+                
+            }
             Cells = _grid.CreateCells();
             _camera = new Camera();
            

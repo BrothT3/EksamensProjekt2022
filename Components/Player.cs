@@ -53,6 +53,7 @@ namespace EksamensProjekt2022
                 {
                     moveDir = currentCell.cellVector - GameObject.Transform.Position;
                     moveDir.Normalize();
+                    moveDir*= 4;
                     GameObject.Transform.Position += moveDir;
                 }
                 else if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) < 5)
@@ -67,6 +68,7 @@ namespace EksamensProjekt2022
                         nextCell = InputHandler.Instance.finalPath[step + 1].CellParent;
                         moveDir = (nextCell.cellVector) - (currentCell.cellVector);
                         moveDir.Normalize();
+                        moveDir *= 4;
                         GameObject.Transform.Position += moveDir;
                     }
 
