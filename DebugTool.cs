@@ -21,6 +21,12 @@ namespace EksamensProjekt2022
 
                 spriteBatch.DrawString(font, $"({x}, {y})", new Vector2(player.GameObject.Transform.Position.X - 40,
                     player.GameObject.Transform.Position.Y +50), Color.White);
+
+                int pointX = (int)player.currentCell.Position.X;
+                int pointY = (int)player.currentCell.Position.Y;
+
+                spriteBatch.DrawString(font, $"({pointX}, {pointY})", new Vector2(player.GameObject.Transform.Position.X - 40,
+                    player.GameObject.Transform.Position.Y + 80), Color.White);
             }
 
 

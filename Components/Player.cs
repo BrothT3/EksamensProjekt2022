@@ -6,7 +6,7 @@ namespace EksamensProjekt2022
     {
         private float speed;
         private bool canShoot = true;
-        private Cell currentCell;
+        public Cell currentCell;
         public Cell nextCell;
         private Vector2 currentVector;
         public Vector2 nextVector;
