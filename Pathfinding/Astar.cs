@@ -27,7 +27,7 @@ namespace EksamensProjekt2022
             Point goal = myGoal;
 
             List<Node> finalPath = new List<Node>();
-
+            finalPath.Clear();
             open.Clear();
 
             Node currentNode = nodes.Find(x => x.Position == start);

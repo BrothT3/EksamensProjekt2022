@@ -44,7 +44,7 @@ namespace EksamensProjekt2022
             foreach (Cell c in GameWorld.Cells.Values)
             {
 
-                if (c.background.Intersects(new Rectangle(mouseState.X, mouseState.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
+                if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameWorld.Instance._camera.Position.X, mouseState.Y - (int)GameWorld.Instance._camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                 {
                     player.step = 1;
                     mLeftReleased = false;
