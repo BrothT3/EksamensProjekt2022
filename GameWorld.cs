@@ -9,6 +9,8 @@ namespace EksamensProjekt2022
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        public Camera _camera;
+        private DebugTool _debugTools;
 
         private List<GameObject> gameObjects = new List<GameObject>();
         private List<GameObject> newGameObjects = new List<GameObject>();
@@ -51,7 +53,8 @@ namespace EksamensProjekt2022
             _grid = new Grid(20, 35, 35);
             grid = _grid.CreateGrid();
             Cells = _grid.CreateCells();
-
+            _camera = new Camera();
+           
         }
 
         protected override void Initialize()
@@ -60,15 +63,10 @@ namespace EksamensProjekt2022
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
-            gameObjects.Add(player);
+            Instantiate(player);          
+            _debugTools = new DebugTool();
 
-            GameObject fishingSpot = new GameObject();
-            fishingSpot.AddComponent(new FishingSpot(new Point(3, 3), 10));
-            gameObjects.Add(fishingSpot);
-
-            GameObject crop = new GameObject();
-            crop.AddComponent(new Crop(new Point(5, 5), 10));
-            gameObjects.Add(crop);
+           
 
 
             for (int i = 0; i < gameObjects.Count; i++)
@@ -109,6 +107,23 @@ namespace EksamensProjekt2022
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            KeyboardState keystate = Keyboard.GetState();
+            if (keystate.IsKeyDown(Keys.W))
+            {
+                _camera.Move(new Vector2(0, 8));
+            }
+            if (keystate.IsKeyDown(Keys.A))
+            {
+                _camera.Move(new Vector2(8, 0));
+            }
+            if (keystate.IsKeyDown(Keys.D))
+            {
+                _camera.Move(new Vector2(-8, 0));
+            }
+            if (keystate.IsKeyDown(Keys.S))
+            {
+                _camera.Move(new Vector2(0, -8));
+            }
 
             foreach (Cell item in grid)
             {
@@ -118,29 +133,43 @@ namespace EksamensProjekt2022
             {
                 gameObjects[i].Update(gameTime);
             }
-            
 
+            CleanUp();
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+
+            var screenScale = _camera.GetScreenScale();
+            var viewMatrix = _camera.GetTransform();
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
+                null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 
             if (grid != null)
                 foreach (Cell item in grid)
                 {
-                    item.Draw(_spriteBatch);
+                    item.Draw(_spriteBatch);                 
                 }
 
-            for (int i = 0; i < gameObjects.Count; i++)
+            //for (int i = 0; i < gameObjects.Count; i++)
+            //{
+            //    gameObjects[i].Draw(_spriteBatch);
+                
+            //}
+
+            foreach (GameObject go in gameObjects)
             {
-                gameObjects[i].Draw(_spriteBatch);
+               
+                go.Draw(_spriteBatch);
+                if (go.GetComponent<Player>() == null)
+                    go.Transform.Position = new Vector2( go.Transform.Position.X- _camera.Position.X , go.Transform.Position.Y - _camera.Position.Y);
+
             }
 
-
+            _debugTools.Draw(_spriteBatch);
 
 
             _spriteBatch.End();
