@@ -14,7 +14,7 @@ namespace EksamensProjekt2022
         private Animator animator;
         private Vector2 start = new Vector2(4, 9);
         private Vector2 end = new Vector2(3, 8);
-        public int step = 1;
+        public int step = 0;
 
         public override void Awake()
         {
@@ -48,6 +48,7 @@ namespace EksamensProjekt2022
 
             if (InputHandler.Instance.finalPath != null)
             {
+
                 if (step + 1 < InputHandler.Instance.finalPath.Count)
                 {
                     currentCell = InputHandler.Instance.finalPath[step].CellParent;
@@ -56,13 +57,19 @@ namespace EksamensProjekt2022
                     moveDir.Normalize();
                     GameObject.Transform.Position += moveDir;
                 }
+                //if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 70)
+                //{
+                //    moveDir = currentCell.cellVector - GameObject.Transform.Position;
+                //    moveDir.Normalize();
+                //    GameObject.Transform.Position += moveDir;
+                //}
                 if (step + 1 >= InputHandler.Instance.finalPath.Count)
                 {
 
-                    currentCell = InputHandler.Instance.finalPath[step].CellParent;
-                    //moveDir = currentCell.cellVector - GameObject.Transform.Position;
-                    //moveDir.Normalize();
-                    //GameObject.Transform.Position += moveDir;
+                    //currentCell = InputHandler.Instance.finalPath[step].CellParent;
+                    moveDir = currentCell.cellVector - GameObject.Transform.Position;
+                    moveDir.Normalize();
+                    GameObject.Transform.Position += moveDir;
                     InputHandler.Instance.finalPath.Clear();
                 }               
                 
