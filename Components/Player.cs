@@ -58,11 +58,11 @@ namespace EksamensProjekt2022
                 }
                 if (step + 1 >= InputHandler.Instance.finalPath.Count)
                 {
-                    
-                    //currentCell = InputHandler.Instance.finalPath.LastIndexOf.CellParent;
-                    moveDir = currentCell.cellVector - GameObject.Transform.Position;
-                    moveDir.Normalize();
-                    GameObject.Transform.Position += moveDir;
+
+                    currentCell = InputHandler.Instance.finalPath[step].CellParent;
+                    //moveDir = currentCell.cellVector - GameObject.Transform.Position;
+                    //moveDir.Normalize();
+                    //GameObject.Transform.Position += moveDir;
                     InputHandler.Instance.finalPath.Clear();
                 }               
                 

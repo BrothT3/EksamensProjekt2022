@@ -65,7 +65,7 @@ namespace EksamensProjekt2022
             this.width = width;
             this.height = height;
             IsWalkable = true;
-            this.cellVector = new Vector2(position.X * width, position.Y * height);
+            this.cellVector = new Vector2(position.X * width + 18, position.Y * height);
         }
         public void Update(GameTime gameTime)
         {
