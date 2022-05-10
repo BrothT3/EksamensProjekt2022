@@ -50,7 +50,7 @@ namespace EksamensProjekt2022
             IsMouseVisible = true;
 
             //opret gid, skal måske gøres på en anden måde
-            _grid = new Grid(20, 35, 35);
+            _grid = new Grid(80, 35, 35);
             grid = _grid.CreateGrid();
             Cells = _grid.CreateCells();
             _camera = new Camera();
