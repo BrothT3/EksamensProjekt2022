@@ -69,6 +69,7 @@ namespace EksamensProjekt2022
                 if (cell.IsWalkable)
                 {
                     cell.MyNode = new Node(cell.Position);
+                    cell.MyNode.CellParent = cell;
                     allNodes.Add(cell.MyNode);
                 }
             }
