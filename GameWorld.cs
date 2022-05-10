@@ -16,6 +16,7 @@ namespace EksamensProjekt2022
         private List<GameObject> newGameObjects = new List<GameObject>();
         private List<GameObject> destroyedGameObjects = new List<GameObject>();
         static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
+        public List<Collider> Colliders = new List<Collider>();
 
         private Astar pathfinder;
         private Cell start, goal;
@@ -63,6 +64,7 @@ namespace EksamensProjekt2022
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
+            player.AddComponent(new Collider());
             Instantiate(player);          
             _debugTools = new DebugTool();
 
