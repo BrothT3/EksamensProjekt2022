@@ -12,8 +12,8 @@ namespace EksamensProjekt2022
         {
             get
             {
-                return new Rectangle((int)GameObject.Transform.Position.X,
-                    (int)GameObject.Transform.Position.Y,
+                return new Rectangle((int)GameObject.Transform.Position.X - _spriteRenderer.Sprite.Width /2,
+                    (int)GameObject.Transform.Position.Y - _spriteRenderer.Sprite.Height /2,
                     _spriteRenderer.Sprite.Width,
                     _spriteRenderer.Sprite.Height );
             }
