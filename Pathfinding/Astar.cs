@@ -28,6 +28,7 @@ namespace EksamensProjekt2022
 
             List<Node> finalPath = new List<Node>();
             finalPath.Clear();
+            closed.Clear();
             open.Clear();
 
             Node currentNode = nodes.Find(x => x.Position == start);

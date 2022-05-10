@@ -46,6 +46,7 @@ namespace EksamensProjekt2022
 
                 if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameWorld.Instance._camera.Position.X, mouseState.Y - (int)GameWorld.Instance._camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                 {
+                    player.readyToMove = false;
                     player.step = 0;
                     mLeftReleased = false;
                     start = GameWorld.Cells[player.currentCell.Position];
@@ -86,6 +87,7 @@ namespace EksamensProjekt2022
         {
             foreach (Cell item in GameWorld.Instance.grid)
             {
+                item.BackGroundColor = Color.White * 0.1f;
                 if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
                 {
                     item.BackGroundColor = Color.Blue;

@@ -15,6 +15,7 @@ namespace EksamensProjekt2022
         private Vector2 start = new Vector2(4, 9);
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
+        public bool readyToMove = false;
 
         public override void Awake()
         {
@@ -38,7 +39,7 @@ namespace EksamensProjekt2022
         {
             InputHandler.Instance.Execute(this);
             InputHandler.Instance.Update(gameTime);
-            
+
             FollowPath();
 
         }
@@ -48,43 +49,61 @@ namespace EksamensProjekt2022
 
             if (InputHandler.Instance.finalPath != null)
             {
-
-                if (step + 1 < InputHandler.Instance.finalPath.Count)
+                if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 5 && readyToMove == false)
                 {
-                    currentCell = InputHandler.Instance.finalPath[step].CellParent;
-                    nextCell = InputHandler.Instance.finalPath[step + 1].CellParent;
-                    moveDir = (nextCell.cellVector) - (currentCell.cellVector);
-                    moveDir.Normalize();
-                    GameObject.Transform.Position += moveDir;
-                }
-                //if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 70)
-                //{
-                //    moveDir = currentCell.cellVector - GameObject.Transform.Position;
-                //    moveDir.Normalize();
-                //    GameObject.Transform.Position += moveDir;
-                //}
-                if (step + 1 >= InputHandler.Instance.finalPath.Count)
-                {
-
-                    //currentCell = InputHandler.Instance.finalPath[step].CellParent;
                     moveDir = currentCell.cellVector - GameObject.Transform.Position;
                     moveDir.Normalize();
                     GameObject.Transform.Position += moveDir;
-                    InputHandler.Instance.finalPath.Clear();
-                }               
-                
-                if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 4 )
-                {
-                    step++;
                 }
+                else if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) < 5)
+                {
+                    readyToMove = true;
+                }
+                if (readyToMove)
+                {
+                    if (step + 1 < InputHandler.Instance.finalPath.Count)
+                    {
+                        currentCell = InputHandler.Instance.finalPath[step].CellParent;
+                        nextCell = InputHandler.Instance.finalPath[step + 1].CellParent;
+                        moveDir = (nextCell.cellVector) - (currentCell.cellVector);
+                        moveDir.Normalize();
+                        GameObject.Transform.Position += moveDir;
+                    }
 
-            }
-            if (InputHandler.Instance.finalPath == null)
-            {
-                
+                    if (step + 1 >= InputHandler.Instance.finalPath.Count)
+                    {
 
+                        currentCell = nextCell;
+                        if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 3)
+                        {
+                            moveDir = currentCell.cellVector - GameObject.Transform.Position;
+                            moveDir.Normalize();
+                            GameObject.Transform.Position += moveDir;
+                        }
+
+                        InputHandler.Instance.finalPath.Clear();
+                    }
+
+                    if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 8)
+                    {
+                        step++;
+                    }
+
+                }
+                if (InputHandler.Instance.finalPath == null)
+                {
+
+
+                }
             }
-            
+              
+            //if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 70)
+            //{
+            //    moveDir = currentCell.cellVector - GameObject.Transform.Position;
+            //    moveDir.Normalize();
+            //    GameObject.Transform.Position += moveDir;
+            //}
+
         }
 
     }
