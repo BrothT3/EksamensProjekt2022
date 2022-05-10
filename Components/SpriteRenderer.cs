@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
 
         public override void Start()
         {
-            Origin = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
+            Origin = new Vector2(Sprite.Width, Sprite.Height);
         }
 
         public void SetSprite(string spriteName)
