@@ -107,6 +107,7 @@ namespace EksamensProjekt2022
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _debugTools.Update(gameTime);
             KeyboardState keystate = Keyboard.GetState();
             if (keystate.IsKeyDown(Keys.W))
             {

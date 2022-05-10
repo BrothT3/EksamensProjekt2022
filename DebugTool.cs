@@ -1,15 +1,31 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace EksamensProjekt2022
 {
     public class DebugTool
     {
         private SpriteFont font;
-
+        public bool ShowCellPoints { get; set; } = false;
+        private KeyboardState kState;
         public DebugTool()
         {
             font = GameWorld.Instance.Content.Load<SpriteFont>("Font");
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            kState = Keyboard.GetState();
+
+            if (kState.IsKeyDown(Keys.P))
+            {
+                ShowCellPoints = true;
+            }
+            else
+            {
+                ShowCellPoints = false;
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -29,6 +45,13 @@ namespace EksamensProjekt2022
                     player.GameObject.Transform.Position.Y + 80), Color.White);
             }
 
+            if(ShowCellPoints)
+            {
+                foreach (Cell c in GameWorld.Cells.Values)
+                {
+                    spriteBatch.DrawString(font, $"({c.Position.X.ToString()}\n{c.Position.Y.ToString()})", new Vector2(c.background.X, c.background.Y), Color.Black, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+                }
+            }
 
         }
     }

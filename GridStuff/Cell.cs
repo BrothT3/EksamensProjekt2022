@@ -13,7 +13,7 @@ namespace EksamensProjekt2022
         private Color spriteColor = Color.White;
         private Color edgeColor = Color.Black;
         public MouseState mstate { get; set; }
-        
+      
         private bool isWalkable;
 
         private int height;
@@ -113,7 +113,7 @@ namespace EksamensProjekt2022
             spriteBatch.Draw(sprite, topLine, edgeColor);
             spriteBatch.Draw(sprite, bottomLine, edgeColor);
             spriteBatch.Draw(sprite, rightLine, edgeColor);
-            spriteBatch.Draw(sprite, leftLine, edgeColor);
+            spriteBatch.Draw(sprite, leftLine, edgeColor);          
 #endif
 
         }
