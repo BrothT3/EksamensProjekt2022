@@ -36,7 +36,6 @@ namespace EksamensProjekt2022
             pathfinder = new Astar();
             //kører algoritmen, den flyttes også ind i input/movement senere men bare for at det virker
             
-
         }
 
         public void Update(GameTime gameTime)
@@ -50,9 +49,7 @@ namespace EksamensProjekt2022
                     player.step = 0;
                     mLeftReleased = false;
                     start = GameWorld.Cells[player.currentCell.Position];
-                    goal = c;
-                    
-                    
+                    goal = c;                   
                     
                     FindPath();
                     finalPath.Reverse();
