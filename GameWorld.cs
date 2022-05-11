@@ -76,8 +76,6 @@ namespace EksamensProjekt2022
             Instantiate(player);          
             _debugTools = new DebugTool();
 
-           
-
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
@@ -238,8 +236,6 @@ namespace EksamensProjekt2022
 
 
         }
-
- 
 
 
 
