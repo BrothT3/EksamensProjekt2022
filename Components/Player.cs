@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-
+using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 namespace EksamensProjekt2022
 {
     public class Player : Component
@@ -16,7 +17,7 @@ namespace EksamensProjekt2022
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
-
+      
         public override void Awake()
         {
             speed = 200;
@@ -49,14 +50,14 @@ namespace EksamensProjekt2022
 
             if (InputHandler.Instance.finalPath != null)
             {
-                if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 5 && readyToMove == false)
+                if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 8 && readyToMove == false)
                 {
                     moveDir = currentCell.cellVector - GameObject.Transform.Position;
                     moveDir.Normalize();
                     moveDir*= 4;
                     GameObject.Transform.Position += moveDir;
                 }
-                else if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) < 5)
+                else 
                 {
                     readyToMove = true;
                 }
@@ -76,7 +77,7 @@ namespace EksamensProjekt2022
                     {
 
                         currentCell = nextCell;
-                        if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 3)
+                        if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 4)
                         {
                             moveDir = currentCell.cellVector - GameObject.Transform.Position;
                             moveDir.Normalize();
@@ -84,6 +85,7 @@ namespace EksamensProjekt2022
                         }
 
                         InputHandler.Instance.finalPath.Clear();
+
                     }
 
                     if (Vector2.Distance(GameObject.Transform.Position, nextCell.cellVector) < 8)
