@@ -7,7 +7,7 @@ namespace EksamensProjekt2022
 {
     public class Tree : ResourceDepot
     {
-        public Tree(Point position, int maxAmount) : base(position, maxAmount)
+        public Tree(Cell _mycell, int maxAmount) : base(_mycell, maxAmount)
         {
         }
     }

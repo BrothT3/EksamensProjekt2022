@@ -8,7 +8,7 @@ namespace EksamensProjekt2022
     public class Boulder : ResourceDepot
     {
 
-        public Boulder(Point position, int maxAmount) : base(position, maxAmount)
+        public Boulder(Cell _mycell, int maxAmount) : base(_mycell, maxAmount)
         {
             
         }

@@ -18,7 +18,7 @@ namespace EksamensProjekt2022
         private Thread growthCycle;
 
         private GrowthState _growthState;
-        public Crop(Point position, int maxAmount) : base(position, maxAmount)
+        public Crop(Cell _mycell, int maxAmount) : base(_mycell, maxAmount)
         {
             this._growthState = GrowthState.Sprout;
             growthCycle = new Thread(Growth);
