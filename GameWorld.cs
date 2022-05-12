@@ -84,6 +84,7 @@ namespace EksamensProjekt2022
             player.AddComponent(new SpriteRenderer());
             player.AddComponent(new Collider());
             Instantiate(player);
+
             _debugTools = new DebugTool();
             areaManager = new AreaManager();
             timeManager = new TimeManager();
@@ -93,20 +94,41 @@ namespace EksamensProjekt2022
                 areaManager.currentGrid[i] = _grid.CreateGrid();
                 foreach (Cell item in areaManager.currentGrid[i])
                 {
-                    item.LoadContent();                   
+                    item.LoadContent();
+
+                    if (areaManager.currentGrid[i] == areaManager.currentGrid[1])
+                    {
+                        item.Sprite = Content.Load<Texture2D>("AreaSprites/Field");
+                    }
+                   
                 }
                 areaManager.currentCells[i] = _grid.CreateCells();
                 foreach (Cell item in areaManager.currentCells[i].Values)
                 {
                     item.LoadContent();
+               
                 }
 
             }
-
+         
 
             currentCells = areaManager.currentCells[0];
             currentGameObjects = areaManager.currentGameObjects[0];
             currentGrid = areaManager.currentGrid[0];
+
+            //TODO lav en method der instantiere med 1/8 del af teksten
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 5)), 500)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 6)), 500)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(6, 5)), 500)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 7)), 500)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 15)), 100)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 12)), 100)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 11)), 100)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(8, 5)), 100)));
+            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(7, 15)), 100)));
+
+
+
 
             for (int i = 0; i < 50; i++)
             {
@@ -121,12 +143,6 @@ namespace EksamensProjekt2022
 
             base.Initialize();
 
-            ////instans af Astar, start og slut punkt (som så bliver spillerens position og hvor end man vil hen
-            //pathfinder = new Astar();
-            //start = Cells[new Point(15, 0)];
-            //goal = Cells[new Point(1, 12)];
-            ////kører algoritmen, den flyttes også ind i input/movement senere men bare for at det virker
-            //FindPath();
         }
 
 
@@ -184,7 +200,7 @@ namespace EksamensProjekt2022
 
 
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            if(player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
+            if (player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
             {
                 player.MyArea = CurrentArea.River;
                 areaManager.ChangeArea(player.MyArea);
@@ -193,6 +209,14 @@ namespace EksamensProjekt2022
                 currentGrid = areaManager.currentGrid[(int)player.MyArea];
                 currentGameObjects = areaManager.currentGameObjects[(int)player.MyArea];
                 currentGameObjects.Add(player.GameObject);
+
+                foreach (GameObject go in currentGameObjects)
+                {
+                    if (go.GetComponent<Player>() == null)
+                    {
+                        go.Start();
+                    }
+                }
 
 
             }
@@ -224,13 +248,13 @@ namespace EksamensProjekt2022
 
 
 
-                if (currentGameObjects[i].GetComponent<Player>() == null)
-                {
-                    currentGameObjects[i].Transform.Position = new Vector2(currentGameObjects[i].Transform.Position.X - _camera.Position.X,
-                        currentGameObjects[i].Transform.Position.Y - _camera.Position.Y);
+                //if (currentGameObjects[i].GetComponent<Player>() == null)
+                //{
+                //    currentGameObjects[i].Transform.Position = new Vector2(currentGameObjects[i].Transform.Position.X - _camera.Position.X,
+                //        currentGameObjects[i].Transform.Position.Y - _camera.Position.Y);
 
 
-                }
+                //}
             }
 
             timeManager.draw(_spriteBatch);

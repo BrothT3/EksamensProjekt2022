@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
     {
         private Thread taskThread;
 
-        public FishingSpot(Point position, int maxAmount) : base(position, maxAmount)
+        public FishingSpot(Cell _mycell, int maxAmount) : base(_mycell, maxAmount)
         {
             taskThread = new Thread(FishReplenishment);
             taskThread.IsBackground = true;

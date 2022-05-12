@@ -92,15 +92,15 @@ namespace EksamensProjekt2022
                 item.BackGroundColor = Color.White * 0.1f;
                 if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
                 {
-                    item.BackGroundColor = Color.Blue;
+                    item.BackGroundColor = Color.Blue *0.5f;
                 }
                 if (pathfinder.Closed.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
                 {
-                    item.BackGroundColor = Color.Orange;
+                    item.BackGroundColor = Color.Orange *0.5f;
                 }
                 if (finalPath.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
                 {
-                    item.BackGroundColor = Color.GreenYellow;
+                    item.BackGroundColor = Color.GreenYellow *0.5f;
                 }
             }
         }
