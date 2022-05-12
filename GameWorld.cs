@@ -31,12 +31,17 @@ namespace EksamensProjekt2022
         public Grid _grid;
         public List<Cell> grid;
         public List<Cell> currentGrid;
+        private int cellCount;
+        private int cellSize;
 
         private AreaManager areaManager;
+        private TimeManager timeManager;
+        public static float DeltaTime;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
+        public int CellSize { get => cellSize; set => cellSize = value; }
+        public int CellCount { get => cellCount; set => cellCount = value; }
 
-        public static float DeltaTime;
         private static GameWorld instance;
         public static GameWorld Instance
         {
@@ -51,15 +56,15 @@ namespace EksamensProjekt2022
 
         }
 
-
         private GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            CellCount = 80;
+            CellSize = 36;
             //opret gid, skal måske gøres på en anden måde
-            _grid = new Grid(80, 36, 36);
+            _grid = new Grid(CellCount, CellSize, CellSize);
 
             _camera = new Camera();
            
@@ -69,7 +74,9 @@ namespace EksamensProjekt2022
 
         protected override void Initialize()
         {
-            
+            Graphics.PreferredBackBufferWidth = 800;
+            Graphics.PreferredBackBufferHeight = 600;
+            Graphics.ApplyChanges();
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
@@ -77,6 +84,7 @@ namespace EksamensProjekt2022
             Instantiate(player);          
             _debugTools = new DebugTool();
             areaManager = new AreaManager();
+            timeManager = new TimeManager();
 
             for (int i = 0; i < 4; i++)
             {
@@ -132,7 +140,7 @@ namespace EksamensProjekt2022
             {
                 item.LoadContent();
             }
-
+            timeManager.LoadContent();
 
 
         }
@@ -169,7 +177,7 @@ namespace EksamensProjekt2022
             {
                 currentGameObjects[i].Update(gameTime);
             }
-
+            timeManager.Update(gameTime);
             CleanUp();
 
            
@@ -222,6 +230,8 @@ namespace EksamensProjekt2022
                    
                 }
             }
+
+            timeManager.draw(_spriteBatch);
 
             _debugTools.Draw(_spriteBatch);
 
