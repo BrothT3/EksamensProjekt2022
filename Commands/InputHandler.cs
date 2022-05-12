@@ -42,7 +42,7 @@ namespace EksamensProjekt2022
         public void Update(GameTime gameTime)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            foreach (Cell c in GameWorld.Instance.grid)
+            foreach (Cell c in GameWorld.Instance.currentGrid)
             {
 
                 if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameWorld.Instance._camera.Position.X, mouseState.Y - (int)GameWorld.Instance._camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
@@ -51,7 +51,7 @@ namespace EksamensProjekt2022
                     player.readyToMove = false;
                     player.step = 0;
                     mLeftReleased = false;
-                    start = GameWorld.Cells[player.currentCell.Position];
+                    start = GameWorld.Instance.currentCells[player.currentCell.Position];
                     goal = c;
 
                     FindPath();
@@ -87,7 +87,7 @@ namespace EksamensProjekt2022
         /// </summary>
         public void ColorNodes()
         {
-            foreach (Cell item in GameWorld.Instance.grid)
+            foreach (Cell item in GameWorld.Instance.currentGrid)
             {
                 item.BackGroundColor = Color.White * 0.1f;
                 if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)
