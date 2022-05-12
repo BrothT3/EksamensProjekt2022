@@ -37,6 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:AreaSprites/FieldLeft.png
 
+
 #begin AreaSprites/Rock.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -60,6 +61,14 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:AreaSprites/Tree.png
+
+#begin buttonFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:buttonFont.spritefont
+
 
 #begin Font.spritefont
 /importer:FontDescriptionImporter
