@@ -9,7 +9,8 @@ namespace EksamensProjekt2022
     {
         private Vector2 _pos;
         private Point position;
-        private Texture2D sprite;
+        public Texture2D Sprite { get; set; }
+        private Texture2D lineSprite; 
         private Color spriteColor = Color.White;
         private Color edgeColor = Color.Black;
         public MouseState mstate { get; set; }
@@ -82,7 +83,7 @@ namespace EksamensProjekt2022
 
         public void LoadContent()
         {
-            sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
+            lineSprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
 
             topLine = new Rectangle(Position.X * width, Position.Y * height, width, 1);
 
@@ -105,15 +106,18 @@ namespace EksamensProjekt2022
             }
             //bare for at at man kan se hvor man har musen og selve pathen, men pathen er også bare et debug tool
             //mouseover
-            spriteBatch.Draw(sprite, background, color);
+            if (Sprite != null)
+                spriteBatch.Draw(Sprite, new Vector2(background.X, background.Y), Color.White);
+
+            spriteBatch.Draw(lineSprite, background, color);
 
 #if DEBUG
             //path
-            spriteBatch.Draw(sprite, background, BackGroundColor);
-            spriteBatch.Draw(sprite, topLine, edgeColor);
-            spriteBatch.Draw(sprite, bottomLine, edgeColor);
-            spriteBatch.Draw(sprite, rightLine, edgeColor);
-            spriteBatch.Draw(sprite, leftLine, edgeColor);          
+            spriteBatch.Draw(lineSprite, background, BackGroundColor);
+            spriteBatch.Draw(lineSprite, topLine, edgeColor);
+            spriteBatch.Draw(lineSprite, bottomLine, edgeColor);
+            spriteBatch.Draw(lineSprite, rightLine, edgeColor);
+            spriteBatch.Draw(lineSprite, leftLine, edgeColor);          
 #endif
 
         }
