@@ -21,7 +21,7 @@ namespace EksamensProjekt2022
 
         static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
         public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
-
+        
         public List<Collider> Colliders = new List<Collider>();
 
         private Astar pathfinder;
@@ -36,6 +36,7 @@ namespace EksamensProjekt2022
 
         private AreaManager areaManager;
         private TimeManager timeManager;
+        private MainMenu mainmenu;
         public static float DeltaTime;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
@@ -78,15 +79,17 @@ namespace EksamensProjekt2022
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
-
+            mainmenu = new MainMenu();
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
             player.AddComponent(new Collider());
             Instantiate(player);
+
             _debugTools = new DebugTool();
             areaManager = new AreaManager();
             timeManager = new TimeManager();
+            
 
             for (int i = 0; i < 4; i++)
             {
@@ -144,7 +147,6 @@ namespace EksamensProjekt2022
             }
             timeManager.LoadContent();
 
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -180,6 +182,10 @@ namespace EksamensProjekt2022
                 currentGameObjects[i].Update(gameTime);
             }
             timeManager.Update(gameTime);
+            foreach (Button item in mainmenu.Buttons)
+            {
+                item.Update(gameTime);
+            }
             CleanUp();
 
 
@@ -234,7 +240,10 @@ namespace EksamensProjekt2022
             }
 
             timeManager.draw(_spriteBatch);
-
+            foreach (Button item in mainmenu.Buttons)
+            {
+                item.Draw(_spriteBatch);
+            }
             _debugTools.Draw(_spriteBatch);
 
 
