@@ -12,10 +12,16 @@ namespace EksamensProjekt2022
         public Camera _camera;
         private DebugTool _debugTools;
 
-        private List<GameObject> gameObjects = new List<GameObject>();
-        private List<GameObject> newGameObjects = new List<GameObject>();
+        public List<GameObject> gameObjects = new List<GameObject>();
+        public List<GameObject> currentGameObjects = new List<GameObject>();
+
+        public List<GameObject> newGameObjects = new List<GameObject>();
         private List<GameObject> destroyedGameObjects = new List<GameObject>();
+
+
         static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
+        public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
+
         public List<Collider> Colliders = new List<Collider>();
 
         private Astar pathfinder;
@@ -24,7 +30,9 @@ namespace EksamensProjekt2022
 
         public Grid _grid;
         public List<Cell> grid;
+        public List<Cell> currentGrid;
 
+        private AreaManager areaManager;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
 
@@ -52,34 +60,53 @@ namespace EksamensProjekt2022
 
             //opret gid, skal måske gøres på en anden måde
             _grid = new Grid(80, 36, 36);
-            grid = _grid.CreateGrid();
-          
 
-
-            for (int i = 0; i < 50; i++)
-            {
-                grid[250 + i].IsWalkable = false;
-                
-            }
-            Cells = _grid.CreateCells();
             _camera = new Camera();
            
+          
+
         }
 
         protected override void Initialize()
         {
-
+            
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
             player.AddComponent(new Collider());
             Instantiate(player);          
             _debugTools = new DebugTool();
+            areaManager = new AreaManager();
 
-
-            for (int i = 0; i < gameObjects.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
-                gameObjects[i].Awake();
+                areaManager.currentGrid[i] = _grid.CreateGrid();
+                foreach (Cell item in areaManager.currentGrid[i])
+                {
+                    item.LoadContent();
+                }
+                areaManager.currentCells[i] = _grid.CreateCells();
+                foreach (Cell item in areaManager.currentCells[i].Values)
+                {
+                    item.LoadContent();
+                }
+
+            }
+
+                    
+            currentCells = areaManager.currentCells[0];
+            currentGameObjects = areaManager.currentGameObjects[0];
+            currentGrid = areaManager.currentGrid[0];
+
+            for (int i = 0; i < 50; i++)
+            {
+                areaManager.currentGrid[1][250 + i].IsWalkable = false;
+
+            }
+
+            for (int i = 0; i < currentGameObjects.Count; i++)
+            {
+                currentGameObjects[i].Awake();
             }
 
             base.Initialize();
@@ -97,11 +124,11 @@ namespace EksamensProjekt2022
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            for (int i = 0; i < gameObjects.Count; i++)
+            for (int i = 0; i < currentGameObjects.Count; i++)
             {
-                gameObjects[i].Start();
+                currentGameObjects[i].Start();
             }
-            foreach (Cell item in grid)
+            foreach (Cell item in currentGrid)
             {
                 item.LoadContent();
             }
@@ -134,16 +161,33 @@ namespace EksamensProjekt2022
                 _camera.Move(new Vector2(0, -8));
             }
 
-            foreach (Cell item in grid)
+            foreach (Cell item in currentGrid)
             {
                 item.Update(gameTime);
             }
-            for (int i = 0; i < gameObjects.Count; i++)
+            for (int i = 0; i < currentGameObjects.Count; i++)
             {
-                gameObjects[i].Update(gameTime);
+                currentGameObjects[i].Update(gameTime);
             }
 
             CleanUp();
+
+           
+            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            if(player != null && player.currentCell.Position == currentCells[new Point(1,1)].Position)
+            {
+                player.MyArea = CurrentArea.River;
+                areaManager.ChangeArea(player.MyArea);
+                currentGameObjects.Remove(player.GameObject);
+                currentCells = areaManager.currentCells[(int)player.MyArea];
+                currentGrid = areaManager.currentGrid[(int)player.MyArea];
+                currentGameObjects = areaManager.currentGameObjects[(int)player.MyArea];
+                currentGameObjects.Add(player.GameObject);
+                
+
+            }
+            
+
             base.Update(gameTime);
         }
 
@@ -157,25 +201,26 @@ namespace EksamensProjekt2022
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                 null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 
-            if (grid != null)
-                foreach (Cell item in grid)
+            if (currentGrid != null)
+                foreach (Cell item in currentGrid)
                 {
-                    item.Draw(_spriteBatch);                 
+                    item.Draw(_spriteBatch);
+
                 }
-
-            //for (int i = 0; i < gameObjects.Count; i++)
-            //{
-            //    gameObjects[i].Draw(_spriteBatch);
-                
-            //}
-
-            foreach (GameObject go in gameObjects)
+          
+            for (int i = 0; i < currentGameObjects.Count; i++)
             {
-               
-                go.Draw(_spriteBatch);
-                if (go.GetComponent<Player>() == null)
-                    go.Transform.Position = new Vector2( go.Transform.Position.X- _camera.Position.X , go.Transform.Position.Y - _camera.Position.Y);
+                currentGameObjects[i].Draw(_spriteBatch);
 
+
+
+                if (currentGameObjects[i].GetComponent<Player>() == null)
+                {
+                    currentGameObjects[i].Transform.Position = new Vector2(currentGameObjects[i].Transform.Position.X - _camera.Position.X,
+                        currentGameObjects[i].Transform.Position.Y - _camera.Position.Y);
+
+                   
+                }
             }
 
             _debugTools.Draw(_spriteBatch);
@@ -204,7 +249,7 @@ namespace EksamensProjekt2022
         {
             for (int i = 0; i < newGameObjects.Count; i++)
             {
-                gameObjects.Add(newGameObjects[i]);
+                currentGameObjects.Add(newGameObjects[i]);
                 newGameObjects[i].Awake();
                 newGameObjects[i].Start();
 
@@ -212,7 +257,7 @@ namespace EksamensProjekt2022
 
             for (int i = 0; i < destroyedGameObjects.Count; i++)
             {
-                gameObjects.Remove(destroyedGameObjects[i]);
+                currentGameObjects.Remove(destroyedGameObjects[i]);
             }
 
             destroyedGameObjects.Clear();
@@ -222,7 +267,7 @@ namespace EksamensProjekt2022
 
         public Component FindObjectOfType<T>() where T : Component
         {
-            foreach (GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in currentGameObjects)
             {
                 Component c = gameObject.GetComponent<T>();
 

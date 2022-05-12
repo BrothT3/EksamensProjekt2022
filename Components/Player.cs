@@ -5,8 +5,8 @@ namespace EksamensProjekt2022
 {
     public class Player : Component
     {
-        private float speed;
-        private bool canShoot = true;
+        private CurrentArea myArea;
+
         public Cell currentCell;
         public Cell nextCell;
         private Vector2 currentVector;
@@ -17,18 +17,20 @@ namespace EksamensProjekt2022
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
+        public CurrentArea MyArea { get => myArea; set => myArea = value; }
       
         public override void Awake()
         {
-            speed = 200;
+           
         }
 
         public override void Start()
         {
+            myArea = CurrentArea.Camp;
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");
-            currentCell = GameWorld.Cells[start.ToPoint()];
+            currentCell = GameWorld.Instance.currentCells[start.ToPoint()];
             GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
 
