@@ -91,28 +91,29 @@ namespace EksamensProjekt2022
             timeManager = new TimeManager();
             
 
-            for (int i = 0; i < 4; i++)
-            {
-                areaManager.currentGrid[i] = _grid.CreateGrid();
-                foreach (Cell item in areaManager.currentGrid[i])
-                {
-                    item.LoadContent();
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    areaManager.currentGrid[i] = _grid.CreateGrid();
+            //    foreach (Cell item in areaManager.currentGrid[i])
+            //    {
+            //        item.LoadContent();
 
-                    if (areaManager.currentGrid[i] == areaManager.currentGrid[1])
-                    {
-                        item.Sprite = Content.Load<Texture2D>("AreaSprites/Field");
-                    }
+            //        if (areaManager.currentGrid[i] == areaManager.currentGrid[1])
+            //        {
+            //            item.Sprite = Content.Load<Texture2D>("AreaSprites/Field");
+            //        }
                    
-                }
-                areaManager.currentCells[i] = _grid.CreateCells();
-                foreach (Cell item in areaManager.currentCells[i].Values)
-                {
-                    item.LoadContent();
+            //    }
+            //    areaManager.currentCells[i] = _grid.CreateCells();
+            //    foreach (Cell item in areaManager.currentCells[i].Values)
+            //    {
+            //        item.LoadContent();
                
-                }
+            //    }
 
-            }
-         
+            //}
+            areaManager.currentGrid[0] = _grid.CreateGrid();
+            areaManager.currentCells[0] = _grid.CreateCells();
 
             currentCells = areaManager.currentCells[0];
             currentGameObjects = areaManager.currentGameObjects[0];
@@ -226,7 +227,7 @@ namespace EksamensProjekt2022
 
             }
 
-
+         
             base.Update(gameTime);
         }
 
