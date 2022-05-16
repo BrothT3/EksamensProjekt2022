@@ -47,11 +47,11 @@ namespace EksamensProjekt2022
                 currentGameObjects[(int)currentArea].Clear();
                 currentGrid[(int)currentArea].Clear();
 
-                foreach (Cell grid in GameWorld.Instance.grid)
+                foreach (Cell grid in GameWorld.Instance.currentGrid)
                 {
                     currentGrid[(int)currentArea].Add(grid);
                 }
-                foreach (GameObject go in GameWorld.Instance.gameObjects)
+                foreach (GameObject go in GameWorld.Instance.currentGameObjects)
                 {
                     currentGameObjects[(int)currentArea].Add(go);
 

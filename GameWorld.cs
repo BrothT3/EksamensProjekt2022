@@ -11,34 +11,26 @@ namespace EksamensProjekt2022
         private SpriteBatch _spriteBatch;
         public Camera _camera;
         private DebugTool _debugTools;
-
-        public List<GameObject> gameObjects = new List<GameObject>();
-        public List<GameObject> currentGameObjects = new List<GameObject>();
-
-        public List<GameObject> newGameObjects = new List<GameObject>();
-        private List<GameObject> destroyedGameObjects = new List<GameObject>();
-
-
-        static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
-        public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
-        
-        public List<Collider> Colliders = new List<Collider>();
-
-
-        public Grid _grid;
-        public List<Cell> grid;
-        public List<Cell> currentGrid;
-        private int cellCount;
-        private int cellSize;
-
         private AreaManager areaManager;
         private TimeManager timeManager;
         private MainMenu mainmenu;
+
+        public List<GameObject> currentGameObjects = new List<GameObject>();
+        public List<GameObject> newGameObjects = new List<GameObject>();
+        private List<GameObject> destroyedGameObjects = new List<GameObject>();
+
+        static public Dictionary<Point, Cell> Cells = new Dictionary<Point, Cell>();
+        public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
+        public List<Collider> Colliders = new List<Collider>();
+
+        public Grid _grid;
+        public List<Cell> currentGrid;
+    
         public static float DeltaTime;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
-        public int CellSize { get => cellSize; set => cellSize = value; }
-        public int CellCount { get => cellCount; set => cellCount = value; }
+        public int CellSize { get; set; }
+        public int CellCount { get; set; }
 
         private static GameWorld instance;
         public static GameWorld Instance
@@ -61,9 +53,7 @@ namespace EksamensProjekt2022
             IsMouseVisible = true;
             CellCount = 80;
             CellSize = 36;
-            //opret gid, skal måske gøres på en anden måde
             _grid = new Grid(CellCount, CellSize, CellSize);
-
             _camera = new Camera();
 
         }
@@ -84,7 +74,7 @@ namespace EksamensProjekt2022
             _debugTools = new DebugTool();
             areaManager = new AreaManager();
             timeManager = new TimeManager();
-            
+
 
             areaManager.currentGrid[0] = _grid.CreateGrid();
             areaManager.currentCells[0] = _grid.CreateCells();
@@ -103,8 +93,6 @@ namespace EksamensProjekt2022
             areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 11)), 100)));
             areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(8, 5)), 100)));
             areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(7, 15)), 100)));
-
-
 
 
 
@@ -141,6 +129,8 @@ namespace EksamensProjekt2022
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _debugTools.Update(gameTime);
             KeyboardState keystate = Keyboard.GetState();
+
+            //TODO flyt ind i inputhandler eller lignende
             if (keystate.IsKeyDown(Keys.W))
             {
                 _camera.Move(new Vector2(0, 8));
@@ -158,6 +148,7 @@ namespace EksamensProjekt2022
                 _camera.Move(new Vector2(0, -8));
             }
 
+
             foreach (Cell item in currentGrid)
             {
                 item.Update(gameTime);
@@ -166,14 +157,16 @@ namespace EksamensProjekt2022
             {
                 currentGameObjects[i].Update(gameTime);
             }
+
             timeManager.Update(gameTime);
+
             foreach (Button item in mainmenu.Buttons)
             {
                 item.Update(gameTime);
             }
             CleanUp();
 
-
+            //TODO flyt ind i anden klasser der håndtere skiftet
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
             {
@@ -196,7 +189,7 @@ namespace EksamensProjekt2022
 
             }
 
-         
+
             base.Update(gameTime);
         }
 
@@ -221,22 +214,15 @@ namespace EksamensProjekt2022
             {
                 currentGameObjects[i].Draw(_spriteBatch);
 
-
-
-                //if (currentGameObjects[i].GetComponent<Player>() == null)
-                //{
-                //    currentGameObjects[i].Transform.Position = new Vector2(currentGameObjects[i].Transform.Position.X - _camera.Position.X,
-                //        currentGameObjects[i].Transform.Position.Y - _camera.Position.Y);
-
-
-                //}
             }
 
-            timeManager.draw(_spriteBatch);
+          
             foreach (Button item in mainmenu.Buttons)
             {
                 item.Draw(_spriteBatch);
             }
+
+            timeManager.draw(_spriteBatch);
             _debugTools.Draw(_spriteBatch);
 
 

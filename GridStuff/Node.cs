@@ -28,7 +28,7 @@ namespace EksamensProjekt2022
         public Node(Point position)
         {
             this.position = position;
-            this.NodeVector = new Vector2(position.X*35, position.Y*35);
+            NodeVector = new Vector2(position.X*35, position.Y*35);
         }
 
 
