@@ -7,7 +7,6 @@ namespace EksamensProjekt2022
     public enum CellType { Empty, Resource, Water }
     public class Cell
     {
-        private Vector2 _pos;
         private Point position;
         public Texture2D Sprite { get; set; }
         private Texture2D lineSprite; 
@@ -25,15 +24,7 @@ namespace EksamensProjekt2022
 
         private bool isHovering;
 
-        public Vector2 cellVector;
-        public Vector2 Pos { get; set; }
-        public Rectangle Rectangle 
-        {
-            get
-            {
-                return new Rectangle((int)_pos.X, (int)_pos.Y, width, height);
-            } 
-        }
+        public Vector2 cellVector;    
 
         public Point Position { get => position; set => position = value; }
         public Node MyNode { get => myNode; set => myNode = value; }
@@ -85,15 +76,12 @@ namespace EksamensProjekt2022
         {
             lineSprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
 
+#if DEBUG
             topLine = new Rectangle(Position.X * width, Position.Y * height, width, 1);
-
             bottomLine = new Rectangle(Position.X * width, (Position.Y * height) + height, width, 1);
-
             rightLine = new Rectangle((Position.X * width) + width, Position.Y * height, 1, height);
-
             leftLine = new Rectangle(Position.X * width, Position.Y * height, 1, height);
-
-           // background = new Rectangle(Position.X * width, Position.Y * height, width, height);
+#endif
         }
 
 
