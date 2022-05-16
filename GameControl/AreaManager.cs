@@ -6,13 +6,6 @@ using System.Threading;
 
 namespace EksamensProjekt2022
 {
-    public enum CurrentArea
-    {
-        Camp,
-        River,
-        Hills,
-        Desert
-    }
     public class AreaManager
     {
         public List<GameObject>[] currentGameObjects = new List<GameObject>[4];
@@ -71,13 +64,13 @@ namespace EksamensProjekt2022
 
         public void LoadArea()
         {
-            GetGrid();
-            GetCells();
+            CreateGrid();
+            CreateCells();
             LoadGridAndCell();
 
         }
 
-        public void GetGrid()
+        public void CreateGrid()
         {
             for (int i = 1; i < currentGrid.Length; i++)
             {
@@ -85,7 +78,7 @@ namespace EksamensProjekt2022
             }
         }
 
-        public void GetCells()
+        public void CreateCells()
         {
             for (int i = 1; i < currentCells.Length; i++)
             {

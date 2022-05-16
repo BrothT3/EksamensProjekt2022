@@ -6,13 +6,6 @@ using System.Threading;
 
 namespace EksamensProjekt2022
 {
-    public enum GrowthState
-    {
-        Sprout,
-        Budding,
-        Flowering,
-        Ripe
-    }
     public class Crop : ResourceDepot
     {
         private Thread growthCycle;

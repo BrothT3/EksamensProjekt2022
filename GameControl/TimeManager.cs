@@ -6,12 +6,6 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public enum CurrentTime
-    {
-        Day,
-        Dusk,
-        Night
-    }
     public class TimeManager
     {
         public CurrentTime currentTime;
