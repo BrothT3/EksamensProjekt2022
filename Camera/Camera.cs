@@ -20,6 +20,7 @@ namespace EksamensProjekt2022
         {
             Position += direction;
         }
+
         public Matrix GetTransform()
         {
             var translationMatrix = Matrix.CreateTranslation(new Vector3(Position.X, Position.Y, 0));

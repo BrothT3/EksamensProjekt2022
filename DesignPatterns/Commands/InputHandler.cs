@@ -27,7 +27,7 @@ namespace EksamensProjekt2022
             }
         }
         //kan bruges til at styre interface måske?
-        private Dictionary<KeyState, ICommand> keybinds = new Dictionary<KeyState, ICommand>();
+        private Dictionary<Keys, ICommand> keybinds = new Dictionary<Keys, ICommand>();
         private Dictionary<ButtonState, ICommand> movement = new Dictionary<ButtonState, ICommand>();
 
         public InputHandler()
@@ -35,6 +35,11 @@ namespace EksamensProjekt2022
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             //instans af Astar, start og slut punkt (som så bliver spillerens position og hvor end man vil hen
             pathfinder = new Astar();
+
+            keybinds.Add(Keys.W, new MoveCommand(new Vector2(0, 8)));
+            keybinds.Add(Keys.A, new MoveCommand(new Vector2(8, 0)));
+            keybinds.Add(Keys.D, new MoveCommand(new Vector2(-8, 0)));
+            keybinds.Add(Keys.S, new MoveCommand(new Vector2(0, -8)));
             //kører algoritmen, den flyttes også ind i input/movement senere men bare for at det virker
 
         }
@@ -63,6 +68,7 @@ namespace EksamensProjekt2022
                 }
             }
 
+         
 
         }
 
@@ -77,10 +83,23 @@ namespace EksamensProjekt2022
         }
         public void Execute(Player player)
         {
-            KeyboardState keyState = Keyboard.GetState();
+            
             mouseState = Mouse.GetState();
 
+            Camera c = GameControl.Instance.camera;
+            Execute(c);
+        }
 
+        public void Execute(Camera camera)
+        {
+            KeyboardState keyState = Keyboard.GetState();
+            foreach (Keys key in keybinds.Keys)
+            {
+                if (keyState.IsKeyDown(key))
+                {
+                    keybinds[key].Execute(camera);
+                }
+            }
         }
         /// <summary>
         /// Colors nodes to display the checked tiles
