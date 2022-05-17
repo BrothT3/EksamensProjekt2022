@@ -36,7 +36,7 @@ namespace EksamensProjekt2022
         //    gameObject.AddComponent(new Collider());
 
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
-            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameWorld.Instance.CellSize / 2));
+            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameControl.Instance.CellSize / 2));
             cell.IsWalkable=false;
 
             return gameObject;

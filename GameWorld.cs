@@ -15,8 +15,6 @@ namespace EksamensProjekt2022
         public static float DeltaTime;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
-        public int CellSize { get; set; }
-        public int CellCount { get; set; }
 
         private static GameWorld instance;
         public static GameWorld Instance
