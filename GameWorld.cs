@@ -68,25 +68,6 @@ namespace EksamensProjekt2022
 
             KeyboardState keystate = Keyboard.GetState();
 
-            //TODO flyt ind i inputhandler eller lignende
-            if (keystate.IsKeyDown(Keys.W))
-            {
-                GameControl.Instance.camera.Move(new Vector2(0, 8));
-            }
-            if (keystate.IsKeyDown(Keys.A))
-            {
-                GameControl.Instance.camera.Move(new Vector2(8, 0));
-            }
-            if (keystate.IsKeyDown(Keys.D))
-            {
-                GameControl.Instance.camera.Move(new Vector2(-8, 0));
-            }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                GameControl.Instance.camera.Move(new Vector2(0, -8));
-            }
-
-
 
             //Eksempel på hvordan man skifter spillerens placering
             //Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
