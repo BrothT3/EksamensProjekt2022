@@ -13,6 +13,7 @@ namespace EksamensProjekt2022
         private DebugTool _debugTools;
         private AreaManager areaManager;
         private TimeManager timeManager;
+        
         private MainMenu mainmenu;
 
         public List<GameObject> currentGameObjects = new List<GameObject>();
@@ -64,6 +65,7 @@ namespace EksamensProjekt2022
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
+            GameControl.Instance.currentGameState = GameState.MainMenu;
           //  mainmenu = new MainMenu();
             //GameObject player = new GameObject();
             //player.AddComponent(new Player());
@@ -160,10 +162,7 @@ namespace EksamensProjekt2022
 
             //timeManager.Update(gameTime);
 
-            foreach (Button item in GameControl.Instance.mainmenu.Buttons)
-            {
-                item.Update(gameTime);
-            }
+            
             //CleanUp();
 
             ////TODO flyt ind i anden klasser der håndtere skiftet
@@ -189,7 +188,7 @@ namespace EksamensProjekt2022
 
             //   }
 
-
+            GameControl.Instance.UpdateGameState(gameTime);
             base.Update(gameTime);
         }
 
@@ -203,7 +202,7 @@ namespace EksamensProjekt2022
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                 null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 
-            if (currentGrid != null)
+            if (GameControl.Instance.currentGrid != null)
                 foreach (Cell item in GameControl.Instance.currentGrid)
                 {
                     item.Draw(_spriteBatch);
@@ -216,13 +215,23 @@ namespace EksamensProjekt2022
 
             }
 
-          
-            foreach (Button item in GameControl.Instance.mainmenu.Buttons)
+          if (GameControl.Instance.currentGameState == GameState.MainMenu)
             {
-                item.Draw(_spriteBatch);
+                GameControl.Instance.mainmenu.Draw(_spriteBatch);
+                foreach (Button item in GameControl.Instance.mainmenu.Buttons)
+                {
+                    item.Draw(_spriteBatch);
+                }
+                
             }
 
-         //   GameControl.Instance.timeManager.draw(_spriteBatch);
+          
+ 
+          if (GameControl.Instance.timeManager != null)
+            {
+                GameControl.Instance.timeManager.draw(_spriteBatch);
+            }
+           
             GameControl.Instance._debugTools.Draw(_spriteBatch);
 
 
@@ -267,7 +276,7 @@ namespace EksamensProjekt2022
 
         public Component FindObjectOfType<T>() where T : Component
         {
-            foreach (GameObject gameObject in currentGameObjects)
+            foreach (GameObject gameObject in GameControl.Instance.currentGameObjects)
             {
                 Component c = gameObject.GetComponent<T>();
 

@@ -10,9 +10,9 @@ namespace EksamensProjekt2022
     {
         public CurrentTime currentTime;
         private Texture2D sprite;
-        private float dayTimer = 120;
-        private float duskTimer = 15;
-        private float NightTimer = 60;
+        private float dayTimer = 15;
+        private float duskTimer = 5;
+        private float NightTimer = 10;
         private float timeColor = 0f;
 
         public TimeManager()
@@ -62,7 +62,7 @@ namespace EksamensProjekt2022
         public void draw(SpriteBatch spriteBatch)
         {
             
-            spriteBatch.Draw(sprite, new Rectangle(0, 0, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize), Color.Black * timeColor);
+            spriteBatch.Draw(sprite, new Rectangle(0, 0, GameControl.Instance.CellCount * GameControl.Instance.CellSize, GameControl.Instance.CellCount * GameControl.Instance.CellSize), Color.Black * timeColor);
             
         }
     }

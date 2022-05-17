@@ -12,7 +12,7 @@ namespace EksamensProjekt2022
         private Astar pathfinder;
         private Cell start, goal;
         public List<Node> finalPath;
-        private bool mLeftReleased = true;
+        private bool mLeftReleased = false;
 
 
         public static InputHandler Instance
@@ -42,16 +42,16 @@ namespace EksamensProjekt2022
         public void Update(GameTime gameTime)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            foreach (Cell c in GameWorld.Instance.currentGrid)
+            foreach (Cell c in GameControl.Instance.currentGrid)
             {
 
-                if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameWorld.Instance._camera.Position.X, mouseState.Y - (int)GameWorld.Instance._camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
+                if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
                     c.IsWalkable && c.cellVector != player.currentCell.cellVector)
                 {
                     player.readyToMove = false;
                     player.step = 0;
                     mLeftReleased = false;
-                    start = GameWorld.Instance.currentCells[player.currentCell.Position];
+                    start = GameControl.Instance.currentCells[player.currentCell.Position];
                     goal = c;
 
                     FindPath();
@@ -72,7 +72,7 @@ namespace EksamensProjekt2022
             {
                 finalPath.Clear();
             }
-            finalPath = pathfinder.FindPath(start.Position, goal.Position, GameWorld.Instance._grid.CreateNodes());
+            finalPath = pathfinder.FindPath(start.Position, goal.Position, GameControl.Instance.grid.CreateNodes());
             ColorNodes();
         }
         public void Execute(Player player)
@@ -87,7 +87,7 @@ namespace EksamensProjekt2022
         /// </summary>
         public void ColorNodes()
         {
-            foreach (Cell item in GameWorld.Instance.currentGrid)
+            foreach (Cell item in GameControl.Instance.currentGrid)
             {
                 item.BackGroundColor = Color.White * 0.1f;
                 if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)

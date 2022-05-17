@@ -26,7 +26,7 @@ namespace EksamensProjekt2022
 
         private void PLAY(object sender, EventArgs e)
         {
-            GameControl.Instance.ChangeGameState(GameState.Begin);
+            GameControl.Instance.ChangeGameState(GameState.Playing);
         }
         private void EXIT(object sender, EventArgs e)
         {
