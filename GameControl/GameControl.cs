@@ -152,6 +152,8 @@ namespace EksamensProjekt2022
                     c.LoadContent();
                 }
                 initializeGameState = false;
+
+
             }
             else //tilsvarer dens Update
             {
