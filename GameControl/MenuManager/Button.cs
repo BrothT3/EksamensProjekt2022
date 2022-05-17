@@ -19,16 +19,9 @@ namespace EksamensProjekt2022
         private string buttonText;
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public MouseState mstate { get; set; }
-        public bool IsHovering { get => isHovering; set => isHovering = value; }
         private bool mReleased = true;
         public event EventHandler CLICK;
-        public Rectangle background
-        {
-            get
-            {
-                return new Rectangle(Rectangle.X * Rectangle.Width, Rectangle.Y * Rectangle.Height, Rectangle.Width, Rectangle.Height);
-            }
-        }
+
         public Button(Rectangle ButtonRectangle, String buttonText)
         {
             this.Rectangle = ButtonRectangle;
@@ -36,7 +29,7 @@ namespace EksamensProjekt2022
             sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
             buttonFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
         }
-        //if (background.Contains(new Point(mstate.X - (int) GameWorld.Instance._camera.Position.X, mstate.Y - (int) GameWorld.Instance._camera.Position.Y)))
+
         public void Update(GameTime gameTime)
         {
             Hovering();
@@ -53,7 +46,7 @@ namespace EksamensProjekt2022
             mstate = Mouse.GetState();
             if (rectangle.Contains(new Vector2(mstate.X - (int)GameWorld.Instance._camera.Position.X, mstate.Y - (int)GameWorld.Instance._camera.Position.Y)))
             {
-                IsHovering = true;
+                isHovering = true;
                 hoverColor = Color.AntiqueWhite;
                 if (mstate.LeftButton == ButtonState.Pressed && mReleased == true)
                 {
@@ -64,26 +57,11 @@ namespace EksamensProjekt2022
             }
             else
             {
-                IsHovering = false;
+                isHovering = false;
                 hoverColor = Color.Gray;
             }
 
         }
     }
-    public class PLAYButton : Button
-    {
-        public PLAYButton(Rectangle ButtonRectangle, string buttonText) : base(ButtonRectangle, buttonText)
-        {
-
-        }
-
-        public void Click()
-        {
-            if (IsHovering)
-            {
-
-            }
-        }
-
-    }
+   
 }

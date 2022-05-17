@@ -37,7 +37,6 @@
 /processorParam:TextureFormat=Color
 /build:AreaSprites/FieldLeft.png
 
-
 #begin AreaSprites/Rock.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -69,13 +68,24 @@
 /processorParam:TextureFormat=Compressed
 /build:buttonFont.spritefont
 
-
 #begin Font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
+
+#begin mainMenuBackground.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mainMenuBackground.png
 
 #begin MinerTest.png
 /importer:TextureImporter

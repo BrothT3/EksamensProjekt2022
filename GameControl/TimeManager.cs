@@ -9,7 +9,7 @@ namespace EksamensProjekt2022
     public class TimeManager
     {
         public CurrentTime currentTime;
-        private Texture2D Sprite;
+        private Texture2D sprite;
         private float dayTimer = 120;
         private float duskTimer = 15;
         private float NightTimer = 60;
@@ -17,13 +17,13 @@ namespace EksamensProjekt2022
 
         public TimeManager()
         {
-            this.currentTime = CurrentTime.Day;
+            currentTime = CurrentTime.Day;
         }
 
         public void Update(GameTime gameTime)
         {
 
-            switch (this.currentTime)
+            switch (currentTime)
             {
                 case CurrentTime.Day:
                     dayTimer -= GameWorld.DeltaTime;
@@ -31,7 +31,7 @@ namespace EksamensProjekt2022
                     if (dayTimer <= 0)
                     {
                         currentTime = CurrentTime.Dusk;
-                        dayTimer = 3;
+                        dayTimer = 10;
                     }
                     break;
                 case CurrentTime.Dusk:
@@ -40,7 +40,7 @@ namespace EksamensProjekt2022
                     if (duskTimer <= 0)
                     {
                         currentTime = CurrentTime.Night;
-                        duskTimer = 3;
+                        duskTimer = 10;
                     }
                     break;
                 case CurrentTime.Night:
@@ -49,7 +49,7 @@ namespace EksamensProjekt2022
                     if (NightTimer <= 0)
                     {
                         currentTime = CurrentTime.Day;
-                        NightTimer = 3;
+                        NightTimer = 10;
                     }
                     break;
 
@@ -57,12 +57,12 @@ namespace EksamensProjekt2022
         }
         public void LoadContent()
         {
-            Sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
+            sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
         }
         public void draw(SpriteBatch spriteBatch)
         {
             
-            spriteBatch.Draw(Sprite, new Rectangle(0, 0, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize), Color.Black * timeColor);
+            spriteBatch.Draw(sprite, new Rectangle(0, 0, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize, GameWorld.Instance.CellCount * GameWorld.Instance.CellSize), Color.Black * timeColor);
             
         }
     }
