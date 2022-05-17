@@ -141,10 +141,18 @@ namespace EksamensProjekt2022
             if (GameControl.Instance.currentGameState == GameState.MainMenu)
             {
                 GameControl.Instance.mainmenu.Draw(_spriteBatch);
-                foreach (Button item in GameControl.Instance.mainmenu.Buttons)
+                foreach (Button item in GameControl.Instance.mainmenu.MainMenuButtons)
                 {
                     item.Draw(_spriteBatch);
                 }
+                if (GameControl.Instance.mainmenu.wantToExit)
+                {
+                    foreach (Button item in GameControl.Instance.mainmenu.ExitButtons)
+                    {
+                        item.Draw(_spriteBatch);
+                    }
+                }
+
 
             }
 
