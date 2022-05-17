@@ -107,11 +107,19 @@ namespace EksamensProjekt2022
             else //tilsvarer dens Update
             {
 
-                foreach (Button item in mainmenu.Buttons)
+                foreach (Button item in mainmenu.MainMenuButtons)
                 {
                     item.Update(gameTime);
                 }
-                
+                if (mainmenu.wantToExit)
+                {
+                    foreach (Button item in mainmenu.ExitButtons)
+                    {
+                        item.Update(gameTime);
+                    }
+                }
+
+
             }
 
         }

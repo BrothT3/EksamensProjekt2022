@@ -37,7 +37,7 @@ namespace EksamensProjekt2022
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, Rectangle, hoverColor);
-            spriteBatch.DrawString(buttonFont, buttonText, new Vector2(rectangle.Center.X - (buttonFont.MeasureString(buttonText).X / 2), rectangle.Center.Y - (buttonFont.MeasureString(buttonText).Y) / 2), Color.DarkGray);
+            spriteBatch.DrawString(buttonFont, buttonText, new Vector2(rectangle.Center.X - (buttonFont.MeasureString(buttonText).X / 2), rectangle.Center.Y - (buttonFont.MeasureString(buttonText).Y) / 2), Color.Black);
 
         }
 
@@ -47,7 +47,7 @@ namespace EksamensProjekt2022
             if (rectangle.Contains(new Vector2(mstate.X - (int)GameControl.Instance.camera.Position.X, mstate.Y - (int)GameControl.Instance.camera.Position.Y)))
             {
                 isHovering = true;
-                hoverColor = Color.AntiqueWhite;
+                hoverColor = Color.Wheat;
                 if (mstate.LeftButton == ButtonState.Pressed && mReleased == true)
                 {
                     mReleased = false;
@@ -58,7 +58,7 @@ namespace EksamensProjekt2022
             else
             {
                 isHovering = false;
-                hoverColor = Color.Gray;
+                hoverColor = Color.Cornsilk;
             }
 
         }
