@@ -44,7 +44,7 @@ namespace EksamensProjekt2022
         public virtual void Hovering()
         {
             mstate = Mouse.GetState();
-            if (rectangle.Contains(new Vector2(mstate.X - (int)GameWorld.Instance._camera.Position.X, mstate.Y - (int)GameWorld.Instance._camera.Position.Y)))
+            if (rectangle.Contains(new Vector2(mstate.X - (int)GameControl.Instance.camera.Position.X, mstate.Y - (int)GameControl.Instance.camera.Position.Y)))
             {
                 isHovering = true;
                 hoverColor = Color.AntiqueWhite;

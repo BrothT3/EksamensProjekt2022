@@ -13,12 +13,12 @@ namespace EksamensProjekt2022
         private Texture2D sprite;
         public MainMenu()
         {
-            //Button TestButton = new Button(new Rectangle(72, 72, 144, 72), "PLAY");
-            //TestButton.CLICK += PLAY;
-            //Button TestButton2 = new Button(new Rectangle(72, 396, 144, 72), "EXIT");
-            //TestButton2.CLICK += EXIT;
-            //Buttons.Add(TestButton);
-            //Buttons.Add(TestButton2);
+            Button TestButton = new Button(new Rectangle(72, 72, 144, 72), "PLAY");
+            TestButton.CLICK += PLAY;
+            Button TestButton2 = new Button(new Rectangle(72, 396, 144, 72), "EXIT");
+            TestButton2.CLICK += EXIT;
+            Buttons.Add(TestButton);
+            Buttons.Add(TestButton2);
             sprite = GameWorld.Instance.Content.Load<Texture2D>("mainMenuBackground");
         }
 
@@ -26,7 +26,7 @@ namespace EksamensProjekt2022
 
         private void PLAY(object sender, EventArgs e)
         {
-            GameControl.Instance.ChangeGameState(GameState.Playing);
+            GameControl.Instance.ChangeGameState(GameState.Begin);
         }
         private void EXIT(object sender, EventArgs e)
         {
