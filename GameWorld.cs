@@ -13,6 +13,7 @@ namespace EksamensProjekt2022
         private DebugTool _debugTools;
         private AreaManager areaManager;
         private TimeManager timeManager;
+        
         private MainMenu mainmenu;
 
         public List<GameObject> currentGameObjects = new List<GameObject>();
@@ -51,10 +52,10 @@ namespace EksamensProjekt2022
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            CellCount = 80;
-            CellSize = 36;
-            _grid = new Grid(CellCount, CellSize, CellSize);
-            _camera = new Camera();
+            //CellCount = 80;
+            //CellSize = 36;
+            //_grid = new Grid(CellCount, CellSize, CellSize);
+            //_camera = new Camera();
 
         }
 
@@ -64,42 +65,43 @@ namespace EksamensProjekt2022
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
-            mainmenu = new MainMenu();
-            GameObject player = new GameObject();
-            player.AddComponent(new Player());
-            player.AddComponent(new SpriteRenderer());
-            player.AddComponent(new Collider());
-            Instantiate(player);
+            GameControl.Instance.currentGameState = GameState.MainMenu;
+          //  mainmenu = new MainMenu();
+            //GameObject player = new GameObject();
+            //player.AddComponent(new Player());
+            //player.AddComponent(new SpriteRenderer());
+            //player.AddComponent(new Collider());
+            //Instantiate(player);
 
-            _debugTools = new DebugTool();
-            areaManager = new AreaManager();
-            timeManager = new TimeManager();
+            //_debugTools = new DebugTool();
+            //areaManager = new AreaManager();
+            //timeManager = new TimeManager();
 
 
-            areaManager.currentGrid[0] = _grid.CreateGrid();
-            areaManager.currentCells[0] = _grid.CreateCells();
+            //areaManager.currentGrid[0] = _grid.CreateGrid();
+            //areaManager.currentCells[0] = _grid.CreateCells();
 
-            currentCells = areaManager.currentCells[0];
-            currentGameObjects = areaManager.currentGameObjects[0];
-            currentGrid = areaManager.currentGrid[0];
+            //currentCells = areaManager.currentCells[0];
+            //currentGameObjects = areaManager.currentGameObjects[0];
+            //currentGrid = areaManager.currentGrid[0];
 
             //TODO lav en method der instantiere med 1/8 del af teksten
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 5)), 500)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 6)), 500)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(6, 5)), 500)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 7)), 500)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 15)), 100)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 12)), 100)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 11)), 100)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(8, 5)), 100)));
-            areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(7, 15)), 100)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 5)), 500)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 6)), 500)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(6, 5)), 500)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((TreeFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(5, 7)), 500)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 15)), 100)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 12)), 100)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(10, 11)), 100)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(8, 5)), 100)));
+            //areaManager.currentGameObjects[(int)CurrentArea.River].Add((BoulderFactory.Instance.CreateGameObject(areaManager.currentGrid[(int)CurrentArea.River].Find(x => x.Position == new Point(7, 15)), 100)));
 
 
 
-            for (int i = 0; i < currentGameObjects.Count; i++)
-            {
-                currentGameObjects[i].Awake();
-            }
+            //for (int i = 0; i < currentGameObjects.Count; i++)
+            //{
+            //    currentGameObjects[i].Awake();
+            //}
 
             base.Initialize();
 
@@ -110,15 +112,15 @@ namespace EksamensProjekt2022
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            for (int i = 0; i < currentGameObjects.Count; i++)
-            {
-                currentGameObjects[i].Start();
-            }
-            foreach (Cell item in currentGrid)
-            {
-                item.LoadContent();
-            }
-            timeManager.LoadContent();
+            //for (int i = 0; i < currentGameObjects.Count; i++)
+            //{
+            //    currentGameObjects[i].Start();
+            //}
+            //foreach (Cell item in currentGrid)
+            //{
+            //    item.LoadContent();
+            //}
+           
 
         }
 
@@ -127,103 +129,110 @@ namespace EksamensProjekt2022
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _debugTools.Update(gameTime);
+            //_debugTools.Update(gameTime);
             KeyboardState keystate = Keyboard.GetState();
 
             //TODO flyt ind i inputhandler eller lignende
             if (keystate.IsKeyDown(Keys.W))
             {
-                _camera.Move(new Vector2(0, 8));
+                GameControl.Instance.camera.Move(new Vector2(0, 8));
             }
             if (keystate.IsKeyDown(Keys.A))
             {
-                _camera.Move(new Vector2(8, 0));
+                GameControl.Instance.camera.Move(new Vector2(8, 0));
             }
             if (keystate.IsKeyDown(Keys.D))
             {
-                _camera.Move(new Vector2(-8, 0));
+                GameControl.Instance.camera.Move(new Vector2(-8, 0));
             }
             if (keystate.IsKeyDown(Keys.S))
             {
-                _camera.Move(new Vector2(0, -8));
+                GameControl.Instance.camera.Move(new Vector2(0, -8));
             }
 
 
-            foreach (Cell item in currentGrid)
-            {
-                item.Update(gameTime);
-            }
-            for (int i = 0; i < currentGameObjects.Count; i++)
-            {
-                currentGameObjects[i].Update(gameTime);
-            }
+            //foreach (Cell item in currentGrid)
+            //{
+            //    item.Update(gameTime);
+            //}
+            //for (int i = 0; i < currentGameObjects.Count; i++)
+            //{
+            //    currentGameObjects[i].Update(gameTime);
+            //}
 
-            timeManager.Update(gameTime);
+            //timeManager.Update(gameTime);
 
-            foreach (Button item in mainmenu.Buttons)
-            {
-                item.Update(gameTime);
-            }
-            CleanUp();
+            
+            //CleanUp();
 
-            //TODO flyt ind i anden klasser der håndtere skiftet
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            if (player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
-            {
-                player.MyArea = CurrentArea.River;
-                areaManager.ChangeArea(player.MyArea);
-                currentGameObjects.Remove(player.GameObject);
-                currentCells = areaManager.currentCells[(int)player.MyArea];
-                currentGrid = areaManager.currentGrid[(int)player.MyArea];
-                currentGameObjects = areaManager.currentGameObjects[(int)player.MyArea];
-                currentGameObjects.Add(player.GameObject);
+            ////TODO flyt ind i anden klasser der håndtere skiftet
+            //Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            //if (player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
+            //{
+            //    player.MyArea = CurrentArea.River;
+            //    areaManager.ChangeArea(player.MyArea);
+            //    currentGameObjects.Remove(player.GameObject);
+            //    currentCells = areaManager.currentCells[(int)player.MyArea];
+            //    currentGrid = areaManager.currentGrid[(int)player.MyArea];
+            //    currentGameObjects = areaManager.currentGameObjects[(int)player.MyArea];
+            //    currentGameObjects.Add(player.GameObject);
 
-                foreach (GameObject go in currentGameObjects)
-                {
-                    if (go.GetComponent<Player>() == null)
-                    {
-                        go.Start();
-                    }
-                }
+            //    foreach (GameObject go in currentGameObjects)
+            //    {
+            //        if (go.GetComponent<Player>() == null)
+            //        {
+            //            go.Start();
+            //        }
+            //    }
 
 
-            }
+            //   }
 
-
+            GameControl.Instance.UpdateGameState(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
 
-            var screenScale = _camera.GetScreenScale();
-            var viewMatrix = _camera.GetTransform();
+            var screenScale = GameControl.Instance.camera.GetScreenScale();
+            var viewMatrix = GameControl.Instance.camera.GetTransform();
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                 null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 
-            if (currentGrid != null)
-                foreach (Cell item in currentGrid)
+            if (GameControl.Instance.currentGrid != null)
+                foreach (Cell item in GameControl.Instance.currentGrid)
                 {
                     item.Draw(_spriteBatch);
 
                 }
 
-            for (int i = 0; i < currentGameObjects.Count; i++)
+            for (int i = 0; i < GameControl.Instance.currentGameObjects.Count; i++)
             {
-                currentGameObjects[i].Draw(_spriteBatch);
+                GameControl.Instance.currentGameObjects[i].Draw(_spriteBatch);
 
+            }
+
+          if (GameControl.Instance.currentGameState == GameState.MainMenu)
+            {
+                GameControl.Instance.mainmenu.Draw(_spriteBatch);
+                foreach (Button item in GameControl.Instance.mainmenu.Buttons)
+                {
+                    item.Draw(_spriteBatch);
+                }
+                
             }
 
           
-            foreach (Button item in mainmenu.Buttons)
+ 
+          if (GameControl.Instance.timeManager != null)
             {
-                item.Draw(_spriteBatch);
+                GameControl.Instance.timeManager.draw(_spriteBatch);
             }
-
-            timeManager.draw(_spriteBatch);
-            _debugTools.Draw(_spriteBatch);
+           
+            GameControl.Instance._debugTools.Draw(_spriteBatch);
 
 
             _spriteBatch.End();
@@ -267,7 +276,7 @@ namespace EksamensProjekt2022
 
         public Component FindObjectOfType<T>() where T : Component
         {
-            foreach (GameObject gameObject in currentGameObjects)
+            foreach (GameObject gameObject in GameControl.Instance.currentGameObjects)
             {
                 Component c = gameObject.GetComponent<T>();
 

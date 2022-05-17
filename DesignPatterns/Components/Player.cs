@@ -30,7 +30,7 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");
-            currentCell = GameWorld.Instance.currentCells[start.ToPoint()];
+            currentCell = GameControl.Instance.currentCells[start.ToPoint()];
             GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
 

@@ -63,7 +63,7 @@ namespace EksamensProjekt2022
         {
             mstate = Mouse.GetState();
             isHovering = false;
-            if (background.Contains(new Point(mstate.X - (int)GameWorld.Instance._camera.Position.X, mstate.Y - (int)GameWorld.Instance._camera.Position.Y)))
+            if (background.Contains(new Point(mstate.X - (int)GameControl.Instance.camera.Position.X, mstate.Y - (int)GameControl.Instance.camera.Position.Y)))
             {
                 isHovering = true;
 
