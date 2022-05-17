@@ -73,7 +73,7 @@ namespace EksamensProjekt2022
             switch (currentGameState)
             {
                 case GameState.MainMenu:
-                    MainMenu(gameTime);
+                    StartMenu(gameTime);
                     break;
                 case GameState.Playing:
                     Playing(gameTime);
@@ -87,7 +87,7 @@ namespace EksamensProjekt2022
             }
 
         }
-        public void MainMenu(GameTime gameTime)
+        public void StartMenu(GameTime gameTime)
         {
             if (endingGameState) //det data den resetter før den ændre GameState
             {
