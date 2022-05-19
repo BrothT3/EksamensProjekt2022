@@ -110,13 +110,13 @@ namespace EksamensProjekt2022
             else //tilsvarer dens Update
             {
 
-                foreach (Button item in mainmenu.MainMenuButtons)
+                foreach (Button item in mainmenu.mainMenuButtons)
                 {
                     item.Update(gameTime);
                 }
                 if (mainmenu.wantToExit)
                 {
-                    foreach (Button item in mainmenu.ExitButtons)
+                    foreach (Button item in mainmenu.mainMenuExitButtons)
                     {
                         item.Update(gameTime);
                     }
@@ -197,13 +197,13 @@ namespace EksamensProjekt2022
 
                 }
                 enterReleased = true;
-                foreach (Button item in pauseMenu.PauseMenuButtons)
+                foreach (Button item in pauseMenu.pauseMenuButtons)
                 {
                     item.Update(gameTime);
                 }
                 if (pauseMenu.wantToExit)
                 {
-                    foreach (Button item in pauseMenu.PauseExitButtons)
+                    foreach (Button item in pauseMenu.pauseMenuExitButtons)
                     {
                         item.Update(gameTime);
                     }
