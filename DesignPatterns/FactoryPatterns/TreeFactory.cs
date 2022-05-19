@@ -39,6 +39,8 @@ namespace EksamensProjekt2022
             gameObject.AddComponent(new Tree(cell, resourceAmount));
             gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameControl.Instance.CellSize / 2));
             cell.IsWalkable = false;
+            gameObject.Tag = "Tree";
+            gameObject.Amount = resourceAmount;
             
             return gameObject;
         }

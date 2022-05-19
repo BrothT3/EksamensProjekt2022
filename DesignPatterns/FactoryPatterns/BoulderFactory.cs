@@ -38,6 +38,8 @@ namespace EksamensProjekt2022
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
             gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameControl.Instance.CellSize / 2));
             cell.IsWalkable=false;
+            gameObject.Tag = "Boulder";
+            gameObject.Amount = resourceAmount;
 
             return gameObject;
 
