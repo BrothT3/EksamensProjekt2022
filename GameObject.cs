@@ -10,6 +10,7 @@ namespace EksamensProjekt2022
         public Transform Transform { get; private set; } = new Transform();
         private List<Component> components = new List<Component>();
         public string Tag { get; set; }
+        public int Amount { get; set; }
 
         public Component AddComponent(Component component)
         {
