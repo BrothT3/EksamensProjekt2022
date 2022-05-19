@@ -120,13 +120,13 @@ namespace EksamensProjekt2022
             if (GameControl.Instance.currentGameState == GameState.MainMenu)
             {
                 GameControl.Instance.mainmenu.Draw(_spriteBatch);
-                foreach (Button item in GameControl.Instance.mainmenu.MainMenuButtons)
+                foreach (Button item in GameControl.Instance.mainmenu.mainMenuButtons)
                 {
                     item.Draw(_spriteBatch);
                 }
                 if (GameControl.Instance.mainmenu.wantToExit)
                 {
-                    foreach (Button item in GameControl.Instance.mainmenu.ExitButtons)
+                    foreach (Button item in GameControl.Instance.mainmenu.mainMenuExitButtons)
                     {
                         item.Draw(_spriteBatch);
                     }
@@ -137,13 +137,13 @@ namespace EksamensProjekt2022
 
             if (GameControl.Instance.currentGameState == GameState.Playing && GameControl.Instance.paused == true)
             {
-                foreach (Button item in GameControl.Instance.pauseMenu.PauseMenuButtons)
+                foreach (Button item in GameControl.Instance.pauseMenu.pauseMenuButtons)
                 {
                     item.Draw(_spriteBatch);
                 }
                 if (GameControl.Instance.pauseMenu.wantToExit)
                 {
-                    foreach (Button item in GameControl.Instance.pauseMenu.PauseExitButtons)
+                    foreach (Button item in GameControl.Instance.pauseMenu.pauseMenuExitButtons)
                     {
                         item.Draw(_spriteBatch);
                     }
