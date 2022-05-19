@@ -6,7 +6,7 @@ namespace EksamensProjekt2022
 {
     public class MapManager
     {
-        public static SQLiteConnection connection = new SQLiteConnection("Data Source=userinfo.db");
+        public SQLiteConnection connection = new SQLiteConnection("Data Source=userinfo.db");
         private SaveSlots currentSave;
 
         public AreaManager areaLoader;
