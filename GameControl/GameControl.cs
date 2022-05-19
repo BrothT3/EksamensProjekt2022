@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 
 namespace EksamensProjekt2022
 {
@@ -11,13 +12,15 @@ namespace EksamensProjekt2022
         private GameState nextGameState;
         private bool initializeGameState = true;
         private bool endingGameState = false;
-
+        public bool paused = false;
+        public bool enterReleased;
         #region References
         public Camera camera;
         public DebugTool _debugTools;
         private AreaManager areaManager;
         public TimeManager timeManager;
         public MainMenu mainmenu;
+        public PauseMenu pauseMenu;
         #endregion
 
         #region Lists
@@ -129,7 +132,7 @@ namespace EksamensProjekt2022
             if (endingGameState) //det data den resetter før den ændre GameState
             {
 
-
+                pauseMenu = null;
                 endingGameState = false;
                 initializeGameState = true;
                 currentGameState = nextGameState;
@@ -149,6 +152,7 @@ namespace EksamensProjekt2022
                 currentGameObjects = areaManager.currentGameObjects[0];
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
+                pauseMenu = new PauseMenu();
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {
                     currentGameObjects[i].Awake();
@@ -165,19 +169,46 @@ namespace EksamensProjekt2022
             }
             else //tilsvarer dens Update
             {
-                _debugTools.Update(gameTime);
-                timeManager.Update(gameTime);
-
-                for (int i = 0; i < currentGameObjects.Count; i++)
+                if (!paused)
                 {
-                    currentGameObjects[i].Update(gameTime);
+                    _debugTools.Update(gameTime);
+                    timeManager.Update(gameTime);
+
+                    for (int i = 0; i < currentGameObjects.Count; i++)
+                    {
+                        currentGameObjects[i].Update(gameTime);
+                    }
+                    foreach (Cell c in currentGrid)
+                    {
+                        c.Update(gameTime);
+                    }
+
+                    CleanUp();
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter) && enterReleased == true)
+                    {
+                        enterReleased = false;
+                        paused = true;
+                    }
+                    enterReleased = true;
                 }
-                foreach (Cell c in currentGrid)
+                if (paused)
                 {
-                    c.Update(gameTime);
+
+                }
+                enterReleased = true;
+                foreach (Button item in pauseMenu.PauseMenuButtons)
+                {
+                    item.Update(gameTime);
+                }
+                if (pauseMenu.wantToExit)
+                {
+                    foreach (Button item in pauseMenu.PauseExitButtons)
+                    {
+                        item.Update(gameTime);
+                    }
                 }
 
-                CleanUp();
             }
             
             

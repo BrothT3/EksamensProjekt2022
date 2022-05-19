@@ -135,7 +135,20 @@ namespace EksamensProjekt2022
 
             }
 
-
+            if (GameControl.Instance.currentGameState == GameState.Playing && GameControl.Instance.paused == true)
+            {
+                foreach (Button item in GameControl.Instance.pauseMenu.PauseMenuButtons)
+                {
+                    item.Draw(_spriteBatch);
+                }
+                if (GameControl.Instance.pauseMenu.wantToExit)
+                {
+                    foreach (Button item in GameControl.Instance.pauseMenu.PauseExitButtons)
+                    {
+                        item.Draw(_spriteBatch);
+                    }
+                }
+            }
 
             if (GameControl.Instance.timeManager != null)
             {

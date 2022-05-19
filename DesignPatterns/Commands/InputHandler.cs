@@ -12,7 +12,7 @@ namespace EksamensProjekt2022
         private Astar pathfinder;
         private Cell start, goal;
         public List<Node> finalPath;
-        private bool mLeftReleased = false;
+        public bool mLeftReleased = false;
 
 
         public static InputHandler Instance
