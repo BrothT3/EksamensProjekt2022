@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace EksamensProjekt2022
 {
@@ -20,7 +19,7 @@ namespace EksamensProjekt2022
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public MouseState mstate { get; set; }
         private bool mReleased = true;
-        public event EventHandler CLICK;
+        public event EventHandler OnClicking;
 
         public Button(Rectangle ButtonRectangle, String buttonText)
         {
@@ -51,7 +50,7 @@ namespace EksamensProjekt2022
                 if (mstate.LeftButton == ButtonState.Pressed && mReleased == true)
                 {
                     mReleased = false;
-                    CLICK?.Invoke(this, new EventArgs());
+                    OnClicking?.Invoke(this, new EventArgs());
                 }
                 mReleased = true;
             }

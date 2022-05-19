@@ -9,27 +9,28 @@ namespace EksamensProjekt2022
 {
     public class PauseMenu
     {
-        public List<Button> PauseMenuButtons = new List<Button>();
-        public List<Button> PauseExitButtons = new List<Button>();
+        public List<Button> pauseMenuButtons = new List<Button>();
+        public List<Button> pauseMenuExitButtons = new List<Button>();
         private SpriteFont exitFont;
         private Texture2D sprite;
         public bool wantToExit = false;
         public PauseMenu()
         {
-            Button TestButton = new Button(new Rectangle(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 54, GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 236, 108, 72), "RESUME");
-            TestButton.CLICK += RESUME;
-            Button TestButton2 = new Button(new Rectangle(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 54, GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 36, 108, 72), "EXIT");
-            TestButton2.CLICK += EXIT;
-            PauseMenuButtons.Add(TestButton);
-            PauseMenuButtons.Add(TestButton2);
-            Button EXITYES = new Button(new Rectangle(500, 250, 144, 72), "YES");
-            EXITYES.CLICK += EXITGAME;
-            PauseExitButtons.Add(EXITYES);
-            Button EXITNO = new Button(new Rectangle(175, 250, 144, 72), "NO");
-            EXITNO.CLICK += DONTEXITGAME;
-            PauseExitButtons.Add(EXITNO);
+            Button ResumeButton = new Button(new Rectangle(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 54, GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 236, 108, 72), "RESUME");
+            ResumeButton.OnClicking += ClickedResume;
+            pauseMenuButtons.Add(ResumeButton);
 
+            Button ExitButton = new Button(new Rectangle(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 54, GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 36, 108, 72), "EXIT");
+            ExitButton.OnClicking += ClickedExit;            
+            pauseMenuButtons.Add(ExitButton);
 
+            Button YesExitButton = new Button(new Rectangle(500, 250, 144, 72), "YES");
+            YesExitButton.OnClicking += ClickedYesExitGame;
+            pauseMenuExitButtons.Add(YesExitButton);
+
+            Button NoExitButton = new Button(new Rectangle(175, 250, 144, 72), "NO");
+            NoExitButton.OnClicking += ClickedNoExitGame;
+            pauseMenuExitButtons.Add(NoExitButton);
 
             sprite = GameWorld.Instance.Content.Load<Texture2D>("mainMenuBackground");
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
@@ -37,20 +38,20 @@ namespace EksamensProjekt2022
 
 
 
-        private void RESUME(object sender, EventArgs e)
+        private void ClickedResume(object sender, EventArgs e)
         {
             InputHandler.Instance.mLeftReleased = false;
             GameControl.Instance.paused = false;
         }
-        private void EXIT(object sender, EventArgs e)
+        private void ClickedExit(object sender, EventArgs e)
         {
             wantToExit = true;
         }
-        private void EXITGAME(object sender, EventArgs e)
+        private void ClickedYesExitGame(object sender, EventArgs e)
         {
             GameWorld.Instance.Exit();
         }
-        private void DONTEXITGAME(object sender, EventArgs e)
+        private void ClickedNoExitGame(object sender, EventArgs e)
         {
             wantToExit = false;
         }
