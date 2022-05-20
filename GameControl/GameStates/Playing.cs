@@ -29,10 +29,10 @@ namespace EksamensProjekt2022
         public int CellCount { get; set; }
         #endregion
         public bool paused = false;
+        private bool offsetPauseButtons;
         public bool enterReleased;
         public bool pauseWantToExit = false;
         private Vector2 buttonOffset;
-
         private static Playing instance;
         public static Playing Instance
         {
@@ -57,7 +57,7 @@ namespace EksamensProjekt2022
         public override void EndingGameState()
         {
             paused = false;
-
+            GameControl.Instance.camera.Position = new Vector2(0, 0);
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             Destroy(player.GameObject);
             initializeGameState = true;
@@ -140,34 +140,36 @@ namespace EksamensProjekt2022
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter) && enterReleased == true)
                 {
+
                     enterReleased = false;
                     buttonOffset = new Vector2(GameControl.Instance.camera.Position.X, GameControl.Instance.camera.Position.Y);
                     paused = true;
+                    offsetPauseButtons = true;
                 }
                 enterReleased = true;
             }
             else
             {
-                foreach (Button item in GameControl.Instance.playing.pauseMenuButtons)
+                if (offsetPauseButtons)
                 {
-                    if (!item.IsOffset)
-                        item.Rectangle = new Rectangle(item.Rectangle.X - (int)buttonOffset.X, item.Rectangle.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
 
-                    item.IsOffset = true;
+                    foreach (Button item in GameControl.Instance.playing.pauseMenuButtons)
+                        item.Rectangle = new Rectangle((int)item.DefaultbottonPos.X - (int)buttonOffset.X, (int)item.DefaultbottonPos.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
+                                        
+                    foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)       
+                        item.Rectangle = new Rectangle((int)item.DefaultbottonPos.X - (int)buttonOffset.X, (int)item.DefaultbottonPos.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
+
+                    offsetPauseButtons = false;
+                }
+                
+
+                foreach (Button item in pauseMenuButtons)
                     item.Update(gameTime);
 
-                }
-                if (Instance.pauseWantToExit)
-                {
-                    foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
-                    {
-                        if (!item.IsOffset)
-                            item.Rectangle = new Rectangle(item.Rectangle.X - (int)buttonOffset.X, item.Rectangle.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
-
-                        item.IsOffset = true;
+                if (Instance.pauseWantToExit)  
+                    foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
-                    }
-                }
+                
             }
 
         }
@@ -175,6 +177,7 @@ namespace EksamensProjekt2022
         #region PauseMenu
         private void ClickedMainMenu(object sender, EventArgs e)
         {
+            
             GameControl.Instance.ChangeGameState(GameState.StartMenu);
         }
 
