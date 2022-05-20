@@ -64,7 +64,7 @@ namespace EksamensProjekt2022
         {
             List<Node> allNodes = new List<Node>();
 
-            foreach (Cell cell in GameControl.Instance.currentGrid)
+            foreach (Cell cell in GameControl.Instance.playing.currentGrid)
             {
                 if (cell.IsWalkable)
                 {

@@ -35,16 +35,16 @@ namespace EksamensProjekt2022
 
         public void OnAreaChange()
         {
-            if (GameControl.Instance.newGameObjects.Count == 0)
+            if (GameControl.Instance.playing.newGameObjects.Count == 0)
             {
                 currentGameObjects[(int)currentArea].Clear();
                 currentGrid[(int)currentArea].Clear();
 
-                foreach (Cell grid in GameControl.Instance.currentGrid)
+                foreach (Cell grid in GameControl.Instance.playing.currentGrid)
                 {
                     currentGrid[(int)currentArea].Add(grid);
                 }
-                foreach (GameObject go in GameControl.Instance.currentGameObjects)
+                foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
                 {
                     currentGameObjects[(int)currentArea].Add(go);
 
@@ -74,7 +74,7 @@ namespace EksamensProjekt2022
         {
             for (int i = 1; i < currentGrid.Length; i++)
             {
-                currentGrid[i] = GameControl.Instance.grid.CreateGrid();
+                currentGrid[i] = GameControl.Instance.playing.grid.CreateGrid();
             }
         }
 
@@ -82,7 +82,7 @@ namespace EksamensProjekt2022
         {
             for (int i = 1; i < currentCells.Length; i++)
             {
-                currentCells[i] = GameControl.Instance.grid.CreateCells();
+                currentCells[i] = GameControl.Instance.playing.grid.CreateCells();
             }
         }
 

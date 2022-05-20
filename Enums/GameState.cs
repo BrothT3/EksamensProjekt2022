@@ -2,7 +2,7 @@
 {
     public enum GameState
     {
-        MainMenu,
+        StartMenu,
         Begin,
         Playing,
         PauseMenu,

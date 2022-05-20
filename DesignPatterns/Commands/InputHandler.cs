@@ -47,7 +47,7 @@ namespace EksamensProjekt2022
         public void Update(GameTime gameTime)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            foreach (Cell c in GameControl.Instance.currentGrid)
+            foreach (Cell c in GameControl.Instance.playing.currentGrid)
             {
 
                 if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
@@ -56,7 +56,7 @@ namespace EksamensProjekt2022
                     player.readyToMove = false;
                     player.step = 0;
                     mLeftReleased = false;
-                    start = GameControl.Instance.currentCells[player.currentCell.Position];
+                    start = GameControl.Instance.playing.currentCells[player.currentCell.Position];
                     goal = c;
 
                     FindPath();
@@ -78,7 +78,7 @@ namespace EksamensProjekt2022
             {
                 finalPath.Clear();
             }
-            finalPath = pathfinder.FindPath(start.Position, goal.Position, GameControl.Instance.grid.CreateNodes());
+            finalPath = pathfinder.FindPath(start.Position, goal.Position, GameControl.Instance.playing.grid.CreateNodes());
             ColorNodes();
         }
         public void Execute(Player player)
@@ -106,7 +106,7 @@ namespace EksamensProjekt2022
         /// </summary>
         public void ColorNodes()
         {
-            foreach (Cell item in GameControl.Instance.currentGrid)
+            foreach (Cell item in GameControl.Instance.playing.currentGrid)
             {
                 item.BackGroundColor = Color.White * 0.1f;
                 if (pathfinder.Open.Exists(x => x.Position == item.Position) && item.Position != start.Position && item.Position != goal.Position)

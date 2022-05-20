@@ -13,25 +13,33 @@ namespace EksamensProjekt2022
         private SpriteFont buttonFont;
         private Texture2D sprite;
         private bool isHovering;
+        private bool isOffset;
+        private Vector2 offset;
         private Color hoverColor = Color.White;
         private Rectangle rectangle;
         private string buttonText;
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public MouseState mstate { get; set; }
+        public bool IsOffset { get => isOffset; set => isOffset = value; }
+
         private bool mReleased = true;
         public event EventHandler OnClicking;
 
-        public Button(Rectangle ButtonRectangle, String buttonText)
+        public Button(Rectangle ButtonRectangle, string buttonText)
         {
-            this.Rectangle = ButtonRectangle;
+            Rectangle = ButtonRectangle;
+    
             this.buttonText = buttonText;
             sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
             buttonFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
+            IsOffset = false;
         }
 
         public void Update(GameTime gameTime)
         {
             Hovering();
+            
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
