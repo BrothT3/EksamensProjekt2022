@@ -4,7 +4,6 @@ namespace EksamensProjekt2022
 {
     public class TreeFactory : Factory
     {
-      //  private GameObject gameObject;
         private static TreeFactory instance;
 
         public static TreeFactory Instance
@@ -17,23 +16,21 @@ namespace EksamensProjekt2022
                 }
                 return instance;
             }
-            
+
         }
 
         private TreeFactory()
         {
-           
-           
+
+
         }
         public override GameObject CreateGameObject(Cell cell, int resourceAmount)
         {
             GameObject gameObject = new GameObject();
-
-            gameObject = new GameObject();
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Tree");
-         //  Collider c = (Collider)gameObject.AddComponent(new Collider());
-            
+            //  Collider c = (Collider)gameObject.AddComponent(new Collider());
+
 
 
             gameObject.AddComponent(new Tree(cell, resourceAmount));
@@ -41,7 +38,7 @@ namespace EksamensProjekt2022
             cell.IsWalkable = false;
             gameObject.Tag = "Tree";
             gameObject.Amount = resourceAmount;
-            
+
             return gameObject;
         }
     }

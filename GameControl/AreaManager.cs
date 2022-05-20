@@ -15,6 +15,7 @@ namespace EksamensProjekt2022
 
         private CurrentArea currentArea;
         private Thread loadAreasThread;
+        private bool HasRun = false;
 
         public event EventHandler AreaChange;
 
@@ -28,11 +29,22 @@ namespace EksamensProjekt2022
                 currentGameObjects[i] = new List<GameObject>();
 
             }
+            if (!HasRun)
+            {
+                CreateGrids();
+                HasRun = true;
+            }
+           
+         
+        }
+
+        public void CreateGrids()
+        {
+            
             loadAreasThread = new Thread(LoadArea);
             loadAreasThread.IsBackground = true;
             loadAreasThread.Start();
         }
-
         public void OnAreaChange()
         {
             if (GameControl.Instance.playing.newGameObjects.Count == 0)

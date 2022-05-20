@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
     public class Playing : SuperGameState
     {
 
-        private AreaManager areaManager;
+        public AreaManager areaManager;
         public TimeManager timeManager;
         public DebugTool _debugTools;
         #region Lists
@@ -69,7 +69,11 @@ namespace EksamensProjekt2022
             GameControl.Instance.currentSuperGameState = this;
             areaManager.currentGrid[0] = grid.CreateGrid();
             areaManager.currentCells[0] = grid.CreateCells();
-            //add player
+            //TODO reminder this is temporary
+            MapManager m = new MapManager();
+            m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+
+
             GameObject player = new GameObject();
             player.AddComponent(new Player());
             player.AddComponent(new SpriteRenderer());
@@ -81,6 +85,14 @@ namespace EksamensProjekt2022
             timeManager = new TimeManager();
             timeManager.LoadContent();
 
+            //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
+            for (int i = 0; i < m.areaLoader.currentGameObjects.Length; i++)
+            {
+                currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+            }
+            
+
+          
             for (int i = 0; i < currentGameObjects.Count; i++)
             {
                 currentGameObjects[i].Awake();
@@ -113,6 +125,9 @@ namespace EksamensProjekt2022
 
 
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
+
+          
+           
 
         }
         public override void Update(GameTime gameTime)

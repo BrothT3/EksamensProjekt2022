@@ -10,8 +10,6 @@ namespace EksamensProjekt2022
         private SaveSlots currentSave;
 
         public AreaManager areaLoader;
-        private List<GameObject> dbGameObjects;
-
 
 
         private string componentName;
@@ -19,10 +17,10 @@ namespace EksamensProjekt2022
         private int amount;
 
 
+
         public MapManager()
         {
             areaLoader = new AreaManager();
-            //dbGameObjects = new List<GameObject>();
         }
 
         /// <summary>
@@ -30,14 +28,14 @@ namespace EksamensProjekt2022
         /// to override the GameControls' instance of AreaManager in order to use the save file data
         /// </summary>
         /// <param name="currentSave"></param>
-        public void GetDbInfo(SaveSlots currentSave)
+        public void GetDbInfo(SaveSlots currentSave, CurrentArea area)
         {
             Open();
             this.currentSave = currentSave;
 
             for (int i = 0; i < areaLoader.currentGrid.Length; i++)
             {
-                GetComponents(currentSave, (int)i);
+                GetComponents(currentSave, area);
             }
             Close();
         }
@@ -47,23 +45,20 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="currentSave"></param>
         /// <param name="area"></param>
-        public void GetComponents(SaveSlots currentSave, int area)
+        public void GetComponents(SaveSlots currentSave, CurrentArea area)
         {
 
-            int positionX;
-            int positionY;
+          
 
-            var cmd = new SQLiteCommand($"SELECT * FROM area WHERE UserID={(int)currentSave}", connection);
+            var cmd = new SQLiteCommand($"SELECT GameObject, PositionX, PositionY, Amount FROM area WHERE UserID={(int)currentSave}", connection);
             var dataread = cmd.ExecuteReader();
 
             while (dataread.Read())
             {
-                //area = dataread.GetInt32(3);
-                componentName = dataread.GetString(4);
-                positionX = dataread.GetInt32(5);
-                positionY = dataread.GetInt32(6);
-                position = new Point(positionX, positionY);
-                amount = dataread.GetInt32(7);
+
+                componentName = dataread.GetString(0);
+                position = new Point(dataread.GetInt32(1), dataread.GetInt32(2));
+                amount = dataread.GetInt32(3);
 
                 CreateComponent(componentName, area);
 
@@ -76,16 +71,16 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="componentName"></param>
         /// <param name="area"></param>
-        public void CreateComponent(string componentName, int area)
+        public void CreateComponent(string componentName, CurrentArea area)
         {
 
             switch (componentName)
             {
                 case "Tree":
-                    areaLoader.currentGameObjects[area].Add((TreeFactory.Instance.CreateGameObject(areaLoader.currentGrid[area].Find(x => x.Position == position), amount)));
+                    areaLoader.currentGameObjects[(int)area].Add(TreeFactory.Instance.CreateGameObject(GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount));
                     break;
                 case "Boulder":
-                    areaLoader.currentGameObjects[area].Add((BoulderFactory.Instance.CreateGameObject(areaLoader.currentGrid[area].Find(x => x.Position == position), amount)));
+                    areaLoader.currentGameObjects[(int)area].Add((BoulderFactory.Instance.CreateGameObject(GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount)));
                     break;
                 default:
                     break;

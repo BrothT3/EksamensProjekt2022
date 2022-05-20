@@ -43,7 +43,7 @@ namespace EksamensProjekt2022
             currentArea = CurrentArea.Hills;
             selectedSprite = sprites[(int)currentObject];
             camera = GameControl.Instance.camera;
-            mapManager = new MapManager();
+          //  mapManager = new MapManager();
         }
 
 
