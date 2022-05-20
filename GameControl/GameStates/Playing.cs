@@ -9,7 +9,7 @@ namespace EksamensProjekt2022
 {
     public class Playing : SuperGameState
     {
-        
+
         private AreaManager areaManager;
         public TimeManager timeManager;
         public DebugTool _debugTools;
@@ -31,6 +31,8 @@ namespace EksamensProjekt2022
         public bool paused = false;
         public bool enterReleased;
         public bool pauseWantToExit = false;
+        private Vector2 buttonOffset;
+
         private static Playing instance;
         public static Playing Instance
         {
@@ -55,7 +57,7 @@ namespace EksamensProjekt2022
         public override void EndingGameState()
         {
             paused = false;
-            
+
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             Destroy(player.GameObject);
             initializeGameState = true;
@@ -78,7 +80,7 @@ namespace EksamensProjekt2022
             currentGameObjects = areaManager.currentGameObjects[0];
             timeManager = new TimeManager();
             timeManager.LoadContent();
-            
+
             for (int i = 0; i < currentGameObjects.Count; i++)
             {
                 currentGameObjects[i].Awake();
@@ -109,7 +111,7 @@ namespace EksamensProjekt2022
             NoExitButton.OnClicking += ClickedNoExitGame;
             pauseMenuExitButtons.Add(NoExitButton);
 
-            
+
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
 
         }
@@ -139,6 +141,7 @@ namespace EksamensProjekt2022
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter) && enterReleased == true)
                 {
                     enterReleased = false;
+                    buttonOffset = new Vector2(GameControl.Instance.camera.Position.X, GameControl.Instance.camera.Position.Y);
                     paused = true;
                 }
                 enterReleased = true;
@@ -147,19 +150,28 @@ namespace EksamensProjekt2022
             {
                 foreach (Button item in GameControl.Instance.playing.pauseMenuButtons)
                 {
+                    if (!item.IsOffset)
+                        item.Rectangle = new Rectangle(item.Rectangle.X - (int)buttonOffset.X, item.Rectangle.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
+
+                    item.IsOffset = true;
                     item.Update(gameTime);
+
                 }
                 if (Instance.pauseWantToExit)
                 {
                     foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
                     {
+                        if (!item.IsOffset)
+                            item.Rectangle = new Rectangle(item.Rectangle.X - (int)buttonOffset.X, item.Rectangle.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
+
+                        item.IsOffset = true;
                         item.Update(gameTime);
                     }
                 }
             }
 
-        }      
-        
+        }
+
         #region PauseMenu
         private void ClickedMainMenu(object sender, EventArgs e)
         {
@@ -185,7 +197,7 @@ namespace EksamensProjekt2022
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            
+
             if (Instance.pauseWantToExit)
             {
                 spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
@@ -204,7 +216,7 @@ namespace EksamensProjekt2022
                     }
                 }
             }
-            
+
         }
         #endregion
 
