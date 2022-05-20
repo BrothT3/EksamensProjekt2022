@@ -44,7 +44,7 @@ namespace EksamensProjekt2022
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
-            GameControl.Instance.currentGameState = GameState.MainMenu;
+            GameControl.Instance.currentGameState = GameState.StartMenu;
 
             base.Initialize();
 
@@ -104,58 +104,32 @@ namespace EksamensProjekt2022
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                 null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 
-            if (GameControl.Instance.currentGrid != null)
-                foreach (Cell item in GameControl.Instance.currentGrid)
+            if (GameControl.Instance.playing.currentGrid != null)
+                foreach (Cell item in GameControl.Instance.playing.currentGrid)
                 {
                     item.Draw(_spriteBatch);
 
                 }
 
-            for (int i = 0; i < GameControl.Instance.currentGameObjects.Count; i++)
+            for (int i = 0; i < GameControl.Instance.playing.currentGameObjects.Count; i++)
             {
-                GameControl.Instance.currentGameObjects[i].Draw(_spriteBatch);
+                GameControl.Instance.playing.currentGameObjects[i].Draw(_spriteBatch);
 
             }
 
-            if (GameControl.Instance.currentGameState == GameState.MainMenu)
-            {
-                GameControl.Instance.mainmenu.Draw(_spriteBatch);
-                foreach (Button item in GameControl.Instance.mainmenu.mainMenuButtons)
-                {
-                    item.Draw(_spriteBatch);
-                }
-                if (GameControl.Instance.mainmenu.wantToExit)
-                {
-                    foreach (Button item in GameControl.Instance.mainmenu.mainMenuExitButtons)
-                    {
-                        item.Draw(_spriteBatch);
-                    }
-                }
+            if (GameControl.Instance.currentGameState == GameState.StartMenu)
+                GameControl.Instance.startScreen.Draw(_spriteBatch);
 
 
-            }
-
-            if (GameControl.Instance.currentGameState == GameState.Playing && GameControl.Instance.paused == true)
-            {
-                foreach (Button item in GameControl.Instance.pauseMenu.pauseMenuButtons)
-                {
-                    item.Draw(_spriteBatch);
-                }
-                if (GameControl.Instance.pauseMenu.wantToExit)
-                {
-                    foreach (Button item in GameControl.Instance.pauseMenu.pauseMenuExitButtons)
-                    {
-                        item.Draw(_spriteBatch);
-                    }
-                }
-            }
+            if (GameControl.Instance.currentGameState == GameState.Playing)
+                GameControl.Instance.playing.Draw(_spriteBatch);
 
             if (GameControl.Instance.timeManager != null)
             {
                 GameControl.Instance.timeManager.draw(_spriteBatch);
             }
 
-            GameControl.Instance._debugTools.Draw(_spriteBatch);
+            GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
 
 
             _spriteBatch.End();
@@ -167,7 +141,7 @@ namespace EksamensProjekt2022
 
         public Component FindObjectOfType<T>() where T : Component
         {
-            foreach (GameObject gameObject in GameControl.Instance.currentGameObjects)
+            foreach (GameObject gameObject in GameControl.Instance.playing.currentGameObjects)
             {
                 Component c = gameObject.GetComponent<T>();
 

@@ -93,11 +93,11 @@ namespace EksamensProjekt2022
             switch (tag)
             {
                 case "Tree":
-                    GameControl.Instance.Instantiate((TreeFactory.Instance.CreateGameObject(
+                    GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
                         mapManager.areaLoader.currentGrid[(int)currentArea].Find(x=> x.Position == cell.Position), 500)));
                     break;
                 case "Boulder":
-                    GameControl.Instance.Instantiate((BoulderFactory.Instance.CreateGameObject(
+                    GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
                        mapManager.areaLoader.currentGrid[(int)currentArea].Find(x => x.Position == cell.Position), 500)));
                     break;
                 default:
