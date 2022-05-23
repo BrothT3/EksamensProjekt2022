@@ -66,6 +66,11 @@ namespace EksamensProjekt2022
 
             KeyboardState keystate = Keyboard.GetState();
 
+            if (MapCreator.DevMode && GameControl.Instance.currentGameState == GameState.Playing)
+            {
+                MapCreator.Instance.Update(gameTime);
+            }
+
 
             //Eksempel på hvordan man skifter spillerens placering
             //Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
@@ -96,13 +101,27 @@ namespace EksamensProjekt2022
 
         protected override void Draw(GameTime gameTime)
         {
-
-            var screenScale = GameControl.Instance.camera.GetScreenScale();
-            var viewMatrix = GameControl.Instance.camera.GetTransform();
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
-                null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
+            if (MapCreator.DevMode)
+            {
+                var screenScale = MapCreator.Instance.camera.GetScreenScale();
+                var viewMatrix = MapCreator.Instance.camera.GetTransform();
+                _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
+               null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
+
+            }
+            else
+            {
+                var screenScale = GameControl.Instance.camera.GetScreenScale();
+                var viewMatrix = GameControl.Instance.camera.GetTransform();
+                _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
+               null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
+            }
+           
+           
+
+           
 
             if (GameControl.Instance.playing.currentGrid != null)
                 foreach (Cell item in GameControl.Instance.playing.currentGrid)

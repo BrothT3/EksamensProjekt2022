@@ -15,23 +15,39 @@ namespace EksamensProjekt2022
     }
     public class MapCreator
     {
-        private bool mLeftReleased;
+       
         private string[] spriteNames = new string[]
-        { 
+        {
             "Tree",
             "Rock",
             "Field",
-         
+
 
         };
-
+        private bool mRightReleased;
+        private bool mLeftReleased;
+        public static bool DevMode = false;
         private Texture2D[] sprites = new Texture2D[3];
         private Texture2D selectedSprite;
-        private Camera camera;
+        public Camera camera;
         private MapManager mapManager;
         private CurrentArea currentArea;
         private GameObjectType currentObject;
         public List<GameObject> addedGameObjects = new List<GameObject>();
+        private Cell cell;
+
+        private static MapCreator instance;
+        public static MapCreator Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MapCreator();
+                }
+                return instance;
+            }
+        }
 
         public MapCreator()
         {
@@ -40,37 +56,71 @@ namespace EksamensProjekt2022
                 sprites[i] = GameWorld.Instance.Content.Load<Texture2D>($"AreaSprites/{spriteNames[i]}");
             }
             currentObject = GameObjectType.Tree;
-            currentArea = CurrentArea.Hills;
+            currentArea = CurrentArea.Camp;
             selectedSprite = sprites[(int)currentObject];
-            camera = GameControl.Instance.camera;
-          //  mapManager = new MapManager();
+            camera = new Camera();
+            mapManager = new MapManager();
         }
+
 
 
         public void Update(GameTime gameTime)
         {
-            
-            MouseState mouseState = Mouse.GetState();
-            foreach (Cell c in mapManager.areaLoader.currentGrid[(int)currentArea])
-            {
+            InputHandler.Instance.Execute(camera);
+            InputHandler.Instance.Update(gameTime);
+          
 
-                if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10))
-                    && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased )
+
+            MouseState mouseState = Mouse.GetState();
+            if (GameControl.Instance.playing.currentGrid != null)
+                foreach (Cell c in GameControl.Instance.playing.currentGrid)
                 {
-                    InsertItem(mouseState);
+
+                    if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
+                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased && c.IsWalkable)
+                    {
+                        cell = c;
+                        InsertItem(mouseState);
+                    }
+                    if (mouseState.LeftButton == ButtonState.Released)
+                    {
+                        mLeftReleased = true;
+                    }
+
+                  
                 }
-                if (mouseState.LeftButton == ButtonState.Released)
+            foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+            {
+                if(go.GetComponent<Collider>() != null)
                 {
-                    mLeftReleased = true;
+                    Collider c = go.GetComponent<Collider>() as Collider;
+                    if (c.CollisionBox.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
+                     && mouseState.RightButton == ButtonState.Pressed && mRightReleased)
+                    {
+                        GameControl.Instance.playing.Destroy(go);
+                    }
+                    if (mouseState.RightButton == ButtonState.Released)
+                    {
+                        mRightReleased = true;
+                    }
                 }
+               
             }
-            
+
+        }
+
+        public void RemoveItem(GameObject go)
+        {
+            switch (go.Tag)
+            {
+                default:
+                    break;
+            }
         }
 
         public void InsertItem(MouseState mouseState)
         {
-           Cell cell = mapManager.areaLoader.currentGrid[(int)currentArea].Find(x => x.cellVector == new Point(mouseState.X, mouseState.Y).ToVector2());
-
+         
             switch (currentObject)
             {
                 case (GameObjectType)0:
@@ -94,14 +144,22 @@ namespace EksamensProjekt2022
             {
                 case "Tree":
                     GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
-                        mapManager.areaLoader.currentGrid[(int)currentArea].Find(x=> x.Position == cell.Position), 500)));
+                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
                     break;
                 case "Boulder":
                     GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
-                       mapManager.areaLoader.currentGrid[(int)currentArea].Find(x => x.Position == cell.Position), 500)));
+                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
                     break;
                 default:
                     break;
+            }
+        }
+
+        public void ChangeObjectType()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && (int)currentObject >= sprites.Length)
+            {
+                
             }
         }
 

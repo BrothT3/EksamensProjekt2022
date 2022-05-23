@@ -29,7 +29,7 @@ namespace EksamensProjekt2022
             GameObject gameObject = new GameObject();
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Tree");
-            //  Collider c = (Collider)gameObject.AddComponent(new Collider());
+            Collider c = (Collider)gameObject.AddComponent(new Collider());
 
 
 

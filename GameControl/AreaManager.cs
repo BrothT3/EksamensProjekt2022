@@ -34,13 +34,13 @@ namespace EksamensProjekt2022
                 CreateGrids();
                 HasRun = true;
             }
-           
-         
+        
+
         }
 
         public void CreateGrids()
         {
-            
+
             loadAreasThread = new Thread(LoadArea);
             loadAreasThread.IsBackground = true;
             loadAreasThread.Start();

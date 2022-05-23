@@ -73,17 +73,22 @@ namespace EksamensProjekt2022
             MapManager m = new MapManager();
             m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
 
-
-            GameObject player = new GameObject();
-            player.AddComponent(new Player());
-            player.AddComponent(new SpriteRenderer());
-            player.AddComponent(new Collider());
-            Instantiate(player);
+            //TODO måske noget andet
+            if (!MapCreator.DevMode)
+            {
+                GameObject player = new GameObject();
+                player.AddComponent(new Player());
+                player.AddComponent(new SpriteRenderer());
+                player.AddComponent(new Collider());
+                Instantiate(player);
+                timeManager = new TimeManager();
+                timeManager.LoadContent();
+            }
+           
             currentGrid = areaManager.currentGrid[0];
             currentCells = areaManager.currentCells[0];
             currentGameObjects = areaManager.currentGameObjects[0];
-            timeManager = new TimeManager();
-            timeManager.LoadContent();
+         
 
             //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
             for (int i = 0; i < m.areaLoader.currentGameObjects.Length; i++)
@@ -140,7 +145,13 @@ namespace EksamensProjekt2022
             if (!paused)
             {
                 _debugTools.Update(gameTime);
-                timeManager.Update(gameTime);
+
+                //TODO lav noget bedre
+                if (!MapCreator.DevMode)
+                {
+                    timeManager.Update(gameTime);
+                }
+              
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {

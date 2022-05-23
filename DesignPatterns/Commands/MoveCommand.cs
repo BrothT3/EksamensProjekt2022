@@ -15,7 +15,7 @@ namespace EksamensProjekt2022
 
         public void Execute(Camera camera)
         {
-            camera.Move(velocity);
+            camera.Move(velocity);         
         }
         public void Execute(Player player)
         {
