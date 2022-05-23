@@ -143,13 +143,14 @@ namespace EksamensProjekt2022
             if (GameControl.Instance.currentGameState == GameState.Playing)
                 GameControl.Instance.playing.Draw(_spriteBatch);
 
-            if (GameControl.Instance.timeManager != null)
-            {
-                GameControl.Instance.timeManager.draw(_spriteBatch);
-            }
+            
 
             GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
 
+            if (GameControl.Instance.playing.timeManager != null)
+            {
+                GameControl.Instance.playing.timeManager.Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
 
