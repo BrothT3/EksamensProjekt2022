@@ -44,7 +44,7 @@ namespace EksamensProjekt2022
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
-            GameControl.Instance.currentGameState = GameState.StartMenu;
+            GameControl.Instance.currentGameState = CurrentGameState.StartMenu;
 
             base.Initialize();
 
@@ -66,7 +66,7 @@ namespace EksamensProjekt2022
 
             KeyboardState keystate = Keyboard.GetState();
 
-            if (MapCreator.DevMode && GameControl.Instance.currentGameState == GameState.Playing)
+            if (MapCreator.DevMode && GameControl.Instance.currentGameState == CurrentGameState.Playing)
             {
                 MapCreator.Instance.Update(gameTime);
             }
@@ -136,11 +136,11 @@ namespace EksamensProjekt2022
 
             }
 
-            if (GameControl.Instance.currentGameState == GameState.StartMenu)
+            if (GameControl.Instance.currentGameState == CurrentGameState.StartMenu)
                 GameControl.Instance.startScreen.Draw(_spriteBatch);
 
 
-            if (GameControl.Instance.currentGameState == GameState.Playing)
+            if (GameControl.Instance.currentGameState == CurrentGameState.Playing)
                 GameControl.Instance.playing.Draw(_spriteBatch);
 
             

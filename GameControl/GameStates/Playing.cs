@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public class Playing : SuperGameState
+    public class Playing : GameState
     {
 
         public AreaManager areaManager;
@@ -33,19 +33,7 @@ namespace EksamensProjekt2022
         public bool enterReleased;
         public bool pauseWantToExit = false;
         private Vector2 buttonOffset;
-        private static Playing instance;
-        public static Playing Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Playing();
-                }
-                return instance;
-            }
 
-        }
         public Playing()
         {
             CellCount = 80;
@@ -57,16 +45,19 @@ namespace EksamensProjekt2022
         public override void EndingGameState()
         {
             paused = false;
+            pauseWantToExit = false;
             GameControl.Instance.camera.Position = new Vector2(0, 0);
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            if (player != null)
             Destroy(player.GameObject);
+
             initializeGameState = true;
             //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
 
         }
         public override void Initialize()
         {
-            GameControl.Instance.currentSuperGameState = this;
+            GameControl.Instance.selectedGameState = this;
             areaManager.currentGrid[0] = grid.CreateGrid();
             areaManager.currentCells[0] = grid.CreateCells();
             //TODO reminder this is temporary
@@ -192,7 +183,7 @@ namespace EksamensProjekt2022
                 foreach (Button item in pauseMenuButtons)
                     item.Update(gameTime);
 
-                if (Instance.pauseWantToExit)  
+                if (pauseWantToExit)  
                     foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
                 
@@ -204,7 +195,7 @@ namespace EksamensProjekt2022
         private void ClickedMainMenu(object sender, EventArgs e)
         {
             
-            GameControl.Instance.ChangeGameState(GameState.StartMenu);
+            GameControl.Instance.ChangeGameState(CurrentGameState.StartMenu);
         }
 
         private void ClickedResume(object sender, EventArgs e)
@@ -214,7 +205,7 @@ namespace EksamensProjekt2022
         }
         private void ClickedExit(object sender, EventArgs e)
         {
-            Instance.pauseWantToExit = true;
+            pauseWantToExit = true;
         }
         private void ClickedYesExitGame(object sender, EventArgs e)
         {
@@ -222,12 +213,12 @@ namespace EksamensProjekt2022
         }
         private void ClickedNoExitGame(object sender, EventArgs e)
         {
-            Instance.pauseWantToExit = false;
+            pauseWantToExit = false;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
 
-            if (Instance.pauseWantToExit)
+            if (pauseWantToExit)
             {
                 spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
             }
@@ -237,7 +228,7 @@ namespace EksamensProjekt2022
                 {
                     item.Draw(spriteBatch);
                 }
-                if (Instance.pauseWantToExit)
+                if (pauseWantToExit)
                 {
                     foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
                     {

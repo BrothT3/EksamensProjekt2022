@@ -21,8 +21,6 @@ namespace EksamensProjekt2022
             "Tree",
             "Rock",
             "Field",
-
-
         };
         private bool mRightReleased;
         private bool mLeftReleased;
