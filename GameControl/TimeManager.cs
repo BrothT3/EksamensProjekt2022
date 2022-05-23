@@ -10,9 +10,8 @@ namespace EksamensProjekt2022
     {
         public CurrentTime currentTime;
         private Texture2D sprite;
-        private float dayTimer = 15;
-        private float duskTimer = 5;
-        private float NightTimer = 10;
+        private float maxTimeTimer = 12;
+        private float timeTimer = 12;
         private float timeColor = 0f;
 
         public TimeManager()
@@ -23,47 +22,35 @@ namespace EksamensProjekt2022
         public void Update(GameTime gameTime)
         {
 
-            switch (currentTime)
+            timeTimer -= GameWorld.DeltaTime;
+            if (timeTimer >= (maxTimeTimer / 2))
             {
-                case CurrentTime.Day:
-                    dayTimer -= GameWorld.DeltaTime;
-                    timeColor = 0f;
-                    if (dayTimer <= 0)
-                    {
-                        currentTime = CurrentTime.Dusk;
-                        dayTimer = 10;
-                    }
-                    break;
-                case CurrentTime.Dusk:
-                    duskTimer -= GameWorld.DeltaTime;
-                    timeColor = 0.25f;
-                    if (duskTimer <= 0)
-                    {
-                        currentTime = CurrentTime.Night;
-                        duskTimer = 10;
-                    }
-                    break;
-                case CurrentTime.Night:
-                    NightTimer -= GameWorld.DeltaTime;
-                    timeColor = 0.5f;
-                    if (NightTimer <= 0)
-                    {
-                        currentTime = CurrentTime.Day;
-                        NightTimer = 10;
-                    }
-                    break;
-
+                currentTime = CurrentTime.Day;
+                timeColor = 0f;
             }
-        }
-        public void LoadContent()
-        {
-            sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
-        }
-        public void draw(SpriteBatch spriteBatch)
-        {
+            if (timeTimer <= maxTimeTimer/2 && timeTimer >= maxTimeTimer/3)
+            {
+                currentTime = CurrentTime.Dusk;
+                timeColor = 0.25f;
+            }
+            if (timeTimer <= maxTimeTimer / 3)
+            {
+                currentTime = CurrentTime.Night; 
+                timeColor = 0.5f;
+            }
+            if (timeTimer <= 0)
+            {
+                timeTimer = maxTimeTimer;
+            }
             
-            spriteBatch.Draw(sprite, new Rectangle(0, 0, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize), Color.Black * timeColor);
-            
         }
+    public void LoadContent()
+    {
+        sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
     }
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(sprite, new Rectangle(0, 0, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize), Color.Black * timeColor);
+    }
+}
 }

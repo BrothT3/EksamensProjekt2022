@@ -7,38 +7,25 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public class StartScreen : SuperGameState
+    public class StartScreen : GameState
     {
         public List<Button> mainMenuButtons = new List<Button>();
         public List<Button> mainMenuExitButtons = new List<Button>();
         private SpriteFont exitFont;
         private Texture2D sprite;
         public bool startWantToExit = false;
-        private static StartScreen instance;
-        public static StartScreen Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new StartScreen();
-                }
-                return instance;
-            }
-
-        }
 
         public override void EndingGameState()
         {
-            Instance.startWantToExit = false;
-            Instance.initializeGameState = true;
+            startWantToExit = false;
+            initializeGameState = true;
 
             //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
 
         }
         public override void Initialize()
         {
-            GameControl.Instance.currentSuperGameState = this;
+            GameControl.Instance.selectedGameState = this;
             Button PlayButton = new Button(new Rectangle(72, 72, 72, 36), "PLAY");
             PlayButton.OnClicking += ClickedPlay;
             mainMenuButtons.Add(PlayButton);
@@ -59,25 +46,25 @@ namespace EksamensProjekt2022
             sprite = GameWorld.Instance.Content.Load<Texture2D>("mainMenuBackground");
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
 
-            Instance.initializeGameState = false;
+            initializeGameState = false;
 
         }
         public override void Update(GameTime gameTime)
         {
 
 
-            if (Instance.initializeGameState)
+            if (initializeGameState)
             {
                 Initialize();
             }
-            Instance.initializeGameState = false;
+            initializeGameState = false;
 
             foreach (Button item in mainMenuButtons)
             {
                 item.Update(gameTime);
             }
 
-            if (Instance.startWantToExit)
+            if (startWantToExit)
             {
                 foreach (Button item in mainMenuExitButtons)
                 {
@@ -96,7 +83,7 @@ namespace EksamensProjekt2022
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, new Vector2(0, 0), Color.White);
-            if (Instance.startWantToExit)
+            if (startWantToExit)
             {
                 spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
             }
@@ -105,7 +92,7 @@ namespace EksamensProjekt2022
                 item.Draw(spriteBatch);
             }
             
-            if (Instance.startWantToExit)
+            if (startWantToExit)
             {
                 foreach (Button item in GameControl.Instance.startScreen.mainMenuExitButtons)
                 {
@@ -117,19 +104,19 @@ namespace EksamensProjekt2022
         }
         private void ClickedPlay(object sender, EventArgs e)
         {
-            GameControl.Instance.ChangeGameState(GameState.Playing);
+            GameControl.Instance.ChangeGameState(CurrentGameState.Playing);
         }
         private void ClickedExit(object sender, EventArgs e)
         {
-            Instance.startWantToExit = true;
+            startWantToExit = true;
         }
         private void ClickedYesExitGame(object sender, EventArgs e)
         {
             GameWorld.Instance.Exit();
         }
         private void ClickedNoExitGame(object sender, EventArgs e)
-        {
-            Instance.startWantToExit = false;
+        {            
+            startWantToExit = false;
         }
     }
 }

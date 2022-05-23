@@ -25,8 +25,6 @@ namespace EksamensProjekt2022
             "Field",
             "FieldWaterEdge",
             "Mountain"
-
-
         };
         private int objectIndex = 0;
         private bool mRightReleased;

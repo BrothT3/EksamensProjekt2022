@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public abstract class SuperGameState
+    public abstract class GameState
     {
 
         public bool initializeGameState = true;
