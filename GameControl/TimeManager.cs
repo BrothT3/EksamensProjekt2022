@@ -50,7 +50,7 @@ namespace EksamensProjekt2022
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(sprite, new Rectangle(0, 0, Playing.Instance.CellCount * Playing.Instance.CellSize, Playing.Instance.CellCount * Playing.Instance.CellSize), Color.Black * timeColor);
+        spriteBatch.Draw(sprite, new Rectangle(0, 0, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize, GameControl.Instance.playing.CellCount * GameControl.Instance.playing.CellSize), Color.Black * timeColor);
     }
 }
 }

@@ -10,17 +10,16 @@ namespace EksamensProjekt2022
     {
         public StartScreen startScreen = new StartScreen();
         public Playing playing = new Playing();
-        public GameState currentGameState = GameState.StartMenu;
+        public CurrentGameState currentGameState = CurrentGameState.StartMenu;
 
-        public SuperGameState currentSuperGameState;
-        public SuperGameState previousSuperGameState;
+        public GameState selectedGameState;
+        public GameState previousGameState;
         public bool switchingGameState = false;
 
         #region References
         public Camera camera;
-        public DebugTool _debugTools;
-        public AreaManager areaManager;
-        public TimeManager timeManager;
+
+
         
         
         #endregion
@@ -67,12 +66,12 @@ namespace EksamensProjekt2022
             camera = new Camera();
         }
 
-        public void ChangeGameState(GameState gameState)
+        public void ChangeGameState(CurrentGameState gameState)
         {
             
-            previousSuperGameState = currentSuperGameState;
+            previousGameState = selectedGameState;
             currentGameState = gameState;
-            previousSuperGameState.EndingGameState();
+            previousGameState.EndingGameState();
             
 
         }
@@ -84,16 +83,16 @@ namespace EksamensProjekt2022
                 switch (currentGameState)
                 {
 
-                    case GameState.StartMenu:
+                    case CurrentGameState.StartMenu:
                         startScreen.Update(gameTime);
                         break;
-                    case GameState.Playing:
+                    case CurrentGameState.Playing:
                         playing.Update(gameTime);
                         break;
-                    case GameState.PauseMenu:
+                    case CurrentGameState.PauseMenu:
                         PauseMenu();
                         break;
-                    case GameState.End:
+                    case CurrentGameState.End:
                         End();
                         break;
                 }

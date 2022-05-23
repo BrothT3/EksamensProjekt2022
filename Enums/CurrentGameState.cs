@@ -1,6 +1,6 @@
 ﻿namespace EksamensProjekt2022
 {
-    public enum GameState
+    public enum CurrentGameState
     {
         StartMenu,
         Begin,
