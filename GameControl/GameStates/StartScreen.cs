@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -84,7 +85,12 @@ namespace EksamensProjekt2022
                     item.Update(gameTime);
                 }
             }
-
+#if DEBUG
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                MapCreator.DevMode = true;
+            }
+#endif
 
         }
         public void Draw(SpriteBatch spriteBatch)
