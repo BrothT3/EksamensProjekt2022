@@ -118,10 +118,13 @@ namespace EksamensProjekt2022
                 _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
             }
-           
-           
 
-           
+
+            if (MapCreator.DevMode)
+            {
+                MapCreator.Instance.Draw(_spriteBatch);
+            }
+
 
             if (GameControl.Instance.playing.currentGrid != null)
                 foreach (Cell item in GameControl.Instance.playing.currentGrid)
@@ -147,10 +150,12 @@ namespace EksamensProjekt2022
 
             GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
 
+
             if (GameControl.Instance.playing.timeManager != null)
             {
                 GameControl.Instance.playing.timeManager.Draw(_spriteBatch);
             }
+
 
             _spriteBatch.End();
 

@@ -12,11 +12,23 @@ namespace EksamensProjekt2022
         {
             get
             {
-                return new Rectangle((int)GameObject.Transform.Position.X - _spriteRenderer.Sprite.Width /2,
-                    (int)GameObject.Transform.Position.Y - _spriteRenderer.Sprite.Height /2,
-                    _spriteRenderer.Sprite.Width,
+                if (GameObject.Tag == "Tree")
+                {
+                    return new Rectangle((int)GameObject.Transform.Position.X - _spriteRenderer.Sprite.Width / 3,
+                    (int)GameObject.Transform.Position.Y - _spriteRenderer.Sprite.Height / 2,
+                    _spriteRenderer.Sprite.Width /2,
                     _spriteRenderer.Sprite.Height );
+                }
+                else
+                {
+                    return new Rectangle((int)GameObject.Transform.Position.X - _spriteRenderer.Sprite.Width / 2,
+                   (int)GameObject.Transform.Position.Y - _spriteRenderer.Sprite.Height / 2,
+                   _spriteRenderer.Sprite.Width,
+                   _spriteRenderer.Sprite.Height);
+                }
+               
             }
+            
         }
 
 
