@@ -36,7 +36,8 @@ namespace EksamensProjekt2022
             Collider c = (Collider)gameObject.AddComponent(new Collider());
 
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
-            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameControl.Instance.playing.CellSize / 2));
+            //with the offset the database can't find the cell
+            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y);
             cell.IsWalkable = false;
             gameObject.Tag = "Boulder";
             gameObject.Amount = resourceAmount;
