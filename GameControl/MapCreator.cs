@@ -36,7 +36,7 @@ namespace EksamensProjekt2022
         private Texture2D[] sprites = new Texture2D[5];
         private Texture2D selectedSprite;
         public Camera camera;
-        private MapManager mapManager;
+        public MapManager mapManager;
         private CurrentArea currentArea;
         private GameObjectType currentObject;
         public List<GameObject> addedGameObjects = new List<GameObject>();
@@ -69,7 +69,7 @@ namespace EksamensProjekt2022
         }
 
 
-
+        bool enterReleased = true;
         public void Update(GameTime gameTime)
         {
             InputHandler.Instance.Execute(camera);
@@ -88,6 +88,7 @@ namespace EksamensProjekt2022
                     {
                         cell = c;
                         InsertItem();
+                        
                     }
                     if (mouseState.LeftButton == ButtonState.Released)
                     {
@@ -106,6 +107,16 @@ namespace EksamensProjekt2022
                     }
 
                 }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) && enterReleased)
+            {
+                mapManager.SaveComponents(GameControl.Instance.playing.currentGameObjects, GameControl.Instance.playing.currentGrid, mapManager.CurrentSave, currentArea);
+                enterReleased = false;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.LeftAlt))
+            {
+                enterReleased = true;
+            }
 
 
         }

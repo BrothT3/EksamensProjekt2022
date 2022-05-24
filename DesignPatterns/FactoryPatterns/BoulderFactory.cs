@@ -34,9 +34,9 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Rock");
             Collider c = (Collider)gameObject.AddComponent(new Collider());
-
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
-            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y + (GameControl.Instance.playing.CellSize / 2));
+            sr.OffSet = GameControl.Instance.playing.CellSize/2;
+            gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y);
             cell.IsWalkable = false;
             gameObject.Tag = "Boulder";
             gameObject.Amount = resourceAmount;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
@@ -8,8 +9,10 @@ namespace EksamensProjekt2022
     {
         public SQLiteConnection connection = new SQLiteConnection("Data Source=userinfo.db");
         private SaveSlots currentSave;
+        private CurrentArea currentArea;
 
         public AreaManager areaLoader;
+        public SaveSlots CurrentSave { get => currentSave; }
 
 
         private string componentName;
@@ -32,6 +35,7 @@ namespace EksamensProjekt2022
         {
             Open();
             this.currentSave = currentSave;
+            currentArea = area;
 
             for (int i = 0; i < areaLoader.currentGrid.Length; i++)
             {
@@ -48,7 +52,7 @@ namespace EksamensProjekt2022
         public void GetComponents(SaveSlots currentSave, CurrentArea area)
         {
 
-          
+
 
             var cmd = new SQLiteCommand($"SELECT GameObject, PositionX, PositionY, Amount FROM area WHERE UserID={(int)currentSave}", connection);
             var dataread = cmd.ExecuteReader();
@@ -62,6 +66,26 @@ namespace EksamensProjekt2022
 
                 CreateComponent(componentName, area);
 
+            }
+
+             cmd = new SQLiteCommand($"SELECT CurrentArea, Texture, PositionX, PositionY FROM areacells WHERE UserID={(int)currentSave}", connection);
+            dataread = cmd.ExecuteReader();
+            while (dataread.Read())
+            {
+                string texture = dataread.GetString(1);
+
+                if ( texture!= null)
+                {
+                    position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
+
+                    foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[(int)area])
+                    {
+                        if (c.Position == position)
+                        {
+                            c.Sprite = GameWorld.Instance.Content.Load<Texture2D>(texture);
+                        }
+                    }
+                }
             }
 
         }
@@ -92,21 +116,32 @@ namespace EksamensProjekt2022
         /// Save objects on all area lists to the save slot
         /// </summary>
         /// <param name="currentSave"></param>
-        public void SaveComponents(SaveSlots currentSave)
+        public void SaveComponents(List<GameObject> gameObjects, List<Cell> grid, SaveSlots currentSave, CurrentArea area)
         {
             Open();
-            for (int i = 0; i < areaLoader.currentGameObjects.Length; i++)
-            {
-                foreach (GameObject go in areaLoader.currentGameObjects[i])
-                {
-                    //Find the correct position on grid
-                    var Cell = areaLoader.currentGrid[0].Find(x => x.cellVector == go.Transform.Position);
 
-                    var cmd = new SQLiteCommand($"INSERT INTO area (ID, UserID, GameObject, PositionX, PositionY, Amount) " +
-                        $"VALUES (null, {currentSave}, {go.Tag}, {Cell.cellVector.X}, {Cell.cellVector.Y}, {go.Amount})");
-                    cmd.ExecuteNonQuery();
-                }
+            foreach (GameObject go in gameObjects)
+            {
+                //Find the correct position on grid
+                var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
+
+                var cmd = new SQLiteCommand($"INSERT INTO area (ID, UserID, CurrentArea, GameObject, PositionX, PositionY, Amount) " +
+                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
+                cmd.ExecuteNonQuery();
             }
+
+            foreach (Cell c in grid)
+            {
+                if (c.Sprite != null)
+                {
+                    var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, UserID, CurrentArea, Texture, PositionX, PositionY) " +
+                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite.ToString()}', {c.Position.X}, {c.Position.Y})", connection);
+                    cmd.ExecuteNonQuery();
+
+                }
+               
+            }
+
             Close();
         }
 

@@ -49,7 +49,7 @@ namespace EksamensProjekt2022
             GameControl.Instance.camera.Position = new Vector2(0, 0);
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null)
-            Destroy(player.GameObject);
+                Destroy(player.GameObject);
 
             initializeGameState = true;
             //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
@@ -60,40 +60,65 @@ namespace EksamensProjekt2022
             GameControl.Instance.selectedGameState = this;
             areaManager.currentGrid[0] = grid.CreateGrid();
             areaManager.currentCells[0] = grid.CreateCells();
-            //TODO reminder this is temporary
-            MapManager m = new MapManager();
-            m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
 
-            //TODO måske noget andet
+
             if (!MapCreator.DevMode)
             {
+                MapManager m = new MapManager();
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+
                 GameObject player = new GameObject();
-                player.AddComponent(new Player());
+                Player p = (player).AddComponent(new Player()) as Player;
+                p.MyArea = CurrentArea.Camp;
                 player.AddComponent(new SpriteRenderer());
                 player.AddComponent(new Collider());
+
                 player.AddComponent(new Inventory());
                
+
                 Instantiate(player);
                 Inventory inv = player.GetComponent<Inventory>() as Inventory;
                 inv.items.Add(new Stone(3));
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
+
+
+                currentGrid = areaManager.currentGrid[0];
+                currentCells = areaManager.currentCells[0];
+                currentGameObjects = areaManager.currentGameObjects[0];
+
+                //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
+                for (int i = 0; i < m.areaLoader.currentGameObjects[(int)p.MyArea].Count; i++)
+                {
+                    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                }
+
+
                 userInterface = new UserInterface();
-            }
-           
-            currentGrid = areaManager.currentGrid[0];
-            currentCells = areaManager.currentCells[0];
-            currentGameObjects = areaManager.currentGameObjects[0];
-         
 
-            //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
-            for (int i = 0; i < m.areaLoader.currentGameObjects.Length; i++)
+            }
+            else
             {
-                currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-            }
-            
+                MapManager m = MapCreator.Instance.mapManager;
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
 
-          
+                MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
+                MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
+                for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
+                {
+                    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                }
+                
+                currentGrid = MapCreator.Instance.mapManager.areaLoader.currentGrid[0];
+                currentCells = MapCreator.Instance.mapManager.areaLoader.currentCells[0];
+                currentGameObjects = MapCreator.Instance.mapManager.areaLoader.currentGameObjects[0];
+            }
+
+
+
+
+
+
             for (int i = 0; i < currentGameObjects.Count; i++)
             {
                 currentGameObjects[i].Awake();
@@ -127,8 +152,8 @@ namespace EksamensProjekt2022
 
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
 
-          
-           
+
+
 
         }
         public override void Update(GameTime gameTime)
@@ -147,7 +172,7 @@ namespace EksamensProjekt2022
                 {
                     timeManager.Update(gameTime);
                 }
-              
+
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {
@@ -177,21 +202,21 @@ namespace EksamensProjekt2022
 
                     foreach (Button item in GameControl.Instance.playing.pauseMenuButtons)
                         item.Rectangle = new Rectangle((int)item.DefaultbottonPos.X - (int)buttonOffset.X, (int)item.DefaultbottonPos.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
-                                        
-                    foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)       
+
+                    foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
                         item.Rectangle = new Rectangle((int)item.DefaultbottonPos.X - (int)buttonOffset.X, (int)item.DefaultbottonPos.Y - (int)buttonOffset.Y, item.Rectangle.Width, item.Rectangle.Height);
 
                     offsetPauseButtons = false;
                 }
-                
+
 
                 foreach (Button item in pauseMenuButtons)
                     item.Update(gameTime);
 
-                if (pauseWantToExit)  
+                if (pauseWantToExit)
                     foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
-                
+
             }
 
         }
@@ -199,8 +224,9 @@ namespace EksamensProjekt2022
         #region PauseMenu
         private void ClickedMainMenu(object sender, EventArgs e)
         {
-            
+
             GameControl.Instance.ChangeGameState(CurrentGameState.StartMenu);
+            MapCreator.DevMode = false;
         }
 
         private void ClickedResume(object sender, EventArgs e)
