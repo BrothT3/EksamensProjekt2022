@@ -7,6 +7,7 @@ namespace EksamensProjekt2022
     {
         public Texture2D Sprite { get; set; }
         public Vector2 Origin { get; set; }
+        public int OffSet { get; set; } = 0;
 
         public override void Start()
         {
@@ -20,7 +21,7 @@ namespace EksamensProjekt2022
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Sprite, GameObject.Transform.Position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(Sprite, new Vector2(GameObject.Transform.Position.X, GameObject.Transform.Position.Y + OffSet ), null, Color.White, 0, Origin, 1, SpriteEffects.None, 1);
         }
     }
 }
