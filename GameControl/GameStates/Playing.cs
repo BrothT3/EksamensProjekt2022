@@ -9,7 +9,7 @@ namespace EksamensProjekt2022
 {
     public class Playing : GameState
     {
-
+        public UserInterface userInterface;
         public AreaManager areaManager;
         public TimeManager timeManager;
         public DebugTool _debugTools;
@@ -73,9 +73,15 @@ namespace EksamensProjekt2022
                 player.AddComponent(new SpriteRenderer());
                 player.AddComponent(new Collider());
 
+                player.AddComponent(new Inventory());
+               
+
                 Instantiate(player);
+                Inventory inv = player.GetComponent<Inventory>() as Inventory;
+                inv.items.Add(new Stone(3));
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
+
 
                 currentGrid = areaManager.currentGrid[0];
                 currentCells = areaManager.currentCells[0];
@@ -86,6 +92,9 @@ namespace EksamensProjekt2022
                 {
                     currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
                 }
+
+
+                userInterface = new UserInterface();
 
             }
             else
@@ -258,6 +267,8 @@ namespace EksamensProjekt2022
                     }
                 }
             }
+            if (userInterface != null)
+            userInterface.Draw(spriteBatch);
 
         }
         #endregion
