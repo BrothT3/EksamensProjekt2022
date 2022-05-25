@@ -55,6 +55,8 @@ namespace EksamensProjekt2022
             //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
 
         }
+
+      
         public override void Initialize()
         {
             GameControl.Instance.selectedGameState = this;
@@ -67,18 +69,9 @@ namespace EksamensProjekt2022
                 MapManager m = new MapManager();
                 m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
 
-                GameObject player = new GameObject();
-                Player p = (player).AddComponent(new Player()) as Player;
-                p.MyArea = CurrentArea.Camp;
-                player.AddComponent(new SpriteRenderer());
-                player.AddComponent(new Collider());
-
-                player.AddComponent(new Inventory());
-               
-
-                Instantiate(player);
-                Inventory inv = player.GetComponent<Inventory>() as Inventory;
-                inv.items.Add(new Stone(3));
+                Director d = new Director(new PlayerBuilder());
+                Instantiate(d.Construct());
+                        
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
 
@@ -88,7 +81,7 @@ namespace EksamensProjekt2022
                 currentGameObjects = areaManager.currentGameObjects[0];
 
                 //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
-                for (int i = 0; i < m.areaLoader.currentGameObjects[(int)p.MyArea].Count; i++)
+                for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
                 {
                     currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
                 }

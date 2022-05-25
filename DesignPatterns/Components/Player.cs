@@ -42,7 +42,7 @@ namespace EksamensProjekt2022
         {
             InputHandler.Instance.Execute(this);
             InputHandler.Instance.Update(gameTime);
-
+            animator.PlayAnimation("test");
             FollowPath();
 
         }
