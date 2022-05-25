@@ -24,12 +24,21 @@ namespace EksamensProjekt2022
 
             CurrentIndex = (int)(elapsed * currentAnimation.FPS);
 
-            if (CurrentIndex > currentAnimation.Sprites.Length - 1)
+            if (currentAnimation.Sprites != null && CurrentIndex > currentAnimation.Sprites.Length - 1 ||
+                currentAnimation.Rectangles != null && CurrentIndex > currentAnimation.Rectangles.Length -1)
             {
                 elapsed = 0;
                 CurrentIndex = 0;
             }
-            _spriteRenderer.Sprite = currentAnimation.Sprites[CurrentIndex];
+            if(currentAnimation.Sprites != null)
+            {
+                _spriteRenderer.Sprite = currentAnimation.Sprites[CurrentIndex];
+            }        
+            else
+            {
+                _spriteRenderer.Rectangle = currentAnimation.Rectangles[CurrentIndex];
+                _spriteRenderer.Sprite = currentAnimation.Sprite;
+            }
         }
 
         public void AddAnimation(Animation animation)

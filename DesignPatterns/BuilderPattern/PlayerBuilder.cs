@@ -1,0 +1,44 @@
+﻿using Microsoft.Xna.Framework.Graphics;
+
+namespace EksamensProjekt2022
+{
+    public class PlayerBuilder : IBuilder
+    {
+        private GameObject gameObject;
+        public void BuildGameObject()
+        {
+            gameObject = new GameObject();
+            gameObject.Tag = "Player";
+            BuildComponents();
+
+        }
+
+        private void BuildComponents()
+        {
+            Player p = (Player)gameObject.AddComponent(new Player());
+            p.MyArea = CurrentArea.Camp;
+
+            gameObject.AddComponent(new SpriteRenderer());
+
+            Collider c = (Collider)gameObject.AddComponent(new Collider());
+     
+            Animator a = (gameObject).AddComponent(new Animator()) as Animator;
+            a.AddAnimation(BuildAnimation("test", "unknown"));
+
+            Inventory inv = (Inventory)gameObject.AddComponent(new Inventory()) as Inventory;
+            inv.items.Add(new Stone(3));
+        }
+        private Animation BuildAnimation(string animationName, string spriteName)
+        {
+            Texture2D sprite = GameWorld.Instance.Content.Load<Texture2D>($"{spriteName}");
+
+            Animation animation = new Animation(animationName, sprite, 3, 10);
+
+            return animation;
+        }
+        public GameObject GetResult()
+        {
+            return gameObject;
+        }
+    }
+}
