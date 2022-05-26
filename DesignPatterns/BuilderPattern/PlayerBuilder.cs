@@ -23,7 +23,11 @@ namespace EksamensProjekt2022
             Collider c = (Collider)gameObject.AddComponent(new Collider());
      
             Animator a = (gameObject).AddComponent(new Animator()) as Animator;
-            a.AddAnimation(BuildAnimation("test", "unknown"));
+            a.AddAnimation(BuildAnimation("playerWalkUp", "playerWalkUp"));
+            a.AddAnimation(BuildAnimation("playerWalkDown", "playerWalkDown"));
+            a.AddAnimation(BuildAnimation("playerWalkLeft", "playerWalkLeft"));
+            a.AddAnimation(BuildAnimation("playerWalkRight", "playerWalkRight"));
+            a.AddAnimation(BuildAnimation("playerIdle", "playerIdle"));
 
             Inventory inv = (Inventory)gameObject.AddComponent(new Inventory()) as Inventory;
             inv.items.Add(new Stone(3));
