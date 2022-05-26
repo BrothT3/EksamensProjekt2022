@@ -26,22 +26,24 @@ namespace EksamensProjekt2022
             "FieldWaterEdge",
             "Mountain"
         };
+        public static bool DevMode = false;
         private int objectIndex = 0;
         private bool mRightReleased;
         private bool mLeftReleased;
-        public static bool DevMode = false;
+       
         private bool tileMode = false;
         private bool rightButtonReleased = false;
         private bool leftButtonReleased = false;
+
         private Texture2D[] sprites = new Texture2D[5];
         private Texture2D selectedSprite;
-        public Camera camera;
+        private Camera camera;
         public MapManager mapManager;
+
         private CurrentArea currentArea;
         private GameObjectType currentObject;
-        public List<GameObject> addedGameObjects = new List<GameObject>();
         private Cell cell;
-
+        public Camera Camera { get => camera; }
         private static MapCreator instance;
         public static MapCreator Instance
         {
@@ -88,6 +90,7 @@ namespace EksamensProjekt2022
                     {
                         cell = c;
                         InsertItem();
+                        c.IsWalkable = false;
                         
                     }
                     if (mouseState.LeftButton == ButtonState.Released)

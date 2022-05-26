@@ -105,8 +105,8 @@ namespace EksamensProjekt2022
 
             if (MapCreator.DevMode)
             {
-                var screenScale = MapCreator.Instance.camera.GetScreenScale();
-                var viewMatrix = MapCreator.Instance.camera.GetTransform();
+                var screenScale = MapCreator.Instance.Camera.GetScreenScale();
+                var viewMatrix = MapCreator.Instance.Camera.GetTransform();
                 _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
 

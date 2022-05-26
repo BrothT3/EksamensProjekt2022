@@ -39,7 +39,7 @@ namespace EksamensProjekt2022
 
             for (int i = 0; i < areaLoader.currentGrid.Length; i++)
             {
-                GetComponents(currentSave, area);
+                GetComponents(currentSave, i);
             }
             Close();
         }
@@ -49,32 +49,26 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="currentSave"></param>
         /// <param name="area"></param>
-        public void GetComponents(SaveSlots currentSave, CurrentArea area)
+        public void GetComponents(SaveSlots currentSave, int area)
         {
-
-
-
             var cmd = new SQLiteCommand($"SELECT GameObject, PositionX, PositionY, Amount FROM area WHERE UserID={(int)currentSave}", connection);
             var dataread = cmd.ExecuteReader();
 
             while (dataread.Read())
             {
-
                 componentName = dataread.GetString(0);
                 position = new Point(dataread.GetInt32(1), dataread.GetInt32(2));
                 amount = dataread.GetInt32(3);
-
                 CreateComponent(componentName, area);
-
             }
 
-             cmd = new SQLiteCommand($"SELECT CurrentArea, Texture, PositionX, PositionY FROM areacells WHERE UserID={(int)currentSave}", connection);
+            cmd = new SQLiteCommand($"SELECT CurrentArea, Texture, PositionX, PositionY FROM areacells WHERE UserID={(int)currentSave}", connection);
             dataread = cmd.ExecuteReader();
             while (dataread.Read())
             {
                 string texture = dataread.GetString(1);
 
-                if ( texture!= null)
+                if (texture != null)
                 {
                     position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
 
@@ -95,16 +89,20 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="componentName"></param>
         /// <param name="area"></param>
-        public void CreateComponent(string componentName, CurrentArea area)
+        public void CreateComponent(string componentName, int area)
         {
 
             switch (componentName)
             {
                 case "Tree":
-                    areaLoader.currentGameObjects[(int)area].Add(TreeFactory.Instance.CreateGameObject(GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount));
+                    areaLoader.currentGameObjects[area].Add(
+                        TreeFactory.Instance.CreateGameObject
+                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount));
                     break;
                 case "Boulder":
-                    areaLoader.currentGameObjects[(int)area].Add((BoulderFactory.Instance.CreateGameObject(GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount)));
+                    areaLoader.currentGameObjects[area].Add(
+                        (BoulderFactory.Instance.CreateGameObject
+                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount)));
                     break;
                 default:
                     break;
@@ -122,7 +120,6 @@ namespace EksamensProjekt2022
 
             foreach (GameObject go in gameObjects)
             {
-                //Find the correct position on grid
                 var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
 
                 var cmd = new SQLiteCommand($"INSERT INTO area (ID, UserID, CurrentArea, GameObject, PositionX, PositionY, Amount) " +
@@ -135,23 +132,22 @@ namespace EksamensProjekt2022
                 if (c.Sprite != null)
                 {
                     var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, UserID, CurrentArea, Texture, PositionX, PositionY) " +
-                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite.ToString()}', {c.Position.X}, {c.Position.Y})", connection);
+                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite}', {c.Position.X}, {c.Position.Y})", connection);
                     cmd.ExecuteNonQuery();
-
                 }
-               
+
             }
 
             Close();
         }
 
 
-        public void Open()
+        private void Open()
         {
             connection.Open();
         }
 
-        public void Close()
+        private void Close()
         {
             connection.Close();
         }

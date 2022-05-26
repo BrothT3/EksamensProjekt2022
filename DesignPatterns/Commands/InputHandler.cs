@@ -72,7 +72,7 @@ namespace EksamensProjekt2022
             }
             if (MapCreator.DevMode)
             {
-                Camera cam = MapCreator.Instance.camera;
+                Camera cam = MapCreator.Instance.Camera;
                 Execute(cam);
             }
            
