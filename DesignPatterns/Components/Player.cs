@@ -18,10 +18,10 @@ namespace EksamensProjekt2022
         public int step = 0;
         public bool readyToMove = false;
         public CurrentArea MyArea { get => myArea; set => myArea = value; }
-      
+
         public override void Awake()
         {
-           
+
         }
 
         public override void Start()
@@ -42,7 +42,7 @@ namespace EksamensProjekt2022
         {
             InputHandler.Instance.Execute(this);
             InputHandler.Instance.Update(gameTime);
-            animator.PlayAnimation("test");
+            PlayerAnimate();
             FollowPath();
 
         }
@@ -56,10 +56,10 @@ namespace EksamensProjekt2022
                 {
                     moveDir = currentCell.cellVector - GameObject.Transform.Position;
                     moveDir.Normalize();
-                    moveDir*= 4;
+                    moveDir *= 4;
                     GameObject.Transform.Position += moveDir;
                 }
-                else 
+                else
                 {
                     readyToMove = true;
                 }
@@ -102,15 +102,29 @@ namespace EksamensProjekt2022
 
                 }
             }
-              
-            //if (Vector2.Distance(GameObject.Transform.Position, currentCell.cellVector) > 70)
-            //{
-            //    moveDir = currentCell.cellVector - GameObject.Transform.Position;
-            //    moveDir.Normalize();
-            //    GameObject.Transform.Position += moveDir;
-            //}
 
         }
+        public void PlayerAnimate()
+        {
+            if (currentCell == nextCell || nextCell == null)
+                animator.PlayAnimation("playerIdle");
 
+            if (nextCell != null)
+            {
+                if (nextCell.Position.Y > currentCell.Position.Y)
+                    animator.PlayAnimation("playerWalkDown");
+                else if (nextCell.Position.Y < currentCell.Position.Y)
+                    animator.PlayAnimation("playerWalkUp");
+                else
+                {
+                    if (nextCell.Position.X > currentCell.Position.X)
+                        animator.PlayAnimation("playerWalkRight");
+
+                    else if (nextCell.Position.X < currentCell.Position.X)
+                        animator.PlayAnimation("playerWalkLeft");
+                }
+            }
+            
+        }
     }
 }
