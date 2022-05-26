@@ -94,7 +94,24 @@ namespace EksamensProjekt2022
             }
             return sum;
         }
-       
+        public int GetItemCount<T>(Item specificItem) where T : Item
+        {
+
+            int sum = 0;
+            foreach (Item item in items)
+            {
+                if (item.Name == specificItem.Name)
+                {
+                    if (item is T itemAsT)
+                    {
+                        sum += itemAsT.Quantity;
+                    }
+                }
+                
+            }
+            return sum;
+        }
+
     }
 
     public class Item

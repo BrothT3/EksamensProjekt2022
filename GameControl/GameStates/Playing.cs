@@ -12,6 +12,7 @@ namespace EksamensProjekt2022
         public UserInterface userInterface;
         public AreaManager areaManager;
         public TimeManager timeManager;
+        public lortePlayerCraftingMenu playerCraftingMenu;
         public DebugTool _debugTools;
         #region Lists
         public List<GameObject> currentGameObjects = new List<GameObject>();
@@ -74,7 +75,7 @@ namespace EksamensProjekt2022
                         
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
-
+                playerCraftingMenu = new lortePlayerCraftingMenu();
 
                 currentGrid = areaManager.currentGrid[0];
                 currentCells = areaManager.currentCells[0];
@@ -164,6 +165,7 @@ namespace EksamensProjekt2022
                 if (!MapCreator.DevMode)
                 {
                     timeManager.Update(gameTime);
+                    playerCraftingMenu.Update(gameTime);
                 }
 
 
