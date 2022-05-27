@@ -13,6 +13,7 @@ namespace EksamensProjekt2022
         private SpriteFont buttonFont;
         private Texture2D sprite;
         private bool isHovering;
+        private bool isAvailable;
         private bool isOffset;
         private Color hoverColor = Color.White;
         private Rectangle rectangle;
@@ -22,7 +23,8 @@ namespace EksamensProjekt2022
         public Vector2 DefaultbottonPos { get => defaultbottonPos; set => defaultbottonPos = value; }
         public MouseState mstate { get; set; }
         public bool IsOffset { get => isOffset; set => isOffset = value; }
-        
+        public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
+        public string ButtonText { get => buttonText; set => buttonText = value; }
 
         private bool mReleased = true;
         public event EventHandler OnClicking;
@@ -31,7 +33,16 @@ namespace EksamensProjekt2022
         {
             Rectangle = ButtonRectangle;
             DefaultbottonPos = new Vector2(ButtonRectangle.X, ButtonRectangle.Y);
-            this.buttonText = buttonText;
+            this.ButtonText = buttonText;
+            sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
+            buttonFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
+            IsOffset = false;
+            IsAvailable = true;
+        }
+
+        public Button(string buttonText)
+        {
+            this.ButtonText = buttonText;
             sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
             buttonFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
             IsOffset = false;
@@ -46,14 +57,14 @@ namespace EksamensProjekt2022
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, Rectangle, hoverColor);
-            spriteBatch.DrawString(buttonFont, buttonText, new Vector2(rectangle.Center.X - (buttonFont.MeasureString(buttonText).X / 2), rectangle.Center.Y - (buttonFont.MeasureString(buttonText).Y) / 2), Color.Black);
+            spriteBatch.DrawString(buttonFont, ButtonText, new Vector2(rectangle.Center.X - (buttonFont.MeasureString(ButtonText).X / 2), rectangle.Center.Y - (buttonFont.MeasureString(ButtonText).Y) / 2), Color.Black);
 
         }
 
         public virtual void Hovering()
         {
             mstate = Mouse.GetState();
-            if (rectangle.Contains(new Vector2(mstate.X - (int)GameControl.Instance.camera.Position.X, mstate.Y - (int)GameControl.Instance.camera.Position.Y)))
+            if (rectangle.Contains(new Vector2(mstate.X - (int)GameControl.Instance.camera.Position.X, mstate.Y - (int)GameControl.Instance.camera.Position.Y)) && isAvailable)
             {
                 isHovering = true;
                 hoverColor = Color.Wheat;
