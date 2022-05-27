@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace EksamensProjekt2022
 {
@@ -30,6 +32,12 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Tree");
             Collider c = (Collider)gameObject.AddComponent(new Collider());
+            sr.OffSet = 50;
+            Random rand = new Random();
+            if (rand.Next(0,2) > 0)
+            {
+                sr.SpriteEffect = SpriteEffects.FlipHorizontally;
+            }
 
             gameObject.AddComponent(new Tree(cell, resourceAmount));
             gameObject.Transform.Position = new Vector2(cell.cellVector.X ,
