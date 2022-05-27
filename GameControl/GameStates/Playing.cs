@@ -264,6 +264,8 @@ namespace EksamensProjekt2022
             }
             if (userInterface != null)
             userInterface.Draw(spriteBatch);
+            if (playerCraftingMenu != null)
+            playerCraftingMenu.Draw(spriteBatch);
 
         }
         #endregion

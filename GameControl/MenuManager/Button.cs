@@ -73,14 +73,17 @@ namespace EksamensProjekt2022
                     mReleased = false;
                     OnClicking?.Invoke(this, new EventArgs());
                 }
-                mReleased = true;
+                
             }
             else
             {
                 isHovering = false;
                 hoverColor = Color.Cornsilk;
             }
-
+            if (mstate.LeftButton == ButtonState.Released)
+            {
+                mReleased = true;
+            }
         }
     }
    

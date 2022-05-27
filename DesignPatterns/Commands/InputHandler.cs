@@ -39,8 +39,6 @@ namespace EksamensProjekt2022
             keybinds.Add(Keys.A, new MoveCommand(new Vector2(8, 0)));
             keybinds.Add(Keys.D, new MoveCommand(new Vector2(-8, 0)));
             keybinds.Add(Keys.S, new MoveCommand(new Vector2(0, -8)));
-
-
         }
 
         public void Update(GameTime gameTime)
@@ -52,7 +50,7 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        c.IsWalkable && c.cellVector != player.currentCell.cellVector)
+                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false)
                     {
                         player.readyToMove = false;
                         player.step = 0;
@@ -75,9 +73,6 @@ namespace EksamensProjekt2022
                 Camera cam = MapCreator.Instance.Camera;
                 Execute(cam);
             }
-           
-         
-
 
         }
 
