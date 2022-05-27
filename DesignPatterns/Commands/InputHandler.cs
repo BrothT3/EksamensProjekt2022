@@ -88,7 +88,9 @@ namespace EksamensProjekt2022
                 finalPath.Clear();
             }
             finalPath = pathfinder.FindPath(start.Position, goal.Position, GameControl.Instance.playing.grid.CreateNodes());
+#if DEBUG
             ColorNodes();
+#endif
         }
         public void Execute(Player player)
         {
