@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace EksamensProjekt2022
 {
@@ -33,6 +35,13 @@ namespace EksamensProjekt2022
             GameObject gameObject = new GameObject();
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Rock");
+            Random rand = new Random();
+            if (rand.Next(0,2) > 0)
+            {
+                sr.SpriteEffect = SpriteEffects.FlipHorizontally;
+            }
+
+
             Collider c = (Collider)gameObject.AddComponent(new Collider());
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
             sr.OffSet = GameControl.Instance.playing.CellSize/2;
