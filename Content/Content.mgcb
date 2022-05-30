@@ -49,6 +49,30 @@
 /processorParam:TextureFormat=Color
 /build:AreaSprites/FieldWaterEdge.png
 
+#begin AreaSprites/Hill.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AreaSprites/Hill.png
+
+#begin AreaSprites/HillWaterEdge.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AreaSprites/HillWaterEdge.png
+
 #begin AreaSprites/Mountain.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -73,6 +97,30 @@
 /processorParam:TextureFormat=Color
 /build:AreaSprites/Rock.png
 
+#begin AreaSprites/Snow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AreaSprites/Snow.png
+
+#begin AreaSprites/SnowWaterEdge.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AreaSprites/SnowWaterEdge.png
+
 #begin AreaSprites/Tree.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -84,6 +132,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:AreaSprites/Tree.png
+
+#begin AreaSprites/Water.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:AreaSprites/Water.png
 
 #begin buttonFont.spritefont
 /importer:FontDescriptionImporter
