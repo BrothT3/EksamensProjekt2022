@@ -80,6 +80,7 @@ namespace EksamensProjekt2022
                 {
                     Stone stone = new Stone(3);
                     inv.AddItem(stone);
+                    chest.Updated = false;
                 }
                 if (kState.IsKeyDown(Keys.Y) && kState != oldKState)
                 {
@@ -87,6 +88,7 @@ namespace EksamensProjekt2022
                     {
                         Stone stone = new Stone(1);
                         inv.RemoveItem(stone, 3);
+                        chest.Updated = false;
                     }
 
                 }

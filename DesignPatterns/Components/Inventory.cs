@@ -17,7 +17,7 @@ namespace EksamensProjekt2022
 
         public Inventory(int inventoryMax)
         {
-
+            InventoryMax = inventoryMax;
         }
         public override void Update(GameTime gameTime)
         {
@@ -43,6 +43,7 @@ namespace EksamensProjekt2022
                 else if (items.Count < inventoryMax)
                 {
                     Item newItem = item;
+                    newItem.Quantity = 0;
                     amountToAdd++;
                     items.Add(newItem);
 
