@@ -120,10 +120,7 @@ namespace EksamensProjekt2022
             }
 
 
-            if (MapCreator.DevMode)
-            {
-                MapCreator.Instance.Draw(_spriteBatch);
-            }
+           
 
 
             if (GameControl.Instance.playing.currentGrid != null)
@@ -155,7 +152,10 @@ namespace EksamensProjekt2022
             {
                 GameControl.Instance.playing.timeManager.Draw(_spriteBatch);
             }
-
+            if (MapCreator.DevMode)
+            {
+                MapCreator.Instance.Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
 

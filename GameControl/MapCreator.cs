@@ -86,11 +86,20 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
-                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased && c.IsWalkable)
+                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                     {
                         cell = c;
-                        InsertItem();
-                        c.IsWalkable = false;
+                        if ((int)currentObject <=  3 && c.IsWalkable)
+                        {
+                            InsertItem();
+                            c.IsWalkable = false;
+                        }
+                        else
+                        {
+                            InsertTile();
+                        }
+                       
+                       
                         
                     }
                     if (mouseState.LeftButton == ButtonState.Released)
@@ -175,6 +184,16 @@ namespace EksamensProjekt2022
                 case "Rock":
                     CreateObject(objects[1], cell);
                     break;
+                   
+                default:
+                    break;
+            }
+
+        }
+        public void InsertTile()
+        {
+            switch (objects[(int)currentObject])
+            {
                 case "Field":
                     ChangeAreaTile(objects[2], cell);
                     break;
@@ -187,7 +206,6 @@ namespace EksamensProjekt2022
                 default:
                     break;
             }
-
         }
 
         /// <summary>
@@ -293,15 +311,15 @@ namespace EksamensProjekt2022
                     tileMode = false;
                     break;
                 case 2:
-                    currentObject = GameObjectType.Field;
+                    currentObject = GameObjectType.Mountain;
                     tileMode = true;
                     break;
                 case 3:
-                    currentObject = GameObjectType.FieldWaterEdge;
-                    tileMode = true;
+                    currentObject = GameObjectType.Field;
+                    tileMode = true;                 
                     break;
                 case 4:
-                    currentObject = GameObjectType.Mountain;
+                    currentObject = GameObjectType.FieldWaterEdge;
                     tileMode = true;
                     break;
                 default:
