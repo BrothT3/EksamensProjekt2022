@@ -15,6 +15,10 @@ namespace EksamensProjekt2022
 
         public int InventoryMax { get => inventoryMax; set => inventoryMax = value; }
 
+        public Inventory(int inventoryMax)
+        {
+
+        }
         public override void Update(GameTime gameTime)
         {
             

@@ -29,7 +29,7 @@ namespace EksamensProjekt2022
             a.AddAnimation(BuildAnimation("playerWalkRight", "playerWalkRight"));
             a.AddAnimation(BuildAnimation("playerIdle", "playerIdle"));
 
-            Inventory inv = (Inventory)gameObject.AddComponent(new Inventory()) as Inventory;
+            Inventory inv = (Inventory)gameObject.AddComponent(new Inventory(5)) as Inventory;
             inv.items.Add(new Stone(3));
         }
         private Animation BuildAnimation(string animationName, string spriteName)

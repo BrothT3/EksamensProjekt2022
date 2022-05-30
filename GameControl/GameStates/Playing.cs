@@ -34,7 +34,7 @@ namespace EksamensProjekt2022
         public bool enterReleased;
         public bool pauseWantToExit = false;
         private Vector2 buttonOffset;
-
+        public Cell selectedCell;
         public Playing()
         {
             CellCount = 80;
@@ -51,7 +51,7 @@ namespace EksamensProjekt2022
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null)
                 Destroy(player.GameObject);
-
+            selectedCell = null;
             initializeGameState = true;
             //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
 
@@ -86,8 +86,15 @@ namespace EksamensProjekt2022
                 {
                     currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
                 }
-
-
+                GameObject chest = new GameObject();
+                Chest c = new Chest(new Point( 7, 7));
+                SpriteRenderer sr = new SpriteRenderer();
+                sr.SetSprite("chest");
+                Inventory inv = new Inventory(5);
+                chest.AddComponent(sr);
+                chest.AddComponent(c);
+                chest.AddComponent(inv);
+                Instantiate(chest);
                 userInterface = new UserInterface();
 
             }
@@ -167,7 +174,7 @@ namespace EksamensProjekt2022
                     timeManager.Update(gameTime);
                     playerCraftingMenu.Update(gameTime);
                 }
-
+                
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {
