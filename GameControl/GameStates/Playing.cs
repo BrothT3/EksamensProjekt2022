@@ -86,26 +86,27 @@ namespace EksamensProjekt2022
                 {
                     currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
                 }
-
-
                 userInterface = new UserInterface();
 
             }
             else
             {
                 MapManager m = MapCreator.Instance.mapManager;
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+               
 
                 MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
                 MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
-                for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
-                {
-                    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                }
-                
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
                 currentGrid = MapCreator.Instance.mapManager.areaLoader.currentGrid[0];
                 currentCells = MapCreator.Instance.mapManager.areaLoader.currentCells[0];
                 currentGameObjects = MapCreator.Instance.mapManager.areaLoader.currentGameObjects[0];
+
+                //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
+                //{
+                //    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                //}
+                
+              
             }
 
 

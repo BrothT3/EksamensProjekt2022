@@ -39,7 +39,7 @@ namespace EksamensProjekt2022
 
             for (int i = 0; i < areaLoader.currentGrid.Length; i++)
             {
-                GetComponents(currentSave, i);
+                IdentifyComponent(currentSave, i);
             }
             Close();
         }
@@ -49,9 +49,9 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="currentSave"></param>
         /// <param name="area"></param>
-        public void GetComponents(SaveSlots currentSave, int area)
+        public void IdentifyComponent(SaveSlots currentSave, int area)
         {
-            var cmd = new SQLiteCommand($"SELECT GameObject, PositionX, PositionY, Amount FROM area WHERE UserID={(int)currentSave}", connection);
+            var cmd = new SQLiteCommand($"SELECT ObjectTag, PositionX, PositionY, Quantity FROM areadata WHERE SaveSlotID={(int)currentSave}", connection);
             var dataread = cmd.ExecuteReader();
 
             while (dataread.Read())
@@ -62,7 +62,7 @@ namespace EksamensProjekt2022
                 CreateComponent(componentName, area);
             }
 
-            cmd = new SQLiteCommand($"SELECT CurrentArea, Texture, PositionX, PositionY FROM areacells WHERE UserID={(int)currentSave}", connection);
+            cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave}", connection);
             dataread = cmd.ExecuteReader();
             while (dataread.Read())
             {
@@ -72,7 +72,7 @@ namespace EksamensProjekt2022
                 {
                     position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
 
-                    foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[(int)area])
+                    foreach (Cell c in areaLoader.currentGrid[(int)area])
                     {
                         if (c.Position == position)
                         {
@@ -122,7 +122,7 @@ namespace EksamensProjekt2022
             {
                 var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
 
-                var cmd = new SQLiteCommand($"INSERT INTO area (ID, UserID, CurrentArea, GameObject, PositionX, PositionY, Amount) " +
+                var cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
                     $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
                 cmd.ExecuteNonQuery();
             }
@@ -131,7 +131,7 @@ namespace EksamensProjekt2022
             {
                 if (c.Sprite != null)
                 {
-                    var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, UserID, CurrentArea, Texture, PositionX, PositionY) " +
+                    var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, SaveSlotID, AreaIndex, TileType, PositionX, PositionY) " +
                     $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite}', {c.Position.X}, {c.Position.Y})", connection);
                     cmd.ExecuteNonQuery();
                 }
