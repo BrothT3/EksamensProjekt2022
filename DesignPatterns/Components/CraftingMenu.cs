@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public class PlayerCraftingMenu : Component
+    public class CraftingMenu : Component
     {
         public bool addedRecipes = false;
         public bool displayedCrafting = false;
@@ -20,7 +20,7 @@ namespace EksamensProjekt2022
         private Texture2D redX;
         private Vector2 firstRecipeSlot = new Vector2(50, 200);
 
-        public PlayerCraftingMenu()
+        public CraftingMenu()
         {
             sprite = GameWorld.Instance.Content.Load<Texture2D>("MinerTest");
             redX = GameWorld.Instance.Content.Load<Texture2D>("redX");
@@ -36,8 +36,7 @@ namespace EksamensProjekt2022
                 }
             }
             else
-            {        
-                AddRecipes();
+            {
                 CheckCrafting();
                 DisplayCrafting();
 
@@ -50,8 +49,6 @@ namespace EksamensProjekt2022
                 {
                     spaceReleased = false;
                     playerCraftingButtons.Clear();
-                    Recipes.Clear();
-                    addedRecipes = false;
                     displayedCrafting = false;
                     craftingMenu = false;
                     firstRecipeSlot = new Vector2(50, 200);
@@ -63,17 +60,18 @@ namespace EksamensProjekt2022
                 spaceReleased = true;
         }
 
-        public void AddRecipes()
+        public void AddRecipe(Recipe recipe)
         {
-            if (!addedRecipes)
-            {
-                Recipes.Add(new ChestRecipe());
-                Recipes.Add(new FermentedBreatMilkRecipe());
-            }
-            addedRecipes = true;
+            Recipes.Add(recipe);
         }
         public void CheckCrafting()
         {
+            //if (!addedRecipes)
+            //{
+            //    Recipes.Add(new ChestRecipe());
+            //    Recipes.Add(new FermentedBreatMilkRecipe());
+            //}
+            //addedRecipes = true;
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
             foreach (Recipe recipe in Recipes)
@@ -97,20 +95,19 @@ namespace EksamensProjekt2022
                     recipe.RecipeButton.IsAvailable = true;
                 else
                     recipe.RecipeButton.IsAvailable = false;
-            } 
-            addedRecipes = true;
+            }
         }
         public void DisplayCrafting()
         {
             if (!displayedCrafting)
-            foreach (Recipe recipe in Recipes)
-            {
-                
-                recipe.RecipeButton.OnClicking += recipe.Craft();
-                recipe.RecipeButton.Rectangle = new Rectangle((int)firstRecipeSlot.X, (int)firstRecipeSlot.Y, 60, 35);
-                playerCraftingButtons.Add(recipe.RecipeButton);
-                firstRecipeSlot.Y += 40;
-            }
+                foreach (Recipe recipe in Recipes)
+                {
+
+                    recipe.RecipeButton.OnClicking += recipe.Craft();
+                    recipe.RecipeButton.Rectangle = new Rectangle((int)firstRecipeSlot.X, (int)firstRecipeSlot.Y, 60, 35);
+                    playerCraftingButtons.Add(recipe.RecipeButton);
+                    firstRecipeSlot.Y += 40;
+                }
             displayedCrafting = true;
         }
 
@@ -121,7 +118,7 @@ namespace EksamensProjekt2022
 
             foreach (Button button in playerCraftingButtons)
             {
-                
+
                 button.Draw(spriteBatch);
                 if (!button.IsAvailable)
                 {
@@ -135,77 +132,7 @@ namespace EksamensProjekt2022
         }
     }
 
-    public abstract class Recipe
-    {
-        public string Name { get; set; }
-        public bool[] Available { get; set; }
-        public bool AllAvailable { get; set; }
-        public List<Item> Ingredients { get; set; }
-        public Button RecipeButton { get; set; }
-        public abstract void Craft(object sender, EventArgs e);
-        internal abstract EventHandler Craft();
-
-        public Recipe()
-        {
-
-        }
-    }
-
-    public class FermentedBreatMilkRecipe : Recipe
-    {
-
-        public FermentedBreatMilkRecipe()
-        {
-            Name = "fermented breast milk";
-            Ingredients = new List<Item>();
-            Ingredients.Add(new Stone(1));
-            Available = new bool[1];
-            AllAvailable = false;
-            RecipeButton = new Button(Name);
-        }
-        public override void Craft(object sender, EventArgs e)
-        {
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
-            inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
-            inv.AddItem(new Fish(1));
-        }
-
-        internal override EventHandler Craft()
-        {
-            return Craft;
-        }
-    }
-    public class ChestRecipe : Recipe
-    {
-        public ChestRecipe()
-        {
-            Name = "Chest";
-            Ingredients = new List<Item>();
-            Ingredients.Add(new Wood(3));
-            Ingredients.Add(new Stone(1));
-            Available = new bool[2];
-            AllAvailable = false;
-            RecipeButton = new Button(Name);
-
-        }
-        public override void Craft(object sender, EventArgs e)
-        {
-
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
-            inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
-            inv.RemoveItem(Ingredients[1], Ingredients[1].Quantity);
-            
-            inv.AddItem(new Wood(4));
-        }
-
-        internal override EventHandler Craft()
-        {
-            return Craft;   
-        }
-
-    }
-
-
 }
+
+
+

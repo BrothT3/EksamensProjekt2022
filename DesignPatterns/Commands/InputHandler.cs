@@ -61,6 +61,11 @@ namespace EksamensProjekt2022
                         FindPath();
                         finalPath.Reverse();
                     }
+                    else if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
+                        !c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false)
+                    {
+                        GameControl.Instance.playing.selectedCell = c;
+                    }
                     if (mouseState.LeftButton == ButtonState.Released)
                     {
                         mLeftReleased = true;

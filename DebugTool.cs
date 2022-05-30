@@ -20,7 +20,7 @@ namespace EksamensProjekt2022
         public void Update(GameTime gameTime)
         {
             kState = Keyboard.GetState();
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            
             if (kState.IsKeyDown(Keys.P))
             {
                 ShowCellPoints = true;
@@ -29,9 +29,12 @@ namespace EksamensProjekt2022
             {
                 ShowCellPoints = false;
             }
+            #region inventoryTests
+            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+            Chest chest = (Chest)GameWorld.Instance.FindObjectOfType<Chest>();
             if (player != null)
             {
-                
+
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
                 stoneCount = inv.GetItemCount<Stone>();
                 woodCount = inv.GetItemCount<Wood>();
@@ -57,7 +60,7 @@ namespace EksamensProjekt2022
                         Stone stone = new Stone(1);
                         inv.RemoveItem(stone, 3);
                     }
-                    
+
                 }
                 if (kState.IsKeyDown(Keys.O) && kState != oldKState)
                 {
@@ -70,6 +73,25 @@ namespace EksamensProjekt2022
                 }
 
             }
+            if (chest != null)
+            {
+                Inventory inv = chest.GameObject.GetComponent<Inventory>() as Inventory;
+                if (kState.IsKeyDown(Keys.H) && kState != oldKState)
+                {
+                    Stone stone = new Stone(3);
+                    inv.AddItem(stone);
+                }
+                if (kState.IsKeyDown(Keys.Y) && kState != oldKState)
+                {
+                    if (inv.GetItemCount<Stone>() > 3)
+                    {
+                        Stone stone = new Stone(1);
+                        inv.RemoveItem(stone, 3);
+                    }
+
+                }
+            }
+            #endregion
             oldKState = kState;
 
         }
@@ -83,7 +105,7 @@ namespace EksamensProjekt2022
                 int y = (int)player.GameObject.Transform.Position.Y;
 
                 spriteBatch.DrawString(font, $"({x}, {y})", new Vector2(player.GameObject.Transform.Position.X - 40,
-                    player.GameObject.Transform.Position.Y +50), Color.White);
+                    player.GameObject.Transform.Position.Y + 50), Color.White);
 
                 int pointX = (int)player.currentCell.Position.X;
                 int pointY = (int)player.currentCell.Position.Y;
@@ -92,12 +114,12 @@ namespace EksamensProjekt2022
                     player.GameObject.Transform.Position.Y + 80), Color.White);
 
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
-                
+
                 spriteBatch.DrawString(font, $"stones:{stoneCount}", new Vector2(340, 350), Color.Black);
                 spriteBatch.DrawString(font, $"wood:{woodCount}", new Vector2(340, 380), Color.Black);
             }
 
-            if(ShowCellPoints)
+            if (ShowCellPoints)
             {
                 foreach (Cell c in GameControl.Instance.playing.currentCells.Values)
                 {
