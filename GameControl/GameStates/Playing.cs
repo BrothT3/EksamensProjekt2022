@@ -67,8 +67,7 @@ namespace EksamensProjekt2022
 
             if (!MapCreator.DevMode)
             {
-                MapManager m = new MapManager();
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+               
 
                 Director d = new Director(new PlayerBuilder());
                 Instantiate(d.Construct());
@@ -81,11 +80,15 @@ namespace EksamensProjekt2022
                 currentCells = areaManager.currentCells[0];
                 currentGameObjects = areaManager.currentGameObjects[0];
 
+                MapManager m = new MapManager();
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+
                 //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
                 for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
                 {
                     currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
                 }
+
                 GameObject chest = new GameObject();
                 Chest c = new Chest(new Point( 7, 7));
                 SpriteRenderer sr = new SpriteRenderer();
@@ -95,24 +98,32 @@ namespace EksamensProjekt2022
                 chest.AddComponent(c);
                 chest.AddComponent(inv);
                 Instantiate(chest);
+
                 userInterface = new UserInterface();
 
             }
             else
             {
-                MapManager m = MapCreator.Instance.mapManager;
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+               
+               
 
                 MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
                 MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
-                for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
-                {
-                    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                }
-                
+                MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
+
+
                 currentGrid = MapCreator.Instance.mapManager.areaLoader.currentGrid[0];
                 currentCells = MapCreator.Instance.mapManager.areaLoader.currentCells[0];
                 currentGameObjects = MapCreator.Instance.mapManager.areaLoader.currentGameObjects[0];
+
+                MapManager m = MapCreator.Instance.mapManager;
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+                //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
+                //{
+                //    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                //}
+
+
             }
 
 

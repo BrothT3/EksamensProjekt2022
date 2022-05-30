@@ -11,6 +11,7 @@ namespace EksamensProjekt2022
         private List<Component> components = new List<Component>();
         public string Tag { get; set; }
         public int Amount { get; set; }
+        public bool IsNew { get; set; }
 
         public Component AddComponent(Component component)
         {

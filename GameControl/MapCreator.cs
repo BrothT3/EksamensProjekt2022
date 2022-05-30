@@ -13,7 +13,11 @@ namespace EksamensProjekt2022
         Boulder,
         Field,
         FieldWaterEdge,
-        Mountain
+        Hill,
+        HillWaterEdge,
+        Snow,
+        SnowWaterEdge, 
+        Water
     }
     public class MapCreator
     {
@@ -24,18 +28,22 @@ namespace EksamensProjekt2022
             "Rock",
             "Field",
             "FieldWaterEdge",
-            "Mountain"
+            "Hill",
+            "HillWaterEdge",
+            "Snow",
+            "SnowWaterEdge",
+            "Water"
         };
         public static bool DevMode = false;
         private int objectIndex = 0;
         private bool mRightReleased;
         private bool mLeftReleased;
-       
+
         private bool tileMode = false;
         private bool rightButtonReleased = false;
         private bool leftButtonReleased = false;
 
-        private Texture2D[] sprites = new Texture2D[5];
+        private Texture2D[] sprites = new Texture2D[9];
         private Texture2D selectedSprite;
         private Camera camera;
         public MapManager mapManager;
@@ -71,7 +79,7 @@ namespace EksamensProjekt2022
         }
 
 
-        bool enterReleased = true;
+        bool lAltReleased = true;
         public void Update(GameTime gameTime)
         {
             InputHandler.Instance.Execute(camera);
@@ -86,12 +94,23 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
-                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased && c.IsWalkable)
+                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                     {
                         cell = c;
-                        InsertItem();
-                        c.IsWalkable = false;
-                        
+                        if ((int)currentObject <= 1 && c.IsWalkable)
+                        {
+                            InsertItem();
+                            c.IsWalkable = false;
+                        }
+                        else if((int)currentObject >= 2)
+                        {
+                           // ChangeAreaTile(objects[(int)currentObject], cell);
+                            c.Sprite = selectedSprite;
+                            c.IsNew = true;
+                        }
+
+
+
                     }
                     if (mouseState.LeftButton == ButtonState.Released)
                     {
@@ -111,14 +130,18 @@ namespace EksamensProjekt2022
 
                 }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) && enterReleased)
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) && lAltReleased)
             {
                 mapManager.SaveComponents(GameControl.Instance.playing.currentGameObjects, GameControl.Instance.playing.currentGrid, mapManager.CurrentSave, currentArea);
-                enterReleased = false;
+                foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+                {
+                    go.IsNew = false;
+                }
+                lAltReleased = false;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.LeftAlt))
             {
-                enterReleased = true;
+                lAltReleased = true;
             }
 
 
@@ -144,6 +167,7 @@ namespace EksamensProjekt2022
                             cell.IsWalkable = true;
                             GameControl.Instance.playing.Destroy(go);
 
+
                         }
 
                     }
@@ -154,9 +178,10 @@ namespace EksamensProjekt2022
             else
             {
                 cell.Sprite = null;
+                cell.IsNew = true;
             }
-            
-        
+
+
         }
 
         /// <summary>
@@ -175,19 +200,44 @@ namespace EksamensProjekt2022
                 case "Rock":
                     CreateObject(objects[1], cell);
                     break;
-                case "Field":
-                    ChangeAreaTile(objects[2], cell);
-                    break;
-                case "FieldWaterEdge":
-                    ChangeAreaTile(objects[3], cell);
-                    break;
-                case "Mountain":
-                    ChangeAreaTile(objects[4], cell);
-                    break;
                 default:
                     break;
             }
 
+        }
+        public void InsertTile()
+        {
+            ChangeAreaTile(objects[(int)currentObject], cell);
+
+            //switch (objects[(int)currentObject])
+            //{
+            //    case "Field":
+            //        ChangeAreaTile(objects[2], cell);
+            //        break;
+            //    case "FieldWaterEdge":
+            //        ChangeAreaTile(objects[3], cell);
+            //        break;
+            //    case "Hill":
+            //        ChangeAreaTile(objects[4], cell);
+            //        break;
+            //    case "HillWaterEdge":
+            //        ChangeAreaTile(objects[5], cell);
+            //        break;
+            //    case "Snow":
+            //        ChangeAreaTile(objects[6], cell);
+            //        break;
+            //    case "SnowWaterEdge":
+            //        ChangeAreaTile(objects[7], cell);
+            //        break;
+            //    case "Mountain":
+            //        ChangeAreaTile(objects[8], cell);
+            //        break;
+            //    case "Water":
+            //        ChangeAreaTile(objects[9], cell);
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         /// <summary>
@@ -201,11 +251,11 @@ namespace EksamensProjekt2022
             {
                 case "Tree":
                     GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
-                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
+                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
                     break;
                 case "Rock":
                     GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
-                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
+                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
                     break;
                 default:
                     break;
@@ -221,29 +271,39 @@ namespace EksamensProjekt2022
         {
             switch (tag)
             {
-                case "Field":
-                    //TODO skriv celle sprites ind i databasen når det gemmes
-                    cell.Sprite = selectedSprite;
-                    break;
-                case "FieldWaterEdge":
-                    cell.Sprite = selectedSprite;
-                    break;
-                case "Mountain":
-                    cell.Sprite = selectedSprite;
-                    cell.IsWalkable = false;
-                    break;
+                //case "Field":
+                //    //TODO skriv celle sprites ind i databasen når det gemmes
+                //    cell.Sprite = selectedSprite;
+                //    break;
+                //case "FieldWaterEdge":
+                //    cell.Sprite = selectedSprite;
+                //    break;
+                //case "Hill":
+                //    cell.Sprite = selectedSprite;
+                //    break;
+                //case "HillWaterEdge":
+                //    cell.Sprite = selectedSprite;
+                //    break;
+                //case "Snow":
+                //    cell.Sprite = selectedSprite;
+                //    break;
+                //case "Mountain":
+                //    cell.Sprite = selectedSprite;
+                //    cell.IsWalkable = false;
+                //    break;
                 default:
+                    cell.Sprite = selectedSprite;
                     break;
             }
         }
-      
+
         /// <summary>
         /// Updates the objectIndex integer
         /// </summary>
         public void UpdateObjectType()
         {
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && objectIndex != sprites.Length && rightButtonReleased)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && objectIndex != sprites.Length - 1 && rightButtonReleased)
             {
                 objectIndex++;
                 rightButtonReleased = false;
@@ -259,7 +319,7 @@ namespace EksamensProjekt2022
             {
                 objectIndex--;
                 leftButtonReleased = false;
-                              
+
 
             }
             if (Keyboard.GetState().IsKeyUp(Keys.Left))
@@ -269,10 +329,7 @@ namespace EksamensProjekt2022
 
             }
 
-            if (objectIndex > 5 || objectIndex < 0)
-            {
-                System.Diagnostics.Debugger.Break();
-            }
+
 
         }
 
@@ -282,31 +339,41 @@ namespace EksamensProjekt2022
         private void ChangeObjectType()
         {
 
-            switch (objectIndex)
+            currentObject = (GameObjectType)objectIndex;
+            if (objectIndex < 2)
             {
-                case 0:
-                    currentObject = GameObjectType.Tree;
-                    tileMode = false;
-                    break;
-                case 1:
-                    currentObject = GameObjectType.Boulder;
-                    tileMode = false;
-                    break;
-                case 2:
-                    currentObject = GameObjectType.Field;
-                    tileMode = true;
-                    break;
-                case 3:
-                    currentObject = GameObjectType.FieldWaterEdge;
-                    tileMode = true;
-                    break;
-                case 4:
-                    currentObject = GameObjectType.Mountain;
-                    tileMode = true;
-                    break;
-                default:
-                    break;
+                tileMode = false;
             }
+            else
+            {
+                tileMode = true;
+            }
+
+            //switch (objectIndex)
+            //{
+            //    case 0:
+            //        currentObject = GameObjectType.Tree;
+            //        tileMode = false;
+            //        break;
+            //    case 1:
+            //        currentObject = GameObjectType.Boulder;
+            //        tileMode = false;
+            //        break;
+            //    case 2:
+            //        currentObject = GameObjectType.Mountain;
+            //        tileMode = true;
+            //        break;
+            //    case 3:
+            //        currentObject = GameObjectType.Field;
+            //        tileMode = true;                 
+            //        break;
+            //    case 4:
+            //        currentObject = GameObjectType.FieldWaterEdge;
+            //        tileMode = true;
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         public void Draw(SpriteBatch spriteBatch)

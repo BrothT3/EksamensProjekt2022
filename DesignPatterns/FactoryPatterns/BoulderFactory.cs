@@ -28,11 +28,12 @@ namespace EksamensProjekt2022
 
         }
 
-        public override GameObject CreateGameObject(Cell cell, int resourceAmount)
+        public override GameObject CreateGameObject(Cell cell, int resourceAmount, bool isNew)
         {
 
 
             GameObject gameObject = new GameObject();
+            gameObject.IsNew = isNew;
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Rock");
             Random rand = new Random();
@@ -40,7 +41,7 @@ namespace EksamensProjekt2022
             {
                 sr.SpriteEffect = SpriteEffects.FlipHorizontally;
             }
-
+            
 
             Collider c = (Collider)gameObject.AddComponent(new Collider());
             gameObject.AddComponent(new Boulder(cell, resourceAmount));
