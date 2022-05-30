@@ -118,31 +118,36 @@ namespace EksamensProjekt2022
         {
             Open();
 
+            //clear saved areadata
+            var cmd = new SQLiteCommand($"DELETE FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)currentArea}", connection);
+            cmd.ExecuteNonQuery();
+
+            //save new areadata
             foreach (GameObject go in gameObjects)
             {
-                if (go.IsNew)
-                {
-                    var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
 
-                    var cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
-                        $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
-                    cmd.ExecuteNonQuery();
-                }
-                
-               
+                var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
+
+                cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
+                   $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
+                cmd.ExecuteNonQuery();
+
+
+
             }
+
 
             foreach (Cell c in grid)
             {
                 if (c.Sprite != null && c.IsNew)
                 {
-                    var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, SaveSlotID, AreaIndex, TileType, PositionX, PositionY) " +
-                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite}', {c.Position.X}, {c.Position.Y})", connection);
+                    cmd = new SQLiteCommand($"INSERT INTO areacells (ID, SaveSlotID, AreaIndex, TileType, PositionX, PositionY) " +
+                   $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite}', {c.Position.X}, {c.Position.Y})", connection);
                     cmd.ExecuteNonQuery();
                 }
                 else if (c.Sprite == null && c.IsNew)
                 {
-                    var cmd = new SQLiteCommand($"DELETE FROM areacells WHERE(PositionX={c.Position.X} AND PositionY={c.Position.Y})", connection);
+                    cmd = new SQLiteCommand($"DELETE FROM areacells WHERE(PositionX={c.Position.X} AND PositionY={c.Position.Y})", connection);
                     cmd.ExecuteNonQuery();
                 }
 
