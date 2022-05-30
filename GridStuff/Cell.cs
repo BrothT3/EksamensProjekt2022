@@ -15,7 +15,7 @@ namespace EksamensProjekt2022
         public MouseState mstate { get; set; }
       
         private bool isWalkable;
-
+        private bool isNew;
         private int height;
         private int width;
 
@@ -31,6 +31,7 @@ namespace EksamensProjekt2022
         public Color BackGroundColor { get; set; } = Color.White * 0.1f;
         public CellType MyType { get { return myType; } }
         public bool IsWalkable { get => isWalkable; set => isWalkable = value; }
+        public bool IsNew { get; set; }
 
         #region rectangles
         private Rectangle topLine;

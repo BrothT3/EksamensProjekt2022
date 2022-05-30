@@ -72,7 +72,7 @@ namespace EksamensProjekt2022
                 {
                     position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
 
-                    foreach (Cell c in areaLoader.currentGrid[(int)area])
+                    foreach (Cell c in GameControl.Instance.playing.currentGrid)
                     {
                         if (c.Position == position)
                         {
@@ -97,12 +97,12 @@ namespace EksamensProjekt2022
                 case "Tree":
                     areaLoader.currentGameObjects[area].Add(
                         TreeFactory.Instance.CreateGameObject
-                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount));
+                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount, false));
                     break;
                 case "Boulder":
                     areaLoader.currentGameObjects[area].Add(
                         (BoulderFactory.Instance.CreateGameObject
-                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount)));
+                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount, false)));
                     break;
                 default:
                     break;
@@ -120,19 +120,29 @@ namespace EksamensProjekt2022
 
             foreach (GameObject go in gameObjects)
             {
-                var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
+                if (go.IsNew)
+                {
+                    var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
 
-                var cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
-                    $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
-                cmd.ExecuteNonQuery();
+                    var cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
+                        $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
+                    cmd.ExecuteNonQuery();
+                }
+                
+               
             }
 
             foreach (Cell c in grid)
             {
-                if (c.Sprite != null)
+                if (c.Sprite != null && c.IsNew)
                 {
                     var cmd = new SQLiteCommand($"INSERT INTO areacells (ID, SaveSlotID, AreaIndex, TileType, PositionX, PositionY) " +
                     $"VALUES (null, {(int)currentSave}, {(int)area}, '{c.Sprite}', {c.Position.X}, {c.Position.Y})", connection);
+                    cmd.ExecuteNonQuery();
+                }
+                else if (c.Sprite == null && c.IsNew)
+                {
+                    var cmd = new SQLiteCommand($"DELETE FROM areacells WHERE(PositionX={c.Position.X} AND PositionY={c.Position.Y})", connection);
                     cmd.ExecuteNonQuery();
                 }
 

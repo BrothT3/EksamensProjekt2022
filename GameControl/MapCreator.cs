@@ -97,6 +97,7 @@ namespace EksamensProjekt2022
                         else
                         {
                             InsertTile();
+                            c.IsNew = true;
                         }
                        
                        
@@ -123,6 +124,10 @@ namespace EksamensProjekt2022
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) && enterReleased)
             {
                 mapManager.SaveComponents(GameControl.Instance.playing.currentGameObjects, GameControl.Instance.playing.currentGrid, mapManager.CurrentSave, currentArea);
+                foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+                {
+                    go.IsNew = false;
+                }
                 enterReleased = false;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.LeftAlt))
@@ -152,6 +157,7 @@ namespace EksamensProjekt2022
                         {
                             cell.IsWalkable = true;
                             GameControl.Instance.playing.Destroy(go);
+                            
 
                         }
 
@@ -163,6 +169,7 @@ namespace EksamensProjekt2022
             else
             {
                 cell.Sprite = null;
+                cell.IsNew = true;
             }
             
         
@@ -219,11 +226,11 @@ namespace EksamensProjekt2022
             {
                 case "Tree":
                     GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
-                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
+                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
                     break;
                 case "Rock":
                     GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
-                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500)));
+                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
                     break;
                 default:
                     break;
