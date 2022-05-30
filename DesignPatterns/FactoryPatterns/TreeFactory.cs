@@ -33,7 +33,7 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Tree");
             Collider c = (Collider)gameObject.AddComponent(new Collider());
-            sr.OffSet = -20;
+            sr.OffSetY = -20;
             Random rand = new Random();
             if (rand.Next(0,2) > 0)
             {

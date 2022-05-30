@@ -13,7 +13,7 @@ namespace EksamensProjekt2022
         private Cell start, goal;
         public List<Node> finalPath;
         public bool mLeftReleased = false;
-
+        public Rectangle uiBox;
 
         public static InputHandler Instance
         {
@@ -50,7 +50,7 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false)
+                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false && !uiBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)))
                     {
                         player.readyToMove = false;
                         player.step = 0;
@@ -60,9 +60,10 @@ namespace EksamensProjekt2022
 
                         FindPath();
                         finalPath.Reverse();
+                        GameControl.Instance.playing.selectedCell = null;
                     }
                     else if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        !c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false)
+                        !c.IsWalkable && c.cellVector != player.currentCell.cellVector && GameControl.Instance.playing.playerCraftingMenu.craftingMenu == false && !uiBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)))
                     {
                         GameControl.Instance.playing.selectedCell = c;
                     }

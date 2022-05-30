@@ -93,7 +93,7 @@ namespace EksamensProjekt2022
                 Chest c = new Chest(new Point( 7, 7));
                 SpriteRenderer sr = new SpriteRenderer();
                 sr.SetSprite("chest");
-                Inventory inv = new Inventory(5);
+                Inventory inv = new Inventory(10);
                 chest.AddComponent(sr);
                 chest.AddComponent(c);
                 chest.AddComponent(inv);

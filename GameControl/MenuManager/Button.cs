@@ -19,12 +19,14 @@ namespace EksamensProjekt2022
         private Rectangle rectangle;
         private Vector2 defaultbottonPos;
         private string buttonText;
+        private Item item;
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public Vector2 DefaultbottonPos { get => defaultbottonPos; set => defaultbottonPos = value; }
         public MouseState mstate { get; set; }
         public bool IsOffset { get => isOffset; set => isOffset = value; }
         public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
         public string ButtonText { get => buttonText; set => buttonText = value; }
+        public Item Item { get => item; set => item = value; }
 
         private bool mReleased = true;
         public event EventHandler OnClicking;
@@ -46,6 +48,12 @@ namespace EksamensProjekt2022
             sprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
             buttonFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
             IsOffset = false;
+        }
+        public Button(Item item)
+        {
+            IsOffset = false;
+            Item = item;
+            isAvailable = true;
         }
 
         public void Update(GameTime gameTime)
