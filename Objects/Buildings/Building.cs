@@ -7,9 +7,7 @@ using System.Text;
 namespace EksamensProjekt2022
 {
     public abstract class Building : Component
-    {
-        protected MouseState mouseState;
-        protected bool mLeftReleased = true;
+    {   
         protected Cell parentCell;
         private List<Cell> cells = new List<Cell>();
         protected Point parentPoint;

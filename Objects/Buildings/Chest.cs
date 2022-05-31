@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace EksamensProjekt2022
         private bool updated = false;
         private List<Button> transferButtons = new List<Button>();
         private Rectangle inventoryBox;
+        private bool click;
+        private MouseState mState;
+
         public bool Updated { get => updated; set => updated = value; }
 
         public Chest(Point parentPoint) : base(parentPoint)
@@ -32,10 +36,16 @@ namespace EksamensProjekt2022
         }
         public override void Update(GameTime gameTime)
         {
+            mState = Mouse.GetState();
+            if (mState.LeftButton == ButtonState.Released && updated)
+            {
+                click = true;
+            }
             if (IsSelected)
             {
                 UpdateButtons();
                 InputHandler.Instance.uiBox = inventoryBox;
+
             }
             if (!IsSelected)
             {
@@ -46,6 +56,8 @@ namespace EksamensProjekt2022
             {
                 button.Update(gameTime);
             }
+
+
         }
 
         public void UpdateButtons()
@@ -60,14 +72,12 @@ namespace EksamensProjekt2022
                 Vector2 firstItemSlot = new Vector2(GameObject.Transform.Position.X - 80, GameObject.Transform.Position.Y - 130);
                 foreach (Item item in inv.items)
                 {
-                   
                     Button itembutton = new Button(inv.items[i]);
-                    int captured_i = i;
                     Button captured_button = itembutton;
                     itembutton.OnClicking += TransferEvent();
                     itembutton.Rectangle = new Rectangle((int)firstItemSlot.X, (int)firstItemSlot.Y, 36, 36);
-                    
-                    
+
+
                     transferButtons.Add(itembutton);
                     firstItemSlot.X += 44;
                     rowNumber++;
@@ -78,30 +88,32 @@ namespace EksamensProjekt2022
                         rowNumber = 0;
                     }
                     i++;
-                    
-                }
 
-            } 
-                
+                }
+            }
             Updated = true;
+
         }
 
         private EventHandler TransferEvent()
         {
-            
-            return Transfer; 
+            return Transfer;
         }
 
         public void Transfer(object captured_button, EventArgs e)
         {
-            Button button = (Button)captured_button;
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
-            Inventory chestInv = GameObject.GetComponent<Inventory>() as Inventory;
-            Item item = button.Item;
-            playerInv.AddItem(item);
-            chestInv.RemoveItem(item, item.Quantity);
-            updated = false;
+            if (click)
+            {
+                click = false;
+                Button button = (Button)captured_button;
+                Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+                Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
+                Inventory chestInv = GameObject.GetComponent<Inventory>() as Inventory;
+                Item item = button.Item;
+                playerInv.AddItem(item);
+                chestInv.RemoveItem(item, item.Quantity);
+                updated = false;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -113,11 +125,11 @@ namespace EksamensProjekt2022
                 Vector2 firstItemSlot = new Vector2(GameObject.Transform.Position.X - 80, GameObject.Transform.Position.Y - 130);
                 spriteBatch.Draw(chestInventory, inventoryBox, Color.White);
                 if (inv != null)
-                {                   
+                {
                     foreach (Button button in transferButtons)
                     {
                         spriteBatch.Draw(button.Item.Sprite, button.Rectangle, Color.White);
-                        spriteBatch.DrawString(font, $"{button.Item.Quantity}", new Vector2(button.Rectangle.X, button.Rectangle.Y), Color);                       
+                        spriteBatch.DrawString(font, $"{button.Item.Quantity}", new Vector2(button.Rectangle.X, button.Rectangle.Y), Color);
                     }
                 }
             }
