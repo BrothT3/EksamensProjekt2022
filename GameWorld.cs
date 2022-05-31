@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
+using System.IO;
+using System.Threading;
 
 namespace EksamensProjekt2022
 {
@@ -11,8 +15,9 @@ namespace EksamensProjekt2022
         private SpriteBatch _spriteBatch;
         public List<Collider> Colliders = new List<Collider>();
         public Texture2D pixel;
-
+        public Random rand = new Random();
         public static float DeltaTime;
+        public Thread createDBThread;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
 
@@ -40,16 +45,34 @@ namespace EksamensProjekt2022
 
         protected override void Initialize()
         {
-
+           
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
             GameControl.Instance.currentGameState = CurrentGameState.StartMenu;
 
+            createDBThread = new Thread(CreateDB);
+            createDBThread.IsBackground = true;
+            createDBThread.Start();
+
+     
             base.Initialize();
 
         }
-
+        private void CreateDB()
+        {
+            if (File.Exists("userinfo.db") == false)
+            {
+                string sqlConnectionString = "Data Source=userinfo.db;new=True;";
+                var sqlConnection = new SQLiteConnection(sqlConnectionString);
+                sqlConnection.Open();
+                string cmd = File.ReadAllText("CreateUserInfoDB.sql");
+                var createDB = new SQLiteCommand(cmd, sqlConnection);
+                createDB.ExecuteNonQuery();
+                sqlConnection.Close();
+                
+            }
+        }
 
         protected override void LoadContent()
         {
@@ -60,7 +83,7 @@ namespace EksamensProjekt2022
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed && !StartScreen.databaseIsLoading || Keyboard.GetState().IsKeyDown(Keys.Escape) && !StartScreen.databaseIsLoading)
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 

@@ -121,17 +121,18 @@ namespace EksamensProjekt2022
                 spriteBatch.DrawString(font, $"wood:{woodCount}", new Vector2(340, 380), Color.Black);
             }
             Camera ca = MapCreator.Instance.Camera;
-            if (ca!=null)
-            {
-                spriteBatch.DrawString(font, $"{(int)MapCreator.Instance.CurrentArea}", new Vector2(ca.Position.X - 40,
-                    ca.Position.Y + 100), Color.White);
-            }
+           
 
             if (ShowCellPoints)
             {
                 foreach (Cell c in GameControl.Instance.playing.currentCells.Values)
                 {
                     spriteBatch.DrawString(font, $"({c.Position.X.ToString()}\n{c.Position.Y.ToString()})", new Vector2(c.background.X, c.background.Y), Color.Black, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+                }
+                if (ca != null)
+                {
+                    spriteBatch.DrawString(font, $"{(MapCreator.Instance.CurrentArea)}", new Vector2(ca.Position.X - 0,
+                        ca.Position.Y + 100), Color.White);
                 }
             }
 #endif

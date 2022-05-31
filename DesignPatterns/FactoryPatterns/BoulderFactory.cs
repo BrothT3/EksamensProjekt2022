@@ -36,8 +36,7 @@ namespace EksamensProjekt2022
             gameObject.IsNew = isNew;
             SpriteRenderer sr = (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
             sr.SetSprite("AreaSprites/Rock");
-            Random rand = new Random();
-            if (rand.Next(0,2) > 0)
+            if (GameWorld.Instance.rand.Next(0,2) > 0)
             {
                 sr.SpriteEffect = SpriteEffects.FlipHorizontally;
             }
