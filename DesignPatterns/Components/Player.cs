@@ -18,6 +18,7 @@ namespace EksamensProjekt2022
         public int step = 0;
         public bool readyToMove = false;
         public CurrentArea MyArea { get => myArea; set => myArea = value; }
+        
 
         public override void Awake()
         {
