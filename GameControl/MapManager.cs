@@ -53,12 +53,12 @@ namespace EksamensProjekt2022
                 int areaIndex = dataread.GetInt32(0);
                 string texture = dataread.GetString(1);
 
-                if (texture != null)
+                if (texture != null && areaIndex == (int)area)
                 {
                     position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
 
 
-                    foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[areaIndex])
+                    foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[(int)area])
                     {
                         if (c.Position == position)
                         {

@@ -102,12 +102,10 @@ namespace EksamensProjekt2022
                 foreach (Cell c in currentGrid[i])
                 {
                     c.LoadContent();
-                    if (currentGrid[i] == currentGrid[1])
-                    {
-                        c.Sprite = GameWorld.Instance.Content.Load<Texture2D>("AreaSprites/Field");
-                    }
+
                 }
 
+                //måske unødning
                 foreach (Cell item in currentCells[i].Values)
                 {
                     item.LoadContent();
