@@ -90,7 +90,7 @@ namespace EksamensProjekt2022
                 }
                 if (kState.IsKeyDown(Keys.T) && kState != oldKState)
                 {
-                    if (inv.GetItemCount<Wood>() >= 2)
+                    if (inv.GetItemCount<Wood>() >= 4)
                     {
                         Wood wood = new Wood(1);
                         inv.RemoveItem(wood, 2);
