@@ -90,11 +90,17 @@ namespace EksamensProjekt2022
 
                 spriteBatch.DrawString(font, $"({pointX}, {pointY})", new Vector2(player.GameObject.Transform.Position.X - 40,
                     player.GameObject.Transform.Position.Y + 80), Color.White);
-
+               
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
                 
                 spriteBatch.DrawString(font, $"stones:{stoneCount}", new Vector2(340, 350), Color.Black);
                 spriteBatch.DrawString(font, $"wood:{woodCount}", new Vector2(340, 380), Color.Black);
+            }
+            Camera ca = MapCreator.Instance.Camera;
+            if (ca!=null)
+            {
+                spriteBatch.DrawString(font, $"{(int)MapCreator.Instance.CurrentArea}", new Vector2(ca.Position.X - 40,
+                    ca.Position.Y + 100), Color.White);
             }
 
             if(ShowCellPoints)

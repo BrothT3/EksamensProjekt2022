@@ -22,7 +22,7 @@ namespace EksamensProjekt2022
     public class MapCreator
     {
 
-        private string[] objects = new string[]
+        private readonly string[] objects = new string[]
         {
             "Tree",
             "Rock",
@@ -52,6 +52,7 @@ namespace EksamensProjekt2022
         private GameObjectType currentObject;
         private Cell cell;
         public Camera Camera { get => camera; }
+        public CurrentArea CurrentArea { get => currentArea; }
         private static MapCreator instance;
         public static MapCreator Instance
         {
@@ -87,10 +88,11 @@ namespace EksamensProjekt2022
             UpdateObjectType();
             ChangeObjectType();
             selectedSprite = sprites[(int)currentObject];
+            currentArea = (CurrentArea)areaIndex;
 
             MouseState mouseState = Mouse.GetState();
-            if (GameControl.Instance.playing.currentGrid != null)
-                foreach (Cell c in GameControl.Instance.playing.currentGrid)
+            if (GameControl.Instance.playing.areaManager.currentGrid[(int)currentArea] != null)
+                foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[(int)currentArea])
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
@@ -132,7 +134,7 @@ namespace EksamensProjekt2022
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) && lAltReleased)
             {
-                mapManager.SaveComponents(GameControl.Instance.playing.currentGameObjects, GameControl.Instance.playing.currentGrid, mapManager.CurrentSave, currentArea);
+                mapManager.SaveComponents(GameControl.Instance.playing.areaManager.currentGameObjects[(int)currentArea], GameControl.Instance.playing.currentGrid, mapManager.CurrentSave, currentArea);
                 foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
                 {
                     go.IsNew = false;
@@ -144,7 +146,54 @@ namespace EksamensProjekt2022
                 lAltReleased = true;
             }
 
+            ChangeCurrentLists();
 
+        }
+        bool f1Released = false;
+        bool f2Released = false;
+        int areaIndex = 0;
+        private void ChangeCurrentLists()
+        {
+            
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.F1) && f1Released && areaIndex != 3)
+            {
+                areaIndex++;
+                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (CurrentArea)areaIndex);
+                f1Released = false;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.F1))
+            {
+                f1Released = true;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F2) && f2Released && areaIndex > 0)
+            {
+                areaIndex--;
+                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (CurrentArea)areaIndex);
+
+                f2Released = false;
+            }
+            if (Keyboard.GetState().IsKeyUp(Keys.F2))
+            {
+                f2Released = true;
+            }
+
+
+        }
+
+        private void InitializeCurrentListObjects()
+        {
+            foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+            {
+                go.Awake();
+                go.Start();
+                
+            }
+            foreach(Cell c in GameControl.Instance.playing.currentGrid)
+            {
+                c.LoadContent();
+            }
         }
 
         /// <summary>
@@ -156,7 +205,7 @@ namespace EksamensProjekt2022
         {
             if (!tileMode)
             {
-                foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+                foreach (GameObject go in GameControl.Instance.playing.areaManager.currentGameObjects[(int)currentArea])
                 {
                     if (go.GetComponent<Collider>() != null)
                     {

@@ -37,7 +37,7 @@ namespace EksamensProjekt2022
 
         public Playing()
         {
-            CellCount = 80;
+            CellCount = 40;
             CellSize = 36;
             grid = new Grid(CellCount, CellSize, CellSize);
             _debugTools = new DebugTool();
@@ -75,42 +75,66 @@ namespace EksamensProjekt2022
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
                 playerCraftingMenu = new PlayerCraftingMenu();
+                currentGrid = areaManager.currentGrid[0];
+                currentCells = areaManager.currentCells[0];
+                currentGameObjects = areaManager.currentGameObjects[0];
+
+
+                MapManager m = new MapManager();
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.River);
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Hills);
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Desert);
+
+                //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
+                //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
+                //{
+                //    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                //}
+                userInterface = new UserInterface();
+
+                for (int i = 0; i < m.areaLoader.currentGameObjects.Length; i++)
+                {
+                    areaManager.currentGameObjects[i] = m.areaLoader.currentGameObjects[i];
+                    areaManager.currentGrid[i] = m.areaLoader.currentGrid[i];
+
+                }
+
+               
+
+            }
+            else
+            {
+
+           
+
+                //MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
+                //MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
+                //MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
+
 
                 currentGrid = areaManager.currentGrid[0];
                 currentCells = areaManager.currentCells[0];
                 currentGameObjects = areaManager.currentGameObjects[0];
 
-                MapManager m = new MapManager();
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
-
-                //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
-                for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
-                {
-                    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                }
-                userInterface = new UserInterface();
-
-            }
-            else
-            {
-               
-               
-
-                MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
-                MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
-                MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
-
-
-                currentGrid = MapCreator.Instance.mapManager.areaLoader.currentGrid[0];
-                currentCells = MapCreator.Instance.mapManager.areaLoader.currentCells[0];
-                currentGameObjects = MapCreator.Instance.mapManager.areaLoader.currentGameObjects[0];
-
                 MapManager m = MapCreator.Instance.mapManager;
                 m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
-                //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
-                //{
-                //    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                //}
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.River);
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Hills);
+                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Desert);
+
+
+
+                for (int i = 1; i < m.areaLoader.currentGameObjects[0].Count; i++)
+                {
+
+                    areaManager.currentGameObjects[i] = m.areaLoader.currentGameObjects[i];
+                    areaManager.currentGrid[i] = m.areaLoader.currentGrid[i];
+                    // currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                  //  currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
+                   // currentGrid = m.areaLoader.currentGrid[0];
+                   // areaManager.currentGrid[0].Add(m.areaLoader.currentGrid[0][i]);
+                }
 
 
             }

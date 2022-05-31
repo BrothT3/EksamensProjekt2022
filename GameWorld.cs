@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public List<Collider> Colliders = new List<Collider>();
-
+        public Texture2D pixel;
 
         public static float DeltaTime;
 
@@ -54,7 +54,7 @@ namespace EksamensProjekt2022
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            pixel = Content.Load<Texture2D>("Pixel");
 
         }
 
@@ -122,7 +122,7 @@ namespace EksamensProjekt2022
 
            
 
-
+            
             if (GameControl.Instance.playing.currentGrid != null)
                 foreach (Cell item in GameControl.Instance.playing.currentGrid)
                 {

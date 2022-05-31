@@ -30,7 +30,7 @@ namespace EksamensProjekt2022
         public Node MyNode { get => myNode; set => myNode = value; }
         public Color BackGroundColor { get; set; } = Color.White * 0.1f;
         public CellType MyType { get { return myType; } }
-        public bool IsWalkable { get => isWalkable; set => isWalkable = value; }
+        public bool IsWalkable { get; set; } 
         public bool IsNew { get; set; }
 
         #region rectangles
@@ -68,15 +68,18 @@ namespace EksamensProjekt2022
                 || background.Contains(new Point(mstate.X - (int)MapCreator.Instance.Camera.Position.X, mstate.Y - (int)MapCreator.Instance.Camera.Position.Y)) && MapCreator.DevMode)
             {
                 isHovering = true;
-
+                
             }
-
+            if (Sprite == null && !MapCreator.DevMode)
+            {
+                IsWalkable = false;
+            }
 
         }
 
         public void LoadContent()
         {
-            lineSprite = GameWorld.Instance.Content.Load<Texture2D>("Pixel");
+           // lineSprite = GameWorld.Instance.pixel;
 
 #if DEBUG
             topLine = new Rectangle(Position.X * width, Position.Y * height, width, 1);
@@ -99,15 +102,15 @@ namespace EksamensProjekt2022
             if (Sprite != null)
                 spriteBatch.Draw(Sprite, new Vector2(background.X, background.Y), Color.White);
 
-            spriteBatch.Draw(lineSprite, background, color);
+            spriteBatch.Draw(GameWorld.Instance.pixel, background, color);
 
 #if DEBUG
             //path
-            spriteBatch.Draw(lineSprite, background, BackGroundColor);
-            spriteBatch.Draw(lineSprite, topLine, edgeColor);
-            spriteBatch.Draw(lineSprite, bottomLine, edgeColor);
-            spriteBatch.Draw(lineSprite, rightLine, edgeColor);
-            spriteBatch.Draw(lineSprite, leftLine, edgeColor);          
+            spriteBatch.Draw(GameWorld.Instance.pixel, background, BackGroundColor);
+            spriteBatch.Draw(GameWorld.Instance.pixel, topLine, edgeColor);
+            spriteBatch.Draw(GameWorld.Instance.pixel, bottomLine, edgeColor);
+            spriteBatch.Draw(GameWorld.Instance.pixel, rightLine, edgeColor);
+            spriteBatch.Draw(GameWorld.Instance.pixel, leftLine, edgeColor);          
 #endif
 
         }
