@@ -9,8 +9,7 @@ namespace EksamensProjekt2022
     {
         public SQLiteConnection connection = new SQLiteConnection("Data Source=userinfo.db");
         private SaveSlots currentSave;
-        private CurrentArea currentArea;
-
+     
         public AreaManager areaLoader;
         public SaveSlots CurrentSave { get => currentSave; }
 
@@ -35,12 +34,8 @@ namespace EksamensProjekt2022
         {
             Open();
             this.currentSave = currentSave;
-            currentArea = area;
 
-            for (int i = 0; i < areaLoader.currentGrid.Length; i++)
-            {
-                IdentifyComponent(currentSave, i);
-            }
+            IdentifyComponent(currentSave, area);
             Close();
         }
 
@@ -49,10 +44,32 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="currentSave"></param>
         /// <param name="area"></param>
-        public void IdentifyComponent(SaveSlots currentSave, int area)
+        public void IdentifyComponent(SaveSlots currentSave, CurrentArea area)
         {
-            var cmd = new SQLiteCommand($"SELECT ObjectTag, PositionX, PositionY, Quantity FROM areadata WHERE SaveSlotID={(int)currentSave}", connection);
+            var cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
             var dataread = cmd.ExecuteReader();
+            while (dataread.Read())
+            {
+                int areaIndex = dataread.GetInt32(0);
+                string texture = dataread.GetString(1);
+
+                if (texture != null)
+                {
+                    position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
+
+
+                    foreach (Cell c in GameControl.Instance.playing.areaManager.currentGrid[areaIndex])
+                    {
+                        if (c.Position == position)
+                        {
+                            c.Sprite = GameWorld.Instance.Content.Load<Texture2D>(texture);
+
+                        }
+                    }
+                }
+            }
+            cmd = new SQLiteCommand($"SELECT ObjectTag, PositionX, PositionY, Quantity FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
+            dataread = cmd.ExecuteReader();
 
             while (dataread.Read())
             {
@@ -62,25 +79,7 @@ namespace EksamensProjekt2022
                 CreateComponent(componentName, area);
             }
 
-            cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave}", connection);
-            dataread = cmd.ExecuteReader();
-            while (dataread.Read())
-            {
-                string texture = dataread.GetString(1);
 
-                if (texture != null)
-                {
-                    position = new Point(dataread.GetInt32(2), dataread.GetInt32(3));
-
-                    foreach (Cell c in GameControl.Instance.playing.currentGrid)
-                    {
-                        if (c.Position == position)
-                        {
-                            c.Sprite = GameWorld.Instance.Content.Load<Texture2D>(texture);
-                        }
-                    }
-                }
-            }
 
         }
 
@@ -89,20 +88,20 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="componentName"></param>
         /// <param name="area"></param>
-        public void CreateComponent(string componentName, int area)
+        public void CreateComponent(string componentName, CurrentArea area)
         {
 
             switch (componentName)
             {
                 case "Tree":
-                    areaLoader.currentGameObjects[area].Add(
+                    GameControl.Instance.playing.areaManager.currentGameObjects[(int)area].Add(
                         TreeFactory.Instance.CreateGameObject
-                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount, false));
+                        (GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount, false));
                     break;
                 case "Boulder":
-                    areaLoader.currentGameObjects[area].Add(
+                    GameControl.Instance.playing.areaManager.currentGameObjects[(int)area].Add(
                         (BoulderFactory.Instance.CreateGameObject
-                        (GameControl.Instance.playing.areaManager.currentGrid[area].Find(x => x.Position == position), amount, false)));
+                        (GameControl.Instance.playing.areaManager.currentGrid[(int)area].Find(x => x.Position == position), amount, false)));
                     break;
                 default:
                     break;
@@ -119,7 +118,7 @@ namespace EksamensProjekt2022
             Open();
 
             //clear saved areadata
-            var cmd = new SQLiteCommand($"DELETE FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)currentArea}", connection);
+            var cmd = new SQLiteCommand($"DELETE FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
             cmd.ExecuteNonQuery();
 
             //save new areadata

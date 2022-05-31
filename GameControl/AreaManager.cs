@@ -17,7 +17,6 @@ namespace EksamensProjekt2022
         private Thread loadAreasThread;
         private bool HasRun = false;
 
-        public event EventHandler AreaChange;
 
         public AreaManager()
         {
@@ -34,7 +33,6 @@ namespace EksamensProjekt2022
                 CreateGrids();
                 HasRun = true;
             }
-        
 
         }
 
@@ -45,24 +43,21 @@ namespace EksamensProjekt2022
             loadAreasThread.IsBackground = true;
             loadAreasThread.Start();
         }
-        public void OnAreaChange()
+        public void AreaChange(CurrentArea currentArea, CurrentArea nextArea)
         {
             if (GameControl.Instance.playing.newGameObjects.Count == 0)
             {
-                currentGameObjects[(int)currentArea].Clear();
-                currentGrid[(int)currentArea].Clear();
+                currentGameObjects[(int)currentArea] = GameControl.Instance.playing.currentGameObjects;
+                GameControl.Instance.playing.currentGameObjects = currentGameObjects[(int)nextArea];
 
-                foreach (Cell grid in GameControl.Instance.playing.currentGrid)
-                {
-                    currentGrid[(int)currentArea].Add(grid);
-                }
-                foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
-                {
-                    currentGameObjects[(int)currentArea].Add(go);
+                LoadGameObjects();
 
-                }
-
+                currentGrid[(int)currentArea] = GameControl.Instance.playing.currentGrid;
+                GameControl.Instance.playing.currentGrid = currentGrid[(int)nextArea];
             }
+
+
+
         }
 
         public void ChangeArea(CurrentArea area)
@@ -100,6 +95,8 @@ namespace EksamensProjekt2022
 
         public void LoadGridAndCell()
         {
+
+
             for (int i = 1; i < currentGrid.Length; i++)
             {
                 foreach (Cell c in currentGrid[i])
@@ -115,6 +112,17 @@ namespace EksamensProjekt2022
                 {
                     item.LoadContent();
                 }
+            }
+
+        }
+
+        public void LoadGameObjects()
+        {
+
+
+            foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
+            {
+                go.Start();
             }
 
         }
