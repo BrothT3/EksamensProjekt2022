@@ -82,9 +82,25 @@ namespace EksamensProjekt2022
                     inv.AddItem(stone);
                     chest.Updated = false;
                 }
+                if (kState.IsKeyDown(Keys.G) && kState != oldKState)
+                {
+                    Wood wood = new Wood(2);
+                    inv.AddItem(wood);
+                    chest.Updated = false;
+                }
+                if (kState.IsKeyDown(Keys.T) && kState != oldKState)
+                {
+                    if (inv.GetItemCount<Wood>() >= 2)
+                    {
+                        Wood wood = new Wood(1);
+                        inv.RemoveItem(wood, 2);
+                        chest.Updated = false;
+                    }
+
+                }
                 if (kState.IsKeyDown(Keys.Y) && kState != oldKState)
                 {
-                    if (inv.GetItemCount<Stone>() > 3)
+                    if (inv.GetItemCount<Stone>() >= 3)
                     {
                         Stone stone = new Stone(1);
                         inv.RemoveItem(stone, 3);
