@@ -12,6 +12,7 @@ namespace EksamensProjekt2022
     {
         public List<Item> items = new List<Item>();
         private int inventoryMax = 5;
+        public int notAddedAmount = 0;
 
         public int InventoryMax { get => inventoryMax; set => inventoryMax = value; }
 
@@ -21,7 +22,7 @@ namespace EksamensProjekt2022
         }
         public override void Update(GameTime gameTime)
         {
-            
+
         }
         public void AddItem(Item item)
         {
@@ -51,10 +52,14 @@ namespace EksamensProjekt2022
 
                 }
                 else if (items.Count == inventoryMax)
+                {
+                    notAddedAmount = amountToAdd;
                     break;
+                }
+                    
 
                 item.Quantity--;
-                
+
             }
 
         }
@@ -83,10 +88,65 @@ namespace EksamensProjekt2022
                     amountToRemove--;
                     itemStack.Quantity--;
                 }
-                
+
             }
-           
+
         }
+        //public void AddItemTo(Item item, Inventory recipient)
+        //{
+        //    int amountToAdd = item.Quantity;
+        //    Item itemStack = null;
+        //    Item itemStackTake = null;
+        //    while (amountToAdd > 0)
+        //    {
+
+        //        if (items.Exists(x => (x.Name == item.Name) && x.RoomForMore) && itemStack != null)
+        //        {
+        //            itemStack = items.First(x => x.Name == item.Name && x.RoomForMore);
+        //        }
+        //        else if (items.Exists(x => (x.Name == item.Name) && itemStack != null))
+        //        {
+        //            itemStack = items.First(x => x.Name == item.Name);
+        //        }
+
+        //        if (items.Exists(x => (x.Name == item.Name) && x.RoomForMore) && itemStack != null)
+        //        {
+        //            itemStack = items.First(x => x.Name == item.Name && x.RoomForMore);
+        //        }
+        //        else if (items.Exists(x => (x.Name == item.Name) && itemStack != null))
+        //        {
+        //            itemStack = items.First(x => x.Name == item.Name);
+        //        }
+
+        //        {
+
+
+        //            while (itemStack.RoomForMore && amountToAdd > 0)
+        //            {
+        //                amountToAdd--;
+        //                itemStack.Quantity++;
+        //            }
+
+
+        //        }
+        //        else if (items.Count < inventoryMax)
+        //        {
+        //            Item newItem = item;
+        //            newItem.Quantity = 1;
+        //            amountToAdd++;
+        //            items.Add(newItem);
+
+
+
+        //        }
+        //        else if (items.Count == inventoryMax)
+        //            break;
+
+        //        item.Quantity--;
+
+        //    }
+
+        //}
 
         public int GetItemCount<T>() where T : Item
         {
@@ -113,7 +173,7 @@ namespace EksamensProjekt2022
                         sum += itemAsT.Quantity;
                     }
                 }
-                
+
             }
             return sum;
         }
@@ -126,7 +186,7 @@ namespace EksamensProjekt2022
         private Texture2D sprite;
 
         public string Name { get => name; set => name = value; }
-        
+
         protected int maxQuantity;
         protected int quantity;
 

@@ -108,10 +108,19 @@ namespace EksamensProjekt2022
                 Button button = (Button)captured_button;
                 Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
                 Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
-                Inventory chestInv = GameObject.GetComponent<Inventory>() as Inventory;
-                Item item = button.Item;
-                playerInv.AddItem(item);
-                chestInv.RemoveItem(item, item.Quantity);
+                Inventory chestInv = this.GameObject.GetComponent<Inventory>() as Inventory;
+                Type type = button.Item.GetType();
+                Item item1 = (Item)Activator.CreateInstance(type);
+                Item item2 = (Item)Activator.CreateInstance(type);
+                item1.Quantity = button.Item.Quantity;
+                item2.Quantity = button.Item.Quantity;
+                playerInv.AddItem(item2);
+                int notRoomFor = playerInv.notAddedAmount;
+                int toRemove = item1.Quantity - notRoomFor;
+                chestInv.RemoveItem(item1, toRemove);
+                playerInv.notAddedAmount = 0;
+                
+
                 updated = false;
             }
         }
