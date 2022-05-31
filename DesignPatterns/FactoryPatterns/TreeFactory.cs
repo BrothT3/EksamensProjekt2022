@@ -34,8 +34,8 @@ namespace EksamensProjekt2022
             sr.SetSprite("AreaSprites/Tree");
             Collider c = (Collider)gameObject.AddComponent(new Collider());
             sr.OffSetY = -20;
-            Random rand = new Random();
-            if (rand.Next(0,2) > 0)
+
+            if (GameWorld.Instance.rand.Next(0,2) > 0)
             {
                 sr.SpriteEffect = SpriteEffects.FlipHorizontally;
             }

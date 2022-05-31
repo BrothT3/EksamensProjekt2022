@@ -17,7 +17,8 @@ namespace EksamensProjekt2022
         HillWaterEdge,
         Snow,
         SnowWaterEdge, 
-        Water
+        Water,
+        Desert
     }
     public class MapCreator
     {
@@ -32,7 +33,8 @@ namespace EksamensProjekt2022
             "HillWaterEdge",
             "Snow",
             "SnowWaterEdge",
-            "Water"
+            "Water",
+            "Desert"
         };
         public static bool DevMode = false;
         private int objectIndex = 0;
@@ -43,7 +45,7 @@ namespace EksamensProjekt2022
         private bool rightButtonReleased = false;
         private bool leftButtonReleased = false;
 
-        private Texture2D[] sprites = new Texture2D[9];
+        private Texture2D[] sprites = new Texture2D[10];
         private Texture2D selectedSprite;
         private Camera camera;
         public MapManager mapManager;
@@ -300,11 +302,11 @@ namespace EksamensProjekt2022
             {
                 case "Tree":
                     GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
-                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
+                        GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), GameWorld.Instance.rand.Next(10, 50), true)));
                     break;
                 case "Rock":
                     GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
-                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), 500, true)));
+                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), GameWorld.Instance.rand.Next(10,50), true)));
                     break;
                 default:
                     break;

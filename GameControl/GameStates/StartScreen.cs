@@ -13,6 +13,7 @@ namespace EksamensProjekt2022
         public List<Button> mainMenuExitButtons = new List<Button>();
         private SpriteFont exitFont;
         private Texture2D sprite;
+        public static bool databaseIsLoading = false;
         public bool startWantToExit = false;
 
         public override void EndingGameState()
@@ -72,6 +73,14 @@ namespace EksamensProjekt2022
                     item.Update(gameTime);
                 }
             }
+            if (!GameWorld.Instance.createDBThread.IsAlive)
+            {
+                databaseIsLoading = false;
+            }
+            else
+            {
+                databaseIsLoading = true;
+            }
 #if DEBUG
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
@@ -83,7 +92,7 @@ namespace EksamensProjekt2022
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(sprite, new Vector2(0, 0), Color.White);
-            if (startWantToExit)
+            if (startWantToExit && !databaseIsLoading)
             {
                 spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
             }
@@ -100,11 +109,27 @@ namespace EksamensProjekt2022
                 }
             }
 
+            if (databaseIsLoading)
+            {
+                spriteBatch.DrawString(exitFont, "Please wait a moment\n" +
+                    "The game is currently creating the map\n" +
+                    "This text will disappear when it is done", new Vector2(250, 72), Color.Black);
+                spriteBatch.DrawString(exitFont, "Please wait a moment\n" +
+                    "The game is currently creating the map\n" +
+                    "This text will disappear when it is done", new Vector2(250, 71), Color.White);
+            }
+
 
         }
         private void ClickedPlay(object sender, EventArgs e)
         {
-            GameControl.Instance.ChangeGameState(CurrentGameState.Playing);
+            if (GameWorld.Instance.createDBThread.IsAlive == false)
+            {
+                GameControl.Instance.ChangeGameState(CurrentGameState.Playing);
+            }
+
+           
+
         }
         private void ClickedExit(object sender, EventArgs e)
         {
