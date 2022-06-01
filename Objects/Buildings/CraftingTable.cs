@@ -8,30 +8,31 @@ using System.Text;
 
 namespace EksamensProjekt2022
 {
-    public class Chest : Building
+    public class CraftingTable : Building
     {
         private Color Color = Color.White;
         private SpriteFont font;
-        private Texture2D chestInventory;
+        private Texture2D craftingTableCM;
         private bool updated = false;
         private List<Button> transferButtons = new List<Button>();
-        private Rectangle inventoryBox;
+        private Rectangle craftingTableBox;
         private bool click;
         private MouseState mState;
 
         public bool Updated { get => updated; set => updated = value; }
 
-        public Chest(Point parentPoint) : base(parentPoint)
+        public CraftingTable(Point parentPoint) : base(parentPoint)
         {
             font = GameWorld.Instance.Content.Load<SpriteFont>("Font");
-            chestInventory = GameWorld.Instance.Content.Load<Texture2D>("chestInventory");
+            craftingTableCM = GameWorld.Instance.Content.Load<Texture2D>("chestInventory");
         }
         public override void Start()
         {
             GameObject.Transform.Position = new Vector2(parentCell.cellVector.X, parentCell.cellVector.Y);
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            sr.OffSetY += 12;
-            sr.OffSetX += 19;
+            sr.OffSetY += 30;
+            sr.OffSetX += 18;
+            
             Occupy();
         }
         public override void Update(GameTime gameTime)
@@ -44,16 +45,14 @@ namespace EksamensProjekt2022
             }
             if (IsSelected)
             {
-                
+                InputHandler.Instance.uiBox = craftingTableBox;
+                cm.craftingMenu = true;
                 UpdateButtons();
-                InputHandler.Instance.uiBox = inventoryBox;
-
             }
             if (!IsSelected)
             {
                 
-                Updated = false;
-                InputHandler.Instance.uiBox = Rectangle.Empty;
+                cm.endingCraftingMenu = true;
             }
             foreach (Button button in transferButtons)
             {
@@ -72,7 +71,7 @@ namespace EksamensProjekt2022
                 transferButtons.Clear();
                 int i = 0;
                 int rowNumber = 0;
-                Vector2 firstItemSlot = new Vector2(GameObject.Transform.Position.X - 80, GameObject.Transform.Position.Y - 130);
+                Vector2 firstItemSlot = new Vector2(GameObject.Transform.Position.X - 20, GameObject.Transform.Position.Y - 64);
                 foreach (Item item in inv.items)
                 {
                     Button itembutton = new Button(inv.items[i]);
@@ -123,7 +122,6 @@ namespace EksamensProjekt2022
                 chestInv.RemoveItem(item1, toRemove);
                 playerInv.notAddedAmount = 0;
                 
-
                 updated = false;
             }
         }
@@ -131,11 +129,12 @@ namespace EksamensProjekt2022
         public override void Draw(SpriteBatch spriteBatch)
         {
             Inventory inv = GameObject.GetComponent<Inventory>() as Inventory;
+            CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             if (IsSelected)
             {
-                inventoryBox = new Rectangle((int)GameObject.Transform.Position.X - 110, (int)GameObject.Transform.Position.Y - 143, 252, 166);
+                craftingTableBox = new Rectangle((int)GameObject.Transform.Position.X - 40, (int)GameObject.Transform.Position.Y - 74, 113, 75);
                 Vector2 firstItemSlot = new Vector2(GameObject.Transform.Position.X - 80, GameObject.Transform.Position.Y - 130);
-                spriteBatch.Draw(chestInventory, inventoryBox, Color.White);
+                spriteBatch.Draw(craftingTableCM, new Vector2(craftingTableBox.X, craftingTableBox.Y), null, Color.White, 0, Vector2.Zero, 0.45f, SpriteEffects.None, 1);
                 if (inv != null)
                 {
                     foreach (Button button in transferButtons)
@@ -151,6 +150,7 @@ namespace EksamensProjekt2022
         {
             Cells.Add((GameControl.Instance.playing.currentCells[new Point(parentPoint.X, parentPoint.Y)]));
             Cells.Add((GameControl.Instance.playing.currentCells[new Point(parentPoint.X + 1, parentPoint.Y)]));
+            Cells.Add((GameControl.Instance.playing.currentCells[new Point(parentPoint.X, parentPoint.Y + 1)]));
             foreach (Cell cell in Cells)
             {
                 if (GameControl.Instance.playing.currentGrid.Exists(x => (x.Position == cell.Position)))

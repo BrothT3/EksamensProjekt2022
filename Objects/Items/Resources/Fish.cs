@@ -13,6 +13,12 @@ namespace EksamensProjekt2022
             Sprite = GameWorld.Instance.Content.Load<Texture2D>("MinerTest");
             this.Quantity = _quantity;
 
+            this.MaxQuantity = Constants.MAX_FISH_QUANTITY;
+        }
+        public Fish()
+        {
+            Name = "fish";
+            Sprite = GameWorld.Instance.Content.Load<Texture2D>("MinerTest");
 
             this.MaxQuantity = Constants.MAX_FISH_QUANTITY;
         }

@@ -13,7 +13,6 @@ namespace EksamensProjekt2022
             Sprite = GameWorld.Instance.Content.Load<Texture2D>("AreaSprites/Rock");
             this.Quantity = _quantity;
 
-
             this.MaxQuantity = Constants.MAX_STONE_QUANTITY;
         }
         public Stone()

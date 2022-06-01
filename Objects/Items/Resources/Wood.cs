@@ -17,6 +17,13 @@ namespace EksamensProjekt2022
 
             this.MaxQuantity = Constants.MAX_WOOD_QUANTITY;
         }
+        public Wood()
+        {
+            Name = "wood";
+            Sprite = GameWorld.Instance.Content.Load<Texture2D>("AreaSprites/Tree");
+
+            this.MaxQuantity = Constants.MAX_WOOD_QUANTITY;
+        }
 
         
     }

@@ -10,5 +10,9 @@ namespace EksamensProjekt2022
         {
             Quantity = _quantity;
         }
+        public Vegetable()
+        {
+
+        }
     }
 }

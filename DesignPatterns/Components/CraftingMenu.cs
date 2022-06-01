@@ -15,10 +15,11 @@ namespace EksamensProjekt2022
         public List<Button> playerCraftingButtons = new List<Button>();
         public List<Recipe> Recipes = new List<Recipe>();
         public bool craftingMenu = false;
+        public bool endingCraftingMenu = false;
         private bool spaceReleased;
         private Texture2D sprite;
         private Texture2D redX;
-        private Vector2 firstRecipeSlot = new Vector2(50, 200);
+        
 
         public CraftingMenu()
         {
@@ -39,25 +40,26 @@ namespace EksamensProjekt2022
             {
                 CheckCrafting();
                 DisplayCrafting();
-
                 foreach (Button button in playerCraftingButtons)
                 {
                     button.Update(gameTime);
                 }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && spaceReleased)
-                {
-                    spaceReleased = false;
+                if (endingCraftingMenu)
+                {            
                     playerCraftingButtons.Clear();
                     displayedCrafting = false;
                     craftingMenu = false;
-                    firstRecipeSlot = new Vector2(50, 200);
+                    endingCraftingMenu = false;
                 }
-
-
+                foreach (Recipe recipe in Recipes)
+                {
+                    if (recipe.RecipeButton.MReleased)
+                    {
+                        recipe.Click = true;
+                    }
+                }
             }
-            if (Keyboard.GetState().IsKeyUp(Keys.Space))
-                spaceReleased = true;
+            
         }
 
         public void AddRecipe(Recipe recipe)
@@ -66,14 +68,9 @@ namespace EksamensProjekt2022
         }
         public void CheckCrafting()
         {
-            //if (!addedRecipes)
-            //{
-            //    Recipes.Add(new ChestRecipe());
-            //    Recipes.Add(new FermentedBreatMilkRecipe());
-            //}
-            //addedRecipes = true;
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
+            
             foreach (Recipe recipe in Recipes)
             {
                 int i = 0;
@@ -100,35 +97,39 @@ namespace EksamensProjekt2022
         public void DisplayCrafting()
         {
             if (!displayedCrafting)
+            {
+                int firstRecipeSlotX = (int)GameObject.Transform.Position.X - 260;
+                int firstRecipeSlotY = (int)GameObject.Transform.Position.Y - 120;
+                Rectangle craftingBox = new Rectangle(firstRecipeSlotX, firstRecipeSlotY, 60, 0);
                 foreach (Recipe recipe in Recipes)
                 {
 
                     recipe.RecipeButton.OnClicking += recipe.Craft();
-                    recipe.RecipeButton.Rectangle = new Rectangle((int)firstRecipeSlot.X, (int)firstRecipeSlot.Y, 60, 35);
+                    recipe.RecipeButton.Rectangle = new Rectangle((int)firstRecipeSlotX, (int)firstRecipeSlotY, 60, 35);
                     playerCraftingButtons.Add(recipe.RecipeButton);
-                    firstRecipeSlot.Y += 40;
+                    firstRecipeSlotY += 40;
+                    craftingBox.Height += 40;
+
                 }
+                InputHandler.Instance.craftingBox = craftingBox;
+            }
+                
             displayedCrafting = true;
         }
 
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-
-
-            foreach (Button button in playerCraftingButtons)
-            {
-
-                button.Draw(spriteBatch);
-                if (!button.IsAvailable)
+            
+                foreach (Button button in playerCraftingButtons)
                 {
-                    spriteBatch.Draw(redX, button.Rectangle, Color.White * 0.4f);
+                    button.Draw(spriteBatch);
+                    if (!button.IsAvailable)
+                    {
+                        spriteBatch.Draw(redX, button.Rectangle, Color.White * 0.4f);
+                    }
                 }
-
-            }
             if (craftingMenu)
                 spriteBatch.Draw(sprite, new Vector2(400, 400), Color.White);
-
         }
     }
 
