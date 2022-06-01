@@ -21,22 +21,24 @@ namespace EksamensProjekt2022
 
         public AreaManager()
         {
-            //   Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
-            currentArea = 0;
+            currentArea = Area.Camp;
             for (int i = 0; i < currentGameObjects.Length; i++)
             {
                 currentGameObjects[i] = new List<GameObject>();
 
             }
             if (!HasRun)
-            {
+            {//To ensure it only runs once
                 CreateGrids();
                 HasRun = true;
             }
 
         }
 
+        /// <summary>
+        /// Creates a thread that creates the grids used in all areas, intended so that the main thread only creates the first zone.
+        /// </summary>
         public void CreateGrids()
         {
 
@@ -44,6 +46,12 @@ namespace EksamensProjekt2022
             loadAreasThread.IsBackground = true;
             loadAreasThread.Start();
         }
+
+        /// <summary>
+        /// Saves any changes on the active list onto the AreaManager instances' list before changing to the next area and loading them.
+        /// </summary>
+        /// <param name="currentArea"></param>
+        /// <param name="nextArea"></param>
         public void AreaChange(Area currentArea, Area nextArea)
         {
             if (GameControl.Instance.playing.newGameObjects.Count == 0)
@@ -55,21 +63,18 @@ namespace EksamensProjekt2022
 
                 currentGrid[(int)currentArea] = GameControl.Instance.playing.currentGrid;
                 GameControl.Instance.playing.currentGrid = currentGrid[(int)nextArea];
+                this.currentArea = nextArea;
             }
 
 
 
         }
 
-        public void ChangeArea(Area area)
-        {
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
-            currentArea = area;
-
-
-        }
-
+        /// <summary>
+        /// Creates Grid and Cells before running their load content methods.
+        /// Method exists as an overview of the Threads tasks.
+        /// </summary>
         public void LoadArea()
         {
             CreateGrid();

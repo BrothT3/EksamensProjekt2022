@@ -9,15 +9,11 @@ namespace EksamensProjekt2022
     {
         public SQLiteConnection connection = new SQLiteConnection("Data Source=userinfo.db");
         private SaveSlots currentSave;
-     
         public AreaManager areaLoader;
         public SaveSlots CurrentSave { get => currentSave; }
-
-
         private string componentName;
         private Point position;
         private int amount;
-
 
 
         public MapManager()
@@ -110,7 +106,7 @@ namespace EksamensProjekt2022
 
 
         /// <summary>
-        /// Save objects on all area lists to the save slot
+        /// Clears the database table with the correlating SaveSlot and Area index before saving the GameObjects and Cells.
         /// </summary>
         /// <param name="currentSave"></param>
         public void SaveComponents(List<GameObject> gameObjects, List<Cell> grid, SaveSlots currentSave, Area area)

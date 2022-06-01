@@ -16,7 +16,7 @@ namespace EksamensProjekt2022
         Hill,
         HillWaterEdge,
         Snow,
-        SnowWaterEdge, 
+        SnowWaterEdge,
         Water,
         Desert
     }
@@ -38,12 +38,18 @@ namespace EksamensProjekt2022
         };
         public static bool DevMode = false;
         private int objectIndex = 0;
+        private int areaIndex = 0;
+
+        #region ButtonBools
         private bool mRightReleased;
         private bool mLeftReleased;
-
         private bool tileMode = false;
         private bool rightButtonReleased = false;
         private bool leftButtonReleased = false;
+        private bool lAltReleased = true;
+        private bool f1Released = false;
+        private bool f2Released = false;
+        #endregion
 
         private Texture2D[] sprites = new Texture2D[10];
         private Texture2D selectedSprite;
@@ -82,15 +88,17 @@ namespace EksamensProjekt2022
         }
 
 
-        bool lAltReleased = true;
+
+
         public void Update(GameTime gameTime)
         {
+            //Inputhandler normally works through the player, so to use it in DevMode it is updated here
             InputHandler.Instance.Execute(camera);
             InputHandler.Instance.Update(gameTime);
+
             UpdateObjectType();
-            ChangeObjectType();
-            selectedSprite = sprites[(int)currentObject];
-            currentArea = (Area)areaIndex;
+
+            
 
             MouseState mouseState = Mouse.GetState();
             if (GameControl.Instance.playing.areaManager.currentGrid[(int)currentArea] != null)
@@ -101,14 +109,15 @@ namespace EksamensProjekt2022
                         && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
                     {
                         cell = c;
-                        if ((int)currentObject <= 1 && c.IsWalkable)
+                        //Instantiate object
+                        if (!tileMode && c.IsWalkable)
                         {
-                            InsertItem();
+                            CreateObject(objects[(int)currentObject], cell);
                             c.IsWalkable = false;
                         }
-                        else if((int)currentObject >= 2)
-                        {
-                           // ChangeAreaTile(objects[(int)currentObject], cell);
+                        else if (tileMode)
+                        {//change tile
+
                             c.Sprite = selectedSprite;
                             c.IsNew = true;
                         }
@@ -151,13 +160,14 @@ namespace EksamensProjekt2022
             ChangeCurrentLists();
 
         }
-        bool f1Released = false;
-        bool f2Released = false;
-        int areaIndex = 0;
+
+        /// <summary>
+        /// Changes the area index with F1 and F2 to go between areas
+        /// </summary>
         private void ChangeCurrentLists()
         {
-            
-            
+
+
             if (Keyboard.GetState().IsKeyDown(Keys.F1) && f1Released && areaIndex != 3)
             {
                 areaIndex++;
@@ -184,22 +194,11 @@ namespace EksamensProjekt2022
 
         }
 
-        private void InitializeCurrentListObjects()
-        {
-            foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
-            {
-                go.Awake();
-                go.Start();
-                
-            }
-            foreach(Cell c in GameControl.Instance.playing.currentGrid)
-            {
-                c.LoadContent();
-            }
-        }
+
 
         /// <summary>
-        /// Deletes the object on tile and resets the walkable bool, or resets the tile sprite
+        /// If currentObject is a tile it will remove the sprite and set the cells IsNew to true, so that it is updated in the database upon saving.
+        /// If currentObject is Component it will use the Collider component to remove the GameObject is attached to, and make the cell Walkable again.
         /// </summary>
         /// <param name="mouseState"></param>
         /// <param name="cell"></param>
@@ -218,7 +217,6 @@ namespace EksamensProjekt2022
                             cell.IsWalkable = true;
                             GameControl.Instance.playing.Destroy(go);
 
-
                         }
 
                     }
@@ -235,70 +233,15 @@ namespace EksamensProjekt2022
 
         }
 
-        /// <summary>
-        /// Manages which object is inserted to the grid depending on currentObject index
-        /// </summary>
-        /// <param name="mouseState"></param>
-        public void InsertItem()
-        {
-
-            switch (objects[(int)currentObject])
-            {
-                case "Tree":
-                    CreateObject(objects[0], cell);
-                    break;
-
-                case "Rock":
-                    CreateObject(objects[1], cell);
-                    break;
-                default:
-                    break;
-            }
-
-        }
-        public void InsertTile()
-        {
-            ChangeAreaTile(objects[(int)currentObject], cell);
-
-            //switch (objects[(int)currentObject])
-            //{
-            //    case "Field":
-            //        ChangeAreaTile(objects[2], cell);
-            //        break;
-            //    case "FieldWaterEdge":
-            //        ChangeAreaTile(objects[3], cell);
-            //        break;
-            //    case "Hill":
-            //        ChangeAreaTile(objects[4], cell);
-            //        break;
-            //    case "HillWaterEdge":
-            //        ChangeAreaTile(objects[5], cell);
-            //        break;
-            //    case "Snow":
-            //        ChangeAreaTile(objects[6], cell);
-            //        break;
-            //    case "SnowWaterEdge":
-            //        ChangeAreaTile(objects[7], cell);
-            //        break;
-            //    case "Mountain":
-            //        ChangeAreaTile(objects[8], cell);
-            //        break;
-            //    case "Water":
-            //        ChangeAreaTile(objects[9], cell);
-            //        break;
-            //    default:
-            //        break;
-            //}
-        }
 
         /// <summary>
-        /// Uses a tag string and a Cell to instantiate objects
+        /// Creates an object matching the current index in the objects array
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="cell"></param>
-        public void CreateObject(string tag, Cell cell)
+        public void CreateObject(string objectTag, Cell cell)
         {
-            switch (tag)
+            switch (objectTag)
             {
                 case "Tree":
                     GameControl.Instance.playing.Instantiate((TreeFactory.Instance.CreateGameObject(
@@ -306,53 +249,21 @@ namespace EksamensProjekt2022
                     break;
                 case "Rock":
                     GameControl.Instance.playing.Instantiate((BoulderFactory.Instance.CreateGameObject(
-                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), GameWorld.Instance.rand.Next(10,50), true)));
+                       GameControl.Instance.playing.currentGrid.Find(x => x.Position == cell.Position), GameWorld.Instance.rand.Next(10, 50), true)));
                     break;
                 default:
                     break;
             }
         }
 
+    
         /// <summary>
-        /// Uses tag string and Cell to update Cell sprite
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="cell"></param>
-        public void ChangeAreaTile(string tag, Cell cell)
-        {
-            switch (tag)
-            {
-                //case "Field":
-                //    //TODO skriv celle sprites ind i databasen når det gemmes
-                //    cell.Sprite = selectedSprite;
-                //    break;
-                //case "FieldWaterEdge":
-                //    cell.Sprite = selectedSprite;
-                //    break;
-                //case "Hill":
-                //    cell.Sprite = selectedSprite;
-                //    break;
-                //case "HillWaterEdge":
-                //    cell.Sprite = selectedSprite;
-                //    break;
-                //case "Snow":
-                //    cell.Sprite = selectedSprite;
-                //    break;
-                //case "Mountain":
-                //    cell.Sprite = selectedSprite;
-                //    cell.IsWalkable = false;
-                //    break;
-                default:
-                    cell.Sprite = selectedSprite;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Updates the objectIndex integer
+        /// Updates the objectIndex integer with Left and Right arrow keys
         /// </summary>
         public void UpdateObjectType()
         {
+            selectedSprite = sprites[(int)currentObject];
+            currentArea = (Area)areaIndex;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right) && objectIndex != sprites.Length - 1 && rightButtonReleased)
             {
@@ -380,16 +291,6 @@ namespace EksamensProjekt2022
 
             }
 
-
-
-        }
-
-        /// <summary>
-        /// Changes the currentObject reference to match the objectIndex
-        /// </summary>
-        private void ChangeObjectType()
-        {
-
             currentObject = (GameObjectType)objectIndex;
             if (objectIndex < 2)
             {
@@ -400,32 +301,8 @@ namespace EksamensProjekt2022
                 tileMode = true;
             }
 
-            //switch (objectIndex)
-            //{
-            //    case 0:
-            //        currentObject = GameObjectType.Tree;
-            //        tileMode = false;
-            //        break;
-            //    case 1:
-            //        currentObject = GameObjectType.Boulder;
-            //        tileMode = false;
-            //        break;
-            //    case 2:
-            //        currentObject = GameObjectType.Mountain;
-            //        tileMode = true;
-            //        break;
-            //    case 3:
-            //        currentObject = GameObjectType.Field;
-            //        tileMode = true;                 
-            //        break;
-            //    case 4:
-            //        currentObject = GameObjectType.FieldWaterEdge;
-            //        tileMode = true;
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
