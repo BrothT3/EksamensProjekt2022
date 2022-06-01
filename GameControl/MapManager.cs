@@ -30,7 +30,7 @@ namespace EksamensProjekt2022
         /// to override the GameControls' instance of AreaManager in order to use the save file data
         /// </summary>
         /// <param name="currentSave"></param>
-        public void GetDbInfo(SaveSlots currentSave, CurrentArea area)
+        public void GetDbInfo(SaveSlots currentSave, Area area)
         {
             Open();
             this.currentSave = currentSave;
@@ -44,7 +44,7 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="currentSave"></param>
         /// <param name="area"></param>
-        public void IdentifyComponent(SaveSlots currentSave, CurrentArea area)
+        public void IdentifyComponent(SaveSlots currentSave, Area area)
         {
             var cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
             var dataread = cmd.ExecuteReader();
@@ -88,7 +88,7 @@ namespace EksamensProjekt2022
         /// </summary>
         /// <param name="componentName"></param>
         /// <param name="area"></param>
-        public void CreateComponent(string componentName, CurrentArea area)
+        public void CreateComponent(string componentName, Area area)
         {
 
             switch (componentName)
@@ -113,7 +113,7 @@ namespace EksamensProjekt2022
         /// Save objects on all area lists to the save slot
         /// </summary>
         /// <param name="currentSave"></param>
-        public void SaveComponents(List<GameObject> gameObjects, List<Cell> grid, SaveSlots currentSave, CurrentArea area)
+        public void SaveComponents(List<GameObject> gameObjects, List<Cell> grid, SaveSlots currentSave, Area area)
         {
             Open();
 
@@ -146,7 +146,7 @@ namespace EksamensProjekt2022
                 }
                 else if (c.Sprite == null && c.IsNew)
                 {
-                    cmd = new SQLiteCommand($"DELETE FROM areacells WHERE(PositionX={c.Position.X} AND PositionY={c.Position.Y})", connection);
+                    cmd = new SQLiteCommand($"DELETE FROM areacells WHERE(PositionX={c.Position.X} AND PositionY={c.Position.Y} AND AreaIndex={(int)area})", connection);
                     cmd.ExecuteNonQuery();
                 }
 

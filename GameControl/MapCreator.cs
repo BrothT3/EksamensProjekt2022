@@ -50,11 +50,11 @@ namespace EksamensProjekt2022
         private Camera camera;
         public MapManager mapManager;
 
-        private CurrentArea currentArea;
+        private Area currentArea;
         private GameObjectType currentObject;
         private Cell cell;
         public Camera Camera { get => camera; }
-        public CurrentArea CurrentArea { get => currentArea; }
+        public Area CurrentArea { get => currentArea; }
         private static MapCreator instance;
         public static MapCreator Instance
         {
@@ -75,7 +75,7 @@ namespace EksamensProjekt2022
                 sprites[i] = GameWorld.Instance.Content.Load<Texture2D>($"AreaSprites/{objects[i]}");
             }
             currentObject = GameObjectType.Tree;
-            currentArea = CurrentArea.Camp;
+            currentArea = Area.Camp;
             selectedSprite = sprites[(int)currentObject];
             camera = new Camera();
             mapManager = new MapManager();
@@ -90,7 +90,7 @@ namespace EksamensProjekt2022
             UpdateObjectType();
             ChangeObjectType();
             selectedSprite = sprites[(int)currentObject];
-            currentArea = (CurrentArea)areaIndex;
+            currentArea = (Area)areaIndex;
 
             MouseState mouseState = Mouse.GetState();
             if (GameControl.Instance.playing.areaManager.currentGrid[(int)currentArea] != null)
@@ -161,7 +161,7 @@ namespace EksamensProjekt2022
             if (Keyboard.GetState().IsKeyDown(Keys.F1) && f1Released && areaIndex != 3)
             {
                 areaIndex++;
-                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (CurrentArea)areaIndex);
+                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (Area)areaIndex);
                 f1Released = false;
             }
             if (Keyboard.GetState().IsKeyUp(Keys.F1))
@@ -172,7 +172,7 @@ namespace EksamensProjekt2022
             if (Keyboard.GetState().IsKeyDown(Keys.F2) && f2Released && areaIndex > 0)
             {
                 areaIndex--;
-                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (CurrentArea)areaIndex);
+                GameControl.Instance.playing.areaManager.AreaChange(currentArea, (Area)areaIndex);
 
                 f2Released = false;
             }

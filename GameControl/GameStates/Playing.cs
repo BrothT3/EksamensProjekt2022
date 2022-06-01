@@ -81,10 +81,10 @@ namespace EksamensProjekt2022
 
 
                 MapManager m = new MapManager();
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.River);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Hills);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Desert);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Camp);
+                m.GetDbInfo(SaveSlots.Slot1, Area.River);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Hills);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Desert);
 
                 //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
                 //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
@@ -130,10 +130,10 @@ namespace EksamensProjekt2022
                 currentGameObjects = areaManager.currentGameObjects[0];
 
                 MapManager m = MapCreator.Instance.mapManager;
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Camp);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.River);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Hills);
-                m.GetDbInfo(SaveSlots.Slot1, CurrentArea.Desert);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Camp);
+                m.GetDbInfo(SaveSlots.Slot1, Area.River);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Hills);
+                m.GetDbInfo(SaveSlots.Slot1, Area.Desert);
 
 
 

@@ -5,7 +5,7 @@ namespace EksamensProjekt2022
 {
     public class Player : Component
     {
-        private CurrentArea myArea;
+        private Area myArea;
 
         public Cell currentCell;
         public Cell nextCell;
@@ -17,7 +17,7 @@ namespace EksamensProjekt2022
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
-        public CurrentArea MyArea { get => myArea; set => myArea = value; }
+        public Area MyArea { get => myArea; set => myArea = value; }
         
 
         public override void Awake()
@@ -27,7 +27,7 @@ namespace EksamensProjekt2022
 
         public override void Start()
         {
-            myArea = CurrentArea.Camp;
+            myArea = Area.Camp;
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");

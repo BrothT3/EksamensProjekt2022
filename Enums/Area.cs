@@ -1,6 +1,6 @@
 ﻿namespace EksamensProjekt2022
 {
-    public enum CurrentArea
+    public enum Area
     {
         Camp,
         River,

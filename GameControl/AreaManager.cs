@@ -10,10 +10,11 @@ namespace EksamensProjekt2022
     {
         public List<GameObject>[] currentGameObjects = new List<GameObject>[4];
         public List<Cell>[] currentGrid = new List<Cell>[4];
+
         public Dictionary<Point, Cell>[] currentCells = new Dictionary<Point, Cell>[4];
 
 
-        private CurrentArea currentArea;
+        private Area currentArea;
         private Thread loadAreasThread;
         private bool HasRun = false;
 
@@ -43,7 +44,7 @@ namespace EksamensProjekt2022
             loadAreasThread.IsBackground = true;
             loadAreasThread.Start();
         }
-        public void AreaChange(CurrentArea currentArea, CurrentArea nextArea)
+        public void AreaChange(Area currentArea, Area nextArea)
         {
             if (GameControl.Instance.playing.newGameObjects.Count == 0)
             {
@@ -60,7 +61,7 @@ namespace EksamensProjekt2022
 
         }
 
-        public void ChangeArea(CurrentArea area)
+        public void ChangeArea(Area area)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
@@ -116,8 +117,6 @@ namespace EksamensProjekt2022
 
         public void LoadGameObjects()
         {
-
-
             foreach (GameObject go in GameControl.Instance.playing.currentGameObjects)
             {
                 go.Start();

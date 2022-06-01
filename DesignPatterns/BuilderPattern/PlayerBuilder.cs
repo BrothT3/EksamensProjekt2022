@@ -16,7 +16,7 @@ namespace EksamensProjekt2022
         private void BuildComponents()
         {
             Player p = (Player)gameObject.AddComponent(new Player());
-            p.MyArea = CurrentArea.Camp;
+            p.MyArea = Area.Camp;
 
             gameObject.AddComponent(new SpriteRenderer());
 
