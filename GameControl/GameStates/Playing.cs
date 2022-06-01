@@ -12,7 +12,6 @@ namespace EksamensProjekt2022
         public UserInterface userInterface;
         public AreaManager areaManager;
         public TimeManager timeManager;
-        public PlayerCraftingMenu playerCraftingMenu;
         public DebugTool _debugTools;
         #region Lists
         public List<GameObject> currentGameObjects = new List<GameObject>();
@@ -74,7 +73,6 @@ namespace EksamensProjekt2022
                         
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
-                playerCraftingMenu = new PlayerCraftingMenu();
                 currentGrid = areaManager.currentGrid[0];
                 currentCells = areaManager.currentCells[0];
                 currentGameObjects = areaManager.currentGameObjects[0];
@@ -109,8 +107,28 @@ namespace EksamensProjekt2022
                 chest.AddComponent(sr);
                 chest.AddComponent(c);
                 chest.AddComponent(inv);
+                
+                
                 Instantiate(chest);
 
+                GameObject craftingTable = new GameObject();
+                SpriteRenderer ctsr = new SpriteRenderer();
+                CraftingTable ct = new CraftingTable(new Point(11, 11));
+                CraftingMenu cm = new CraftingMenu();
+                Inventory ctinv = new Inventory(2);
+                ctsr.SetSprite("craftingTable");
+                
+                cm.AddRecipe(new FermentedBreastMilkRecipe());
+                cm.AddRecipe(new ChestRecipe());
+                craftingTable.AddComponent(cm);
+                craftingTable.AddComponent(ct);
+                craftingTable.AddComponent(ctsr);
+                craftingTable.AddComponent(ctinv);
+                ctinv.AddItem(new Wood(8));
+                ctinv.AddItem(new Stone(3));
+
+                Instantiate(craftingTable);
+                
                 userInterface = new UserInterface();
 
 
@@ -208,7 +226,6 @@ namespace EksamensProjekt2022
                 if (!MapCreator.DevMode)
                 {
                     timeManager.Update(gameTime);
-                    playerCraftingMenu.Update(gameTime);
                 }
                 
 
@@ -307,9 +324,6 @@ namespace EksamensProjekt2022
             }
             if (userInterface != null)
             userInterface.Draw(spriteBatch);
-            if (playerCraftingMenu != null)
-            playerCraftingMenu.Draw(spriteBatch);
-
         }
         #endregion
 

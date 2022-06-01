@@ -20,6 +20,8 @@ namespace EksamensProjekt2022
         private Vector2 defaultbottonPos;
         private string buttonText;
         private Item item;
+        private bool mReleased = true;
+        public event EventHandler OnClicking;
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public Vector2 DefaultbottonPos { get => defaultbottonPos; set => defaultbottonPos = value; }
         public MouseState mstate { get; set; }
@@ -27,9 +29,9 @@ namespace EksamensProjekt2022
         public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
         public string ButtonText { get => buttonText; set => buttonText = value; }
         public Item Item { get => item; set => item = value; }
+        public bool MReleased { get => mReleased; set => mReleased = value; }
 
-        private bool mReleased = true;
-        public event EventHandler OnClicking;
+        
 
         public Button(Rectangle ButtonRectangle, string buttonText)
         {
@@ -76,9 +78,9 @@ namespace EksamensProjekt2022
             {
                 isHovering = true;
                 hoverColor = Color.Wheat;
-                if (mstate.LeftButton == ButtonState.Pressed && mReleased == true)
+                if (mstate.LeftButton == ButtonState.Pressed && MReleased == true)
                 {
-                    mReleased = false;
+                    MReleased = false;
                     OnClicking?.Invoke(this, new EventArgs());
                 }
                 
@@ -90,7 +92,7 @@ namespace EksamensProjekt2022
             }
             if (mstate.LeftButton == ButtonState.Released)
             {
-                mReleased = true;
+                MReleased = true;
             }
         }
     }
