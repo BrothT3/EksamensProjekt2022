@@ -51,7 +51,8 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && !uiBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)) && !craftingBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)))
+                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && !uiBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5))
+                        && !craftingBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5)))
                     {
                         player.readyToMove = false;
                         player.step = 0;
@@ -66,7 +67,8 @@ namespace EksamensProjekt2022
                         craftingBox = Rectangle.Empty;
                     }
                     else if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        !c.IsWalkable && c.cellVector != player.currentCell.cellVector && !uiBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)) && !craftingBox.Contains(new Rectangle(mouseState.X, mouseState.Y, 5, 5)))
+                        !c.IsWalkable && c.cellVector != player.currentCell.cellVector && !uiBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5))
+                        && !craftingBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5)))
                     {
                         GameControl.Instance.playing.selectedCell = c;
                     }
