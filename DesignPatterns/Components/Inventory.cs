@@ -233,6 +233,7 @@ namespace EksamensProjekt2022
         internal const int MAX_WOOD_QUANTITY = 10;
         internal const int MAX_FISH_QUANTITY = 8;
         internal const int MAX_VEGETABLE_QUANTITY = 10;
+        internal const int MAX_COOKEDFISH_QUANTITY = 1;
     }
 
 }

@@ -24,8 +24,10 @@ namespace EksamensProjekt2022
         private List<Item> cookingItems = new List<Item>();
         private Vector2 cookingBox;
         private Color cookingColor;
+        private int currentlyCooking = 0;
 
         public bool Updated { get => updated; set => updated = value; }
+        public int CurrentlyCooking { get => currentlyCooking; set => currentlyCooking = value; }
 
         public CampFire(Point parentPoint) : base(parentPoint)
         {
@@ -67,7 +69,10 @@ namespace EksamensProjekt2022
                 button.Update(gameTime);
             }
             if (cookingItems.Count > 0)
+            {
                 cooking = true;
+                CurrentlyCooking = cookingItems.Count();
+            }
             else
                 cooking = false;
         }
@@ -149,7 +154,8 @@ namespace EksamensProjekt2022
             cookingItems.Add(fish);
             
             Thread.Sleep(5000);
-            inv.AddItem(new CookedFish(1));
+            inv.items.Add(new CookedFish(1));
+            //inv.AddItem(new CookedFish());
             cookingItems.Remove(fish);
             updated = false;
         }
@@ -182,6 +188,7 @@ namespace EksamensProjekt2022
                     cookingBox.X += 30;
                     fish.CookingColor = Color.OrangeRed * fish.CookingFloat;
                     fish.CookingFloat += 0.0028f;
+                    
                 }
             }
         }
