@@ -109,8 +109,13 @@ namespace EksamensProjekt2022
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
                 GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedCampFire");
                 CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
-                cf.Cook();
-                inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
+                if (cfinv.items.Count + cf.CurrentlyCooking <= cfinv.InventoryMax)
+                {
+                    cf.Cook();
+                    inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                }
+                
                 
                 Click = false;
             }
