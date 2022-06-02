@@ -37,6 +37,7 @@ namespace EksamensProjekt2022
         public MapManager _mapManager;
         private Vector2 buttonOffset;
         public Cell selectedCell;
+
         public Playing()
         {
             CellCount = 40;
