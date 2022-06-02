@@ -81,12 +81,12 @@ namespace EksamensProjekt2022
             {
                 databaseIsLoading = true;
             }
-#if DEBUG
+
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 MapCreator.DevMode = true;
             }
-#endif
+
 
         }
         public void Draw(SpriteBatch spriteBatch)

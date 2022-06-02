@@ -32,6 +32,8 @@ namespace EksamensProjekt2022
         private bool offsetPauseButtons;
         public bool enterReleased;
         public bool pauseWantToExit = false;
+        private bool hasSaved = false;
+        private MapManager _mapManager;
         private Vector2 buttonOffset;
         public Cell selectedCell;
 
@@ -53,8 +55,6 @@ namespace EksamensProjekt2022
                 Destroy(player.GameObject);
             selectedCell = null;
             initializeGameState = true;
-            //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
-
         }
 
       
@@ -79,26 +79,21 @@ namespace EksamensProjekt2022
                 currentGameObjects = areaManager.currentGameObjects[0];
 
 
-                MapManager m = new MapManager();
-                m.GetDbInfo(SaveSlots.Slot1, Area.Camp);
-                m.GetDbInfo(SaveSlots.Slot1, Area.River);
-                m.GetDbInfo(SaveSlots.Slot1, Area.Hills);
-                m.GetDbInfo(SaveSlots.Slot1, Area.Desert);
-
-                //TODO Dette er midlertidig, skal have en metode der flytter objekterne over
-                //for (int i = 0; i < m.areaLoader.currentGameObjects[0].Count; i++)
-                //{
-                //    currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                //}
+                _mapManager = new MapManager();
+                _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Camp);
+                _mapManager.GetDbInfo(SaveSlots.Slot1, Area.River);
+                _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Hills);
+                _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Desert);
+               
                 userInterface = new UserInterface();
 
-                for (int i = 0; i < m.areaLoader.currentGameObjects.Length; i++)
+                for (int i = 0; i < _mapManager.areaLoader.currentGameObjects.Length; i++)
                 {
-                    areaManager.currentGameObjects[i] = m.areaLoader.currentGameObjects[i];
-                    areaManager.currentGrid[i] = m.areaLoader.currentGrid[i];
+                    areaManager.currentGameObjects[i] = _mapManager.areaLoader.currentGameObjects[i];
+                    areaManager.currentGrid[i] = _mapManager.areaLoader.currentGrid[i];
 
                 }
-
+                
 
                 GameObject chest = new GameObject();
                 Chest c = new Chest(new Point( 7, 7));
@@ -145,20 +140,9 @@ namespace EksamensProjekt2022
 
                 Instantiate(campFire);
 
-                
-
-
-
             }
             else
             {
-
-           
-
-                //MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
-                //MapCreator.Instance.mapManager.areaLoader.currentCells[0] = grid.CreateCells();
-                //MapCreator.Instance.mapManager.areaLoader.currentGrid[0] = grid.CreateGrid();
-
 
                 currentGrid = areaManager.currentGrid[0];
                 currentCells = areaManager.currentCells[0];
@@ -169,27 +153,16 @@ namespace EksamensProjekt2022
                 m.GetDbInfo(SaveSlots.Slot1, Area.River);
                 m.GetDbInfo(SaveSlots.Slot1, Area.Hills);
                 m.GetDbInfo(SaveSlots.Slot1, Area.Desert);
-
-
-
+                
                 for (int i = 1; i < m.areaLoader.currentGameObjects[0].Count; i++)
                 {
 
                     areaManager.currentGameObjects[i] = m.areaLoader.currentGameObjects[i];
                     areaManager.currentGrid[i] = m.areaLoader.currentGrid[i];
-                    // currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                  //  currentGameObjects.Add(m.areaLoader.currentGameObjects[0][i]);
-                   // currentGrid = m.areaLoader.currentGrid[0];
-                   // areaManager.currentGrid[0].Add(m.areaLoader.currentGrid[0][i]);
+
                 }
 
-
             }
-
-
-
-
-
 
             for (int i = 0; i < currentGameObjects.Count; i++)
             {
@@ -201,6 +174,8 @@ namespace EksamensProjekt2022
             {
                 c.LoadContent();
             }
+
+            #region ButtonCreation
             Button ResumeButton = new Button(new Rectangle(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 54, GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2 - 300, 108, 72), "RESUME");
             ResumeButton.OnClicking += ClickedResume;
             pauseMenuButtons.Add(ResumeButton);
@@ -221,10 +196,9 @@ namespace EksamensProjekt2022
             NoExitButton.OnClicking += ClickedNoExitGame;
             pauseMenuExitButtons.Add(NoExitButton);
 
+            #endregion
 
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
-
-
 
 
         }
@@ -239,7 +213,6 @@ namespace EksamensProjekt2022
             {
                 _debugTools.Update(gameTime);
 
-                //TODO lav noget bedre
                 if (!MapCreator.DevMode)
                 {
                     timeManager.Update(gameTime);
@@ -264,6 +237,7 @@ namespace EksamensProjekt2022
                     buttonOffset = new Vector2(GameControl.Instance.camera.Position.X, GameControl.Instance.camera.Position.Y);
                     paused = true;
                     offsetPauseButtons = true;
+                    hasSaved = false;
                 }
                 enterReleased = true;
             }
@@ -289,6 +263,25 @@ namespace EksamensProjekt2022
                     foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
 
+                //save inventory
+                if (!hasSaved)
+                {
+                    GameObject player;
+                    foreach (GameObject go in currentGameObjects)
+                    {
+                        if (go.GetComponent<Player>() != null)
+                        {
+                            player = go;
+                            Inventory inv = player.GetComponent<Inventory>() as Inventory;
+                            _mapManager.SavePlayerInventory(inv.items);
+                            hasSaved = true;
+                        }
+                    }
+                    
+                   
+                }
+               
+                
             }
 
         }
@@ -352,13 +345,18 @@ namespace EksamensProjekt2022
                 newGameObjects[i].Awake();
                 newGameObjects[i].Start();
 
+                if (newGameObjects[i].GetComponent<Player>() != null)
+                {
+                    _mapManager.LoadPlayerInventory(SaveSlots.Slot1);
+                }
+
             }
 
             for (int i = 0; i < destroyedGameObjects.Count; i++)
             {
                 currentGameObjects.Remove(destroyedGameObjects[i]);
             }
-
+  
             destroyedGameObjects.Clear();
             newGameObjects.Clear();
 
