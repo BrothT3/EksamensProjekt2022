@@ -42,8 +42,19 @@ namespace EksamensProjekt2022
         /// <param name="area"></param>
         public void IdentifyComponent(SaveSlots currentSave, Area area)
         {
-            var cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
+            var cmd = new SQLiteCommand($"SELECT ObjectTag, PositionX, PositionY, Quantity FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
             var dataread = cmd.ExecuteReader();
+
+            while (dataread.Read())
+            {
+                componentName = dataread.GetString(0);
+                position = new Point(dataread.GetInt32(1), dataread.GetInt32(2));
+                amount = dataread.GetInt32(3);
+                CreateComponent(componentName, area);
+            }
+
+            cmd = new SQLiteCommand($"SELECT AreaIndex, TileType, PositionX, PositionY FROM areacells WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
+            dataread = cmd.ExecuteReader();
             while (dataread.Read())
             {
                 int areaIndex = dataread.GetInt32(0);
@@ -64,16 +75,7 @@ namespace EksamensProjekt2022
                     }
                 }
             }
-            cmd = new SQLiteCommand($"SELECT ObjectTag, PositionX, PositionY, Quantity FROM areadata WHERE SaveSlotID={(int)currentSave} AND AreaIndex={(int)area}", connection);
-            dataread = cmd.ExecuteReader();
 
-            while (dataread.Read())
-            {
-                componentName = dataread.GetString(0);
-                position = new Point(dataread.GetInt32(1), dataread.GetInt32(2));
-                amount = dataread.GetInt32(3);
-                CreateComponent(componentName, area);
-            }
 
 
 
@@ -149,14 +151,80 @@ namespace EksamensProjekt2022
             }
 
             Close();
+
         }
 
+        /// <summary>
+        /// Load the inventory of the correlating SaveSlotID
+        /// </summary>
+        /// <param name="currentSave"></param>
+        public void LoadPlayerInventory(SaveSlots currentSave)
+        {
+            Open();
+            var cmd = new SQLiteCommand($"SELECT Name, Quantity FROM item WHERE(InventoryID={(int)currentSave})", connection);
+            var dataread = cmd.ExecuteReader();
+            Player p = GameWorld.Instance.FindObjectOfType<Player>() as Player;
+            if (p != null)
+            {
+                Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
 
+                while (dataread.Read())
+                {
+                    string name = dataread.GetString(0);
+                    int quantity = dataread.GetInt32(1);
+
+                    switch (name)
+                    {
+                        case "stone":
+                            inv.AddItem(new Stone(quantity));
+                            break;
+                        case "wood":
+                            inv.AddItem(new Wood(quantity));
+                            break;
+
+                    }
+                }
+            }
+
+            Close();
+        }
+
+        /// <summary>
+        /// Saves the players inventory to the correlating SaveSlotID
+        /// </summary>
+        /// <param name="items"></param>
+        public void SavePlayerInventory(List<Item> items)
+        {
+
+            Open();
+            var cmd = new SQLiteCommand($"DELETE FROM item WHERE(InventoryID={(int)currentSave})", connection);
+            var execute = cmd.ExecuteNonQuery();
+
+            foreach (Item i in items)
+            {
+                var name = i.Name;
+                var quantity = i.Quantity;
+
+                cmd = new SQLiteCommand($"INSERT INTO item VALUES (null, {(int)currentSave}, '{name}', {quantity}) ", connection);
+                execute = cmd.ExecuteNonQuery();
+            }
+
+            Close();
+        }
+
+        /// <summary>
+        /// Opens connection to database. 
+        /// Is just more convenient
+        /// </summary>
         private void Open()
         {
             connection.Open();
         }
 
+        /// <summary>
+        /// Closes connection to database.
+        /// Is just more convenient
+        /// </summary>
         private void Close()
         {
             connection.Close();

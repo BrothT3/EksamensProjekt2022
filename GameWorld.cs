@@ -167,7 +167,7 @@ namespace EksamensProjekt2022
                 GameControl.Instance.playing.Draw(_spriteBatch);
 
             
-
+            if(MapCreator.DevMode)
             GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
 
 
