@@ -34,6 +34,7 @@ namespace EksamensProjekt2022
         public bool pauseWantToExit = false;
         private Vector2 buttonOffset;
         public Cell selectedCell;
+
         public Playing()
         {
             CellCount = 40;
@@ -128,8 +129,24 @@ namespace EksamensProjekt2022
                 ctinv.AddItem(new Stone(3));
 
                 Instantiate(craftingTable);
+
+                GameObject campFire = new GameObject();
+                SpriteRenderer cfsr = new SpriteRenderer();
+                CampFire cf = new CampFire(new Point(7, 4));
+                CraftingMenu cfcm = new CraftingMenu();
+                Inventory cfinv = new Inventory(3);
+                cfsr.SetSprite("campFire");
+                campFire.AddComponent(cfinv);
+                campFire.AddComponent(cfsr);
+                campFire.AddComponent(cf);
+                campFire.AddComponent(cfinv);
+                campFire.AddComponent(cfcm);
+                cfcm.AddRecipe(new CookedFishRecipe());
+
+                Instantiate(campFire);
+
                 
-                userInterface = new UserInterface();
+
 
 
             }

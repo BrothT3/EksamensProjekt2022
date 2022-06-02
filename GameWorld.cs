@@ -204,9 +204,5 @@ namespace EksamensProjekt2022
 
         }
 
-
-
-
-
     }
 }

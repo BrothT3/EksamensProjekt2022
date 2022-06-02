@@ -189,7 +189,7 @@ namespace EksamensProjekt2022
 
         protected int maxQuantity;
         protected int quantity;
-
+        
         public Texture2D Sprite { get => sprite; set => sprite = value; }
 
         public int MaxQuantity { get => maxQuantity; set => maxQuantity = value; }

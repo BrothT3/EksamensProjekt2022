@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EksamensProjekt2022
@@ -86,4 +87,41 @@ namespace EksamensProjekt2022
         }
 
     }
+    public class CookedFishRecipe : Recipe
+    {
+        public bool toBeCooked;
+
+        public CookedFishRecipe()
+        {
+            Name = "CookedFish";
+            Ingredients = new List<Item>();
+            Ingredients.Add(new Fish(1));
+            Available = new bool[1];
+            AllAvailable = false;
+            RecipeButton = new Button(Name);
+
+        }
+        public override void Craft(object sender, EventArgs e)
+        {
+            if (Click)
+            {
+                Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+                Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
+                GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedCampFire");
+                CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
+                cf.Cook();
+                inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                
+                Click = false;
+            }
+
+        }
+
+        internal override EventHandler Craft()
+        {
+            Click = true;
+            return Craft;
+        }
+    }
 }
+
