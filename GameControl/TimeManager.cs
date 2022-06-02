@@ -10,8 +10,8 @@ namespace EksamensProjekt2022
     {
         public CurrentTime currentTime;
         private Texture2D sprite;
-        private float maxTimeTimer = 60;
-        private float timeTimer = 12;
+        private float maxTimeTimer = 80;
+        private float timeTimer = 80;
         private float timeColor = 0f;
 
         public TimeManager()
