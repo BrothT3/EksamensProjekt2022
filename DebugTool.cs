@@ -115,7 +115,7 @@ namespace EksamensProjekt2022
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-#if DEBUG
+
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null)
             {
@@ -151,7 +151,7 @@ namespace EksamensProjekt2022
                         ca.Position.Y + 100), Color.White);
                 }
             }
-#endif
+
         }
     }
 }
