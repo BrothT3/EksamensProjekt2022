@@ -128,8 +128,19 @@ namespace EksamensProjekt2022
 
                 Instantiate(craftingTable);
 
+                GameObject campfire = new GameObject();
+                SpriteRenderer cfsr = new SpriteRenderer();
+                CampFire cf = new CampFire(new Point(4, 5));
+                Inventory cfinv = new Inventory(2);
+                CraftingMenu cfcm = new CraftingMenu();
+                cfsr.SetSprite("campFire");
+                cfcm.AddRecipe(new CookedFishRecipe());
+                campfire.AddComponent(cf);
+                campfire.AddComponent(cfinv);
+                campfire.AddComponent(cfcm);
+                campfire.AddComponent(cfsr);
 
-                
+                Instantiate(campfire);
             }
             else
             {
