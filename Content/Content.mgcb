@@ -346,6 +346,24 @@
 /processorParam:TextureFormat=Color
 /build:RedX.png
 
+#begin SoundEffects/Backgroundblues.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Backgroundblues.wav
+
+#begin SoundEffects/Pickaxe.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Pickaxe.wav
+
+#begin SoundEffects/Woodchop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Woodchop.wav
+
 #begin unknown.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -18,6 +20,9 @@ namespace EksamensProjekt2022
         public Random rand = new Random();
         public static float DeltaTime;
         public Thread createDBThread;
+        public SoundEffect woodChop;
+        public SoundEffect rockHit;
+        public Song backgroundBlues;
 
         public GraphicsDeviceManager Graphics { get => _graphics; }
 
@@ -78,6 +83,11 @@ namespace EksamensProjekt2022
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             pixel = Content.Load<Texture2D>("Pixel");
+            woodChop = Content.Load<SoundEffect>("SoundEffects/Woodchop");
+            rockHit = Content.Load<SoundEffect>("SoundEffects/Pickaxe");
+            backgroundBlues = Content.Load<Song>("SoundEffects/Backgroundblues");
+            MediaPlayer.Play(backgroundBlues);
+            MediaPlayer.IsRepeating = true;
 
         }
 

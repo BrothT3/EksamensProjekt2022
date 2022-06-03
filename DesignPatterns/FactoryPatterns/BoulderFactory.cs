@@ -43,13 +43,13 @@ namespace EksamensProjekt2022
             
 
             Collider c = (Collider)gameObject.AddComponent(new Collider());
-            gameObject.AddComponent(new Boulder(cell, resourceAmount));
+           Boulder boulder = (Boulder)gameObject.AddComponent(new Boulder(cell, resourceAmount));
             sr.OffSetY = GameControl.Instance.playing.CellSize/2;
             gameObject.Transform.Position = new Vector2(cell.cellVector.X, cell.cellVector.Y);
             cell.IsWalkable = false;
             gameObject.Tag = "Boulder";
             gameObject.Amount = resourceAmount;
-
+            cell.myResource = boulder;
             return gameObject;
 
         }

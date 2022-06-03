@@ -196,8 +196,8 @@ namespace EksamensProjekt2022
 
         public override void Occupy()
         {
-            Cells.Add((GameControl.Instance.playing.currentCells[new Point(parentPoint.X, parentPoint.Y)]));
-            Cells.Add((GameControl.Instance.playing.currentCells[new Point(parentPoint.X + 1, parentPoint.Y)]));
+            Cells.Add((GameControl.Instance.playing.currentGrid.Find(x => x.Position == parentPoint)));
+            Cells.Add((GameControl.Instance.playing.currentGrid.Find(x => x.Position == new Point(parentPoint.X +1, parentPoint.Y))));
             foreach (Cell cell in Cells)
             {
                 if (GameControl.Instance.playing.currentGrid.Exists(x => (x.Position == cell.Position)))

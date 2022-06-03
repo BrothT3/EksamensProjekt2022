@@ -13,6 +13,11 @@ namespace EksamensProjekt2022
         private float maxTimeTimer = 80;
         private float timeTimer = 80;
         private float timeColor = 0f;
+        public float Time
+        {
+            get { return timeTimer; }
+            set { timeTimer = value; }
+        }
 
         public TimeManager()
         {
