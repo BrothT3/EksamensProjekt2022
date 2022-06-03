@@ -14,6 +14,7 @@ namespace EksamensProjekt2022
         public List<Node> finalPath;
         public bool mLeftReleased = false;
         public Rectangle uiBox;
+        public Rectangle playerInventoryBox;
         public Rectangle craftingBox;
 
         public static InputHandler Instance
@@ -51,7 +52,8 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 10, 10)) && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased &&
-                        c.IsWalkable && c.cellVector != player.currentCell.cellVector && !uiBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5))
+                        c.IsWalkable && c.cellVector != player.currentCell.cellVector
+                        && !uiBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5))
                         && !craftingBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5)))
                     {
                         player.readyToMove = false;

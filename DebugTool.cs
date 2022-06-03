@@ -70,6 +70,7 @@ namespace EksamensProjekt2022
                 {
                     Stone stone = new Stone(1);
                     inv.AddItem(stone);
+                    GameControl.Instance.playing.userInterface.Updated = false;
                 }
                 if (kState.IsKeyDown(Keys.K) && kState != oldKState)
                 {

@@ -220,6 +220,8 @@ namespace EksamensProjekt2022
                     timeManager.Update(gameTime);
                 }
 
+                userInterface.Update(gameTime);
+
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {

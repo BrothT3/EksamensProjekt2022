@@ -7,7 +7,8 @@ using System.Text;
 namespace EksamensProjekt2022
 {
     public abstract class Building : Component
-    {   
+    {
+        protected string buildingTag;
         protected Cell parentCell;
         private List<Cell> cells = new List<Cell>();
         protected Point parentPoint;
@@ -31,10 +32,12 @@ namespace EksamensProjekt2022
                 {
                     if (Cells.Exists(x => (x.Position == GameControl.Instance.playing.selectedCell.Position)))   
                     {
+                        buildingTag = "selectedBuilding";
                         return true;
                     }
                     else
                     {
+                        buildingTag = "Building";
                         return false;
                     }
                 }
