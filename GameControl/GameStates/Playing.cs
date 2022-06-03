@@ -72,8 +72,7 @@ namespace EksamensProjekt2022
             {
 
 
-                Director d = new Director(new PlayerBuilder());
-                Instantiate(d.Construct());
+               
 
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
@@ -87,7 +86,7 @@ namespace EksamensProjekt2022
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.River);
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Hills);
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Desert);
-
+                _mapManager.LoadPlayer(_mapManager.CurrentSave);
 
 
                 for (int i = 0; i < _mapManager.areaLoader.currentGameObjects.Length; i++)
@@ -246,6 +245,7 @@ namespace EksamensProjekt2022
             }
             else
             {
+                
                 if (offsetPauseButtons)
                 {
 
@@ -269,28 +269,37 @@ namespace EksamensProjekt2022
                 //save inventory
                 if (!hasSaved)
                 {
-                    GameObject player;
-                    foreach (GameObject go in currentGameObjects)
-                    {
-                        if (go.GetComponent<Player>() != null)
-                        {
-                            player = go;
-                            Inventory inv = player.GetComponent<Inventory>() as Inventory;
-                            _mapManager.SavePlayerInventory(inv.items);
-                            hasSaved = true;
-                        }
-                    }
+                    Player p = (Player)GameWorld.Instance.FindObjectOfType<Player>() as Player;
+                    Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
+                    hasSaved = true;
+                    _mapManager.SavePlayerInventory(inv.items);
+                    _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
+                    hasSaved = true;
+                    //GameObject player;
+                    //foreach (GameObject go in currentGameObjects)
+                    //{
+                    //    if (go.GetComponent<Player>() != null)
+                    //    {
+                    //        player = go;
+                    //        Inventory inv = player.GetComponent<Inventory>() as Inventory;
+                    //        _mapManager.SavePlayerInventory(inv.items);
+                    //        hasSaved = true;
+                    //    }
+                    //}
+ 
 
 
                 }
 
-                if (!hasLoadedInventory && GameWorld.Instance.FindObjectOfType<Player>() != null)
-                {
-                    _mapManager.LoadPlayerInventory(_mapManager.CurrentSave);
-                    hasLoadedInventory = true;
-                }
+              
 
 
+            }
+
+            if (!hasLoadedInventory && GameWorld.Instance.FindObjectOfType<Player>() != null)
+            {
+                _mapManager.LoadPlayerInventory(_mapManager.CurrentSave);
+                hasLoadedInventory = true;
             }
 
         }

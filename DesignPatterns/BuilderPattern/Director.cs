@@ -9,9 +9,9 @@
             this.builder = builder;
         }
 
-        public GameObject Construct()
+        public GameObject Construct(int health, int energy, int hunger, int x, int y, int time)
         {
-            builder.BuildGameObject();
+            builder.BuildGameObject(health, energy, hunger, x, y, time);
             return builder.GetResult();
         }
     }

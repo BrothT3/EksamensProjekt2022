@@ -76,9 +76,27 @@ namespace EksamensProjekt2022
                 }
             }
 
+        }
 
+        public void LoadPlayer(SaveSlots currentSave)
+        {
+            Open();
+            var cmd = new SQLiteCommand($"SELECT Health, Energy, Hunger, PositionX, PositionY, Time FROM SaveSlots WHERE SaveSlotID={(int)currentSave}", connection);
+            var dataread = cmd.ExecuteReader();
 
+            while (dataread.Read())
+            {
+                int health = dataread.GetInt32(0);
+                int energy = dataread.GetInt32(1);
+                int hunger = dataread.GetInt32(2);
+                int x = dataread.GetInt32(3);
+                int y = dataread.GetInt32(4);
+                int time = dataread.GetInt32(5);
 
+                Director d = new Director(new PlayerBuilder());
+                GameControl.Instance.playing.Instantiate(d.Construct(health, energy, hunger, x, y, time));
+            }
+            Close();
         }
 
         /// <summary>
@@ -122,12 +140,26 @@ namespace EksamensProjekt2022
             //save new areadata
             foreach (GameObject go in gameObjects)
             {
+                if (go.GetComponent<Player>() != null)
+                {
+                    Player p = go.GetComponent<Player>() as Player;
+                    SurvivalAspect sa = p.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
 
-                var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
+                    cmd = new SQLiteCommand($"UPDATE saveslots SET Health ={sa.CurrentHealth}, Energy = {sa.CurrentEnergy}, Hunger = {sa.CurrentHunger}," +
+                        $" PositionX = {p.currentCell.Position.X}, PositionY = {p.currentCell.Position.Y}, Time = {(int)GameControl.Instance.playing.timeManager.Time} " +
+                        $"WHERE SaveSlotID={(int)currentSave} ", connection);
+                    cmd.ExecuteNonQuery();
+                   
+                }
+                else
+                {
+                    var Cell = grid.Find(x => x.cellVector == go.Transform.Position);
 
-                cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
-                   $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
-                cmd.ExecuteNonQuery();
+                    cmd = new SQLiteCommand($"INSERT INTO areadata (ID, SaveSlotID, AreaIndex, ObjectTag, PositionX, PositionY, Quantity) " +
+                       $"VALUES (null, {(int)currentSave}, {(int)area}, '{go.Tag}', {Cell.Position.X}, {Cell.Position.Y}, {go.Amount})", connection);
+                    cmd.ExecuteNonQuery();
+                }
+             
 
 
 
