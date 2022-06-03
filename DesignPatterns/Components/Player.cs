@@ -13,12 +13,18 @@ namespace EksamensProjekt2022
         private Vector2 currentVector;
         public Vector2 nextVector;
         private Vector2 moveDir;
+        public Cell selectedCell;
         private Animator animator;
         private SurvivalAspect survivalAspect;
         private Vector2 start = new Vector2(4, 9);
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
+
+
+
+        
+
         public Area MyArea { get => myArea; set => myArea = value; }
 
 
@@ -33,14 +39,14 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");
-            currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
-            GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
+        //    currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
+          //  GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
             survivalAspect = GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
 
             animator = (Animator)GameObject.GetComponent<Animator>();
             survivalAspect.DeathEvent += OnDeathEvent;
-           
+
 
         }
         public override void Update(GameTime gameTime)
@@ -50,6 +56,12 @@ namespace EksamensProjekt2022
             PlayerAnimate();
             FollowPath();
 
+            if (selectedCell != null && selectedCell.myResource is ResourceDepot
+                && readyToMove)
+            {
+                ResourceGather();
+            }
+        
         }
 
         private void OnDeathEvent(object sender, EventArgs e)
@@ -136,5 +148,31 @@ namespace EksamensProjekt2022
             }
 
         }
+
+        private float countDown = 2;
+        private void ResourceGather()
+        {
+            countDown -= GameWorld.DeltaTime;
+            Inventory inv = GameObject.GetComponent<Inventory>() as Inventory;
+
+            if (selectedCell.myResource is Tree && countDown <= 0 && selectedCell.myResource.Amount > 0)
+            {
+                
+                GameWorld.Instance.woodChop.Play(0.5f, 0, 0);
+                inv.AddItem(new Wood(2));
+                selectedCell.myResource.Amount -= 2;
+                countDown = 2;
+            }
+            else if (selectedCell.myResource is Boulder && countDown <= 0 && selectedCell.myResource.Amount >0)
+            {
+                GameWorld.Instance.rockHit.Play();
+                
+                inv.AddItem(new Stone(2));
+                selectedCell.myResource.Amount -= 2;
+                countDown = 2;
+            }
+        }
+
+
     }
 }

@@ -18,6 +18,7 @@ namespace EksamensProjekt2022
         private bool isNew;
         private int height;
         private int width;
+        public ResourceDepot myResource;
 
         private Node myNode;
         private CellType myType = CellType.Empty;

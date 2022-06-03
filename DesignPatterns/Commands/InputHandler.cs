@@ -71,6 +71,7 @@ namespace EksamensProjekt2022
                         && !craftingBox.Contains(new Rectangle(mouseState.X - (int)GameControl.Instance.camera.Position.X, mouseState.Y - (int)GameControl.Instance.camera.Position.Y, 5, 5)))
                     {
                         GameControl.Instance.playing.selectedCell = c;
+                        player.selectedCell = c;
                     }
                     if (mouseState.LeftButton == ButtonState.Released)
                     {

@@ -35,17 +35,18 @@ namespace EksamensProjekt2022
             Collider c = (Collider)gameObject.AddComponent(new Collider());
             sr.OffSetY = -20;
 
-            if (GameWorld.Instance.rand.Next(0,2) > 0)
+            if (GameWorld.Instance.rand.Next(0, 2) > 0)
             {
                 sr.SpriteEffect = SpriteEffects.FlipHorizontally;
             }
 
-            gameObject.AddComponent(new Tree(cell, resourceAmount));
-            gameObject.Transform.Position = new Vector2(cell.cellVector.X ,
-                cell.cellVector.Y );
+            Tree tree = (Tree)gameObject.AddComponent(new Tree(cell, resourceAmount));
+            gameObject.Transform.Position = new Vector2(cell.cellVector.X,
+                cell.cellVector.Y);
             cell.IsWalkable = false;
             gameObject.Tag = "Tree";
             gameObject.Amount = resourceAmount;
+            cell.myResource = tree;
 
             return gameObject;
         }

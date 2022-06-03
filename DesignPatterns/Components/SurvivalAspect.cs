@@ -19,7 +19,7 @@ namespace EksamensProjekt2022
         public int CurrentHealth
         {
             get { return health; }
-            private set
+            set
             {
                 health = value;
                 if (health < 0)
@@ -43,7 +43,7 @@ namespace EksamensProjekt2022
         public int CurrentEnergy
         {
             get { return energy; }
-            private set
+            set
             {
                 energy = value;
 
@@ -66,7 +66,7 @@ namespace EksamensProjekt2022
         public int CurrentHunger
         {
             get { return hunger; }
-            private set
+            set
             {
                 hunger = value;
 
@@ -134,10 +134,7 @@ namespace EksamensProjekt2022
         float countDown = 2;
         public override void Update(GameTime gameTime)
         {
-            if (!IsAlive)
-            {
-                OnDeathEvent();
-            }
+
 
            
             countDown -= GameWorld.DeltaTime;

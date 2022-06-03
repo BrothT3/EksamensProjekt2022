@@ -1,19 +1,20 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace EksamensProjekt2022
 {
     public class PlayerBuilder : IBuilder
     {
         private GameObject gameObject;
-        public void BuildGameObject()
+        public void BuildGameObject(int health, int energy, int hunger, int x, int y, int time)
         {
             gameObject = new GameObject();
             gameObject.Tag = "Player";
-            BuildComponents();
+            BuildComponents(health, energy, hunger, x, y, time);
 
         }
 
-        private void BuildComponents()
+        private void BuildComponents(int health, int energy, int hunger, int x, int y, int time)
         {
             Player p = (Player)gameObject.AddComponent(new Player());
             p.MyArea = Area.Camp;
@@ -32,7 +33,13 @@ namespace EksamensProjekt2022
             Inventory inv = (Inventory)gameObject.AddComponent(new Inventory(5)) as Inventory;
 
             SurvivalAspect sa = (SurvivalAspect)gameObject.AddComponent(new SurvivalAspect(50, 50, 50, 50)) as SurvivalAspect;
-
+            sa.CurrentHealth = health;
+            sa.CurrentHunger = hunger;
+            sa.CurrentEnergy = energy;
+            Point position = new Point(x, y);
+            p.currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == position);
+            p.GameObject.Transform.Position = p.currentCell.cellVector;
+            GameControl.Instance.playing.timeManager.Time = time;
             
            // inv.items.Add(new Stone(3));
         }
