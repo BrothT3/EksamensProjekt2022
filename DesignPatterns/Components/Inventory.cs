@@ -44,8 +44,9 @@ namespace EksamensProjekt2022
                 else if (items.Count < inventoryMax)
                 {
                     Item newItem = item;
-                    newItem.Quantity = 1;
                     amountToAdd++;
+                    newItem.Quantity = amountToAdd;
+                    amountToAdd -= amountToAdd;
                     items.Add(newItem);
 
 
