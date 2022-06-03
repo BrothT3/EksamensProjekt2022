@@ -18,7 +18,7 @@ namespace EksamensProjekt2022
         public Building(Point _parentPoint)
         {
             parentPoint = _parentPoint;
-            parentCell = GameControl.Instance.playing.currentCells[parentPoint];
+            parentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == parentPoint);
         }
 
         public abstract void Occupy();

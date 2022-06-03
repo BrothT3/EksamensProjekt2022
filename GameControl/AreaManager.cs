@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -11,7 +9,7 @@ namespace EksamensProjekt2022
         public List<GameObject>[] currentGameObjects = new List<GameObject>[4];
         public List<Cell>[] currentGrid = new List<Cell>[4];
 
-        public Dictionary<Point, Cell>[] currentCells = new Dictionary<Point, Cell>[4];
+        public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
 
 
         private Area currentArea;
@@ -30,7 +28,7 @@ namespace EksamensProjekt2022
             }
             if (!HasRun)
             {//To ensure it only runs once
-                CreateGrids();
+                Start();
                 HasRun = true;
             }
 
@@ -39,7 +37,7 @@ namespace EksamensProjekt2022
         /// <summary>
         /// Creates a thread that creates the grids used in all areas, intended so that the main thread only creates the first zone.
         /// </summary>
-        public void CreateGrids()
+        public void Start()
         {
 
             loadAreasThread = new Thread(LoadArea);
@@ -72,14 +70,14 @@ namespace EksamensProjekt2022
 
 
         /// <summary>
-        /// Creates Grid and Cells before running their load content methods.
+        /// Creates the grids for the different araes before running their load content methods.
         /// Method exists as an overview of the Threads tasks.
         /// </summary>
         public void LoadArea()
         {
             CreateGrid();
-            CreateCells();
-            LoadGridAndCell();
+           // CreateCells();
+            LoadGridl();
 
         }
 
@@ -93,13 +91,12 @@ namespace EksamensProjekt2022
 
         public void CreateCells()
         {
-            for (int i = 1; i < currentCells.Length; i++)
-            {
-                currentCells[i] = GameControl.Instance.playing.grid.CreateCells();
-            }
+
+            currentCells = GameControl.Instance.playing.grid.CreateCells();
+
         }
 
-        public void LoadGridAndCell()
+        public void LoadGridl()
         {
 
 
@@ -111,11 +108,7 @@ namespace EksamensProjekt2022
 
                 }
 
-                //måske unødning
-                foreach (Cell item in currentCells[i].Values)
-                {
-                    item.LoadContent();
-                }
+
             }
 
         }

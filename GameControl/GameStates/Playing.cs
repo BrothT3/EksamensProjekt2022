@@ -45,7 +45,7 @@ namespace EksamensProjekt2022
             grid = new Grid(CellCount, CellSize, CellSize);
             _debugTools = new DebugTool();
             areaManager = new AreaManager();
-         
+
 
         }
         public override void EndingGameState()
@@ -60,25 +60,25 @@ namespace EksamensProjekt2022
             initializeGameState = true;
         }
 
-      
+
         public override void Initialize()
         {
             GameControl.Instance.selectedGameState = this;
             areaManager.currentGrid[0] = grid.CreateGrid();
-            areaManager.currentCells[0] = grid.CreateCells();
+            areaManager.currentCells = grid.CreateCells();
 
 
             if (!MapCreator.DevMode)
             {
-                
+
 
                 Director d = new Director(new PlayerBuilder());
                 Instantiate(d.Construct());
-                        
+
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
                 currentGrid = areaManager.currentGrid[0];
-                currentCells = areaManager.currentCells[0];
+                currentCells = areaManager.currentCells;
                 currentGameObjects = areaManager.currentGameObjects[0];
 
 
@@ -87,8 +87,8 @@ namespace EksamensProjekt2022
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.River);
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Hills);
                 _mapManager.GetDbInfo(SaveSlots.Slot1, Area.Desert);
-               
-               
+
+
 
                 for (int i = 0; i < _mapManager.areaLoader.currentGameObjects.Length; i++)
                 {
@@ -99,15 +99,15 @@ namespace EksamensProjekt2022
 
                 userInterface = new UserInterface();
                 GameObject chest = new GameObject();
-                Chest c = new Chest(new Point( 7, 7));
+                Chest c = new Chest(new Point(7, 7));
                 SpriteRenderer sr = new SpriteRenderer();
                 sr.SetSprite("chest");
                 Inventory inv = new Inventory(10);
                 chest.AddComponent(sr);
                 chest.AddComponent(c);
                 chest.AddComponent(inv);
-                
-                
+
+
                 Instantiate(chest);
 
                 GameObject craftingTable = new GameObject();
@@ -116,7 +116,7 @@ namespace EksamensProjekt2022
                 CraftingMenu cm = new CraftingMenu();
                 Inventory ctinv = new Inventory(2);
                 ctsr.SetSprite("craftingTable");
-                
+
                 cm.AddRecipe(new FermentedBreastMilkRecipe());
                 cm.AddRecipe(new ChestRecipe());
                 craftingTable.AddComponent(cm);
@@ -147,7 +147,7 @@ namespace EksamensProjekt2022
 
 
                 currentGrid = areaManager.currentGrid[0];
-                currentCells = areaManager.currentCells[0];
+                currentCells = areaManager.currentCells;
                 currentGameObjects = areaManager.currentGameObjects[0];
 
                 MapManager m = MapCreator.Instance.mapManager;
@@ -155,7 +155,7 @@ namespace EksamensProjekt2022
                 m.GetDbInfo(SaveSlots.Slot1, Area.River);
                 m.GetDbInfo(SaveSlots.Slot1, Area.Hills);
                 m.GetDbInfo(SaveSlots.Slot1, Area.Desert);
-                
+
                 for (int i = 1; i < m.areaLoader.currentGameObjects[0].Count; i++)
                 {
 
@@ -220,7 +220,7 @@ namespace EksamensProjekt2022
                 {
                     timeManager.Update(gameTime);
                 }
-                
+
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {
@@ -280,8 +280,8 @@ namespace EksamensProjekt2022
                             hasSaved = true;
                         }
                     }
-                    
-                   
+
+
                 }
 
                 if (!hasLoadedInventory && GameWorld.Instance.FindObjectOfType<Player>() != null)
@@ -289,8 +289,8 @@ namespace EksamensProjekt2022
                     _mapManager.LoadPlayerInventory(_mapManager.CurrentSave);
                     hasLoadedInventory = true;
                 }
-               
-                
+
+
             }
 
         }
@@ -342,7 +342,7 @@ namespace EksamensProjekt2022
                 }
             }
             if (userInterface != null)
-            userInterface.Draw(spriteBatch);
+                userInterface.Draw(spriteBatch);
         }
         #endregion
 
@@ -361,7 +361,7 @@ namespace EksamensProjekt2022
             {
                 currentGameObjects.Remove(destroyedGameObjects[i]);
             }
-  
+
             destroyedGameObjects.Clear();
             newGameObjects.Clear();
 
