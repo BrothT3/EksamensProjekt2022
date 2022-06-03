@@ -154,8 +154,8 @@ namespace EksamensProjekt2022
             cookingItems.Add(fish);
             
             Thread.Sleep(5000);
-            inv.items.Add(new CookedFish(1));
-            //inv.AddItem(new CookedFish());
+
+            inv.AddItem(new CookedFish());
             cookingItems.Remove(fish);
             updated = false;
         }
