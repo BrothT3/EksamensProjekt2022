@@ -98,8 +98,8 @@ namespace EksamensProjekt2022
         {
             if (!displayedCrafting)
             {
-                int firstRecipeSlotX = (int)GameObject.Transform.Position.X - 260;
-                int firstRecipeSlotY = (int)GameObject.Transform.Position.Y - 120;
+                int firstRecipeSlotX = (int)GameObject.Transform.Position.X - 130;
+                int firstRecipeSlotY = (int)GameObject.Transform.Position.Y - 80;
                 Rectangle craftingBox = new Rectangle(firstRecipeSlotX, firstRecipeSlotY, 60, 0);
                 foreach (Recipe recipe in Recipes)
                 {
