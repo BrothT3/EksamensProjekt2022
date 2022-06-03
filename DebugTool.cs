@@ -12,6 +12,8 @@ namespace EksamensProjekt2022
         private KeyboardState oldKState;
         private int stoneCount;
         private int woodCount;
+        private bool mReleased = false;
+        private bool nReleased = false;
         public DebugTool()
         {
             font = GameWorld.Instance.Content.Load<SpriteFont>("Font");
@@ -29,6 +31,32 @@ namespace EksamensProjekt2022
             {
                 ShowCellPoints = false;
             }
+            
+            Player p = (Player)GameWorld.Instance.FindObjectOfType<Player>() as Player;
+            if(p!=null)
+            {
+                SurvivalAspect sa = p.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
+
+                if (kState.IsKeyDown((Keys.M)) && mReleased && sa != null)
+                {
+                    sa.TakeDamage(25);
+                    mReleased = false;
+                }
+                if (kState.IsKeyUp(Keys.M))
+                    mReleased = true;
+
+                if (kState.IsKeyDown(Keys.N) && nReleased)
+                {
+                    sa.Heal(10);
+                    nReleased = false;
+                }
+                if (kState.IsKeyUp(Keys.N))
+                {
+                    nReleased = true;
+                }
+            }
+          
+
             #region inventoryTests
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             Chest chest = (Chest)GameWorld.Instance.FindObjectOfType<Chest>();
@@ -135,6 +163,12 @@ namespace EksamensProjekt2022
 
                 spriteBatch.DrawString(font, $"stones:{stoneCount}", new Vector2(340, 350), Color.Black);
                 spriteBatch.DrawString(font, $"wood:{woodCount}", new Vector2(340, 380), Color.Black);
+
+                SurvivalAspect sa = player.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
+                int currentHealth = sa.CurrentHealth;
+                spriteBatch.DrawString(font, $"{currentHealth}", new Vector2(player.GameObject.Transform.Position.X - 40,
+                    player.GameObject.Transform.Position.Y + 120), Color.White);
+
             }
             Camera ca = MapCreator.Instance.Camera;
            

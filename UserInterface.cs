@@ -30,6 +30,17 @@ namespace EksamensProjekt2022
                     spriteBatch.DrawString(font, $"{item.Quantity}", new Vector2(itemSlot.X + 20, itemSlot.Y + 40), Color.White);
                     itemSlot.X += 36;
                 }
+
+                SurvivalAspect sa = (SurvivalAspect)player.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
+
+                spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(10 - (int)GameControl.Instance.camera.Position.X ,
+                    500- ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentHealth), Color.Green);
+
+                spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(25 - (int)GameControl.Instance.camera.Position.X,
+                   500 - ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentEnergy), Color.Red);
+
+                spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(40 - (int)GameControl.Instance.camera.Position.X,
+                   500 - ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentHunger), Color.Orange);
             }
            
         }

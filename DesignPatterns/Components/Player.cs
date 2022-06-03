@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 namespace EksamensProjekt2022
 {
@@ -13,12 +14,13 @@ namespace EksamensProjekt2022
         public Vector2 nextVector;
         private Vector2 moveDir;
         private Animator animator;
+        private SurvivalAspect survivalAspect;
         private Vector2 start = new Vector2(4, 9);
         private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
         public Area MyArea { get => myArea; set => myArea = value; }
-        
+
 
         public override void Awake()
         {
@@ -34,9 +36,11 @@ namespace EksamensProjekt2022
             currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
             GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
-
+            survivalAspect = GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
 
             animator = (Animator)GameObject.GetComponent<Animator>();
+            survivalAspect.DeathEvent += OnDeathEvent;
+           
 
         }
         public override void Update(GameTime gameTime)
@@ -46,6 +50,11 @@ namespace EksamensProjekt2022
             PlayerAnimate();
             FollowPath();
 
+        }
+
+        private void OnDeathEvent(object sender, EventArgs e)
+        {
+            GameControl.Instance.playing.Destroy(this.GameObject);
         }
 
         public void FollowPath()
@@ -125,7 +134,7 @@ namespace EksamensProjekt2022
                         animator.PlayAnimation("playerWalkLeft");
                 }
             }
-            
+
         }
     }
 }
