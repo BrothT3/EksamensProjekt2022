@@ -136,7 +136,8 @@ namespace EksamensProjekt2022
                 int toRemove = item1.Quantity - notRoomFor;
                 chestInv.RemoveItem(item1, toRemove);
                 playerInv.notAddedAmount = 0;
-                
+
+                GameControl.Instance.playing.userInterface.Updated = false;
                 updated = false;
             }
         }

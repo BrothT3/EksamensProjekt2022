@@ -107,7 +107,7 @@ namespace EksamensProjekt2022
             {
                 Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
-                GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedCampFire");
+                GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
                 CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
                 Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
                 if (cfinv.items.Count + cf.CurrentlyCooking <= cfinv.InventoryMax)

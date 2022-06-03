@@ -29,7 +29,7 @@ namespace EksamensProjekt2022
             a.AddAnimation(BuildAnimation("playerWalkRight", "playerWalkRight"));
             a.AddAnimation(BuildAnimation("playerIdle", "playerIdle"));
 
-            Inventory inv = (Inventory)gameObject.AddComponent(new Inventory(5)) as Inventory;
+            Inventory inv = (Inventory)gameObject.AddComponent(new Inventory(8)) as Inventory;
 
             SurvivalAspect sa = (SurvivalAspect)gameObject.AddComponent(new SurvivalAspect(50, 50, 50, 50)) as SurvivalAspect;
 
