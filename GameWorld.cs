@@ -45,7 +45,7 @@ namespace EksamensProjekt2022
 
         protected override void Initialize()
         {
-           
+
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 600;
             Graphics.ApplyChanges();
@@ -55,7 +55,7 @@ namespace EksamensProjekt2022
             createDBThread.IsBackground = true;
             createDBThread.Start();
 
-     
+
             base.Initialize();
 
         }
@@ -70,7 +70,7 @@ namespace EksamensProjekt2022
                 var createDB = new SQLiteCommand(cmd, sqlConnection);
                 createDB.ExecuteNonQuery();
                 sqlConnection.Close();
-                
+
             }
         }
 
@@ -143,9 +143,9 @@ namespace EksamensProjekt2022
             }
 
 
-           
 
-            
+
+
             if (GameControl.Instance.playing.currentGrid != null)
                 foreach (Cell item in GameControl.Instance.playing.currentGrid)
                 {
@@ -166,10 +166,10 @@ namespace EksamensProjekt2022
             if (GameControl.Instance.currentGameState == CurrentGameState.Playing)
                 GameControl.Instance.playing.Draw(_spriteBatch);
 
-            
-            if(MapCreator.DevMode)
-            GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
 
+#if DEBUG
+            GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
+#endif
 
             if (GameControl.Instance.playing.timeManager != null)
             {
