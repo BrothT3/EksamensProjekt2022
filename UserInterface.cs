@@ -60,10 +60,7 @@ namespace EksamensProjekt2022
                 button.Update(gameTime);
                 if (updated)
                 {
-                    int offsetX = button.Rectangle.X - cameraOffsetX;
-                    int offsetY = button.Rectangle.Y - cameraOffsetY;
-                    button.Rectangle = new Rectangle(offsetX, offsetY, button.Rectangle.Width, button.Rectangle.Height);
-                    button.Update(gameTime);
+
                 }
             }
 
@@ -86,7 +83,7 @@ namespace EksamensProjekt2022
                     Button itembutton = new Button(inv.items[i]);
                     Button captured_button = itembutton;
                     itembutton.OnClicking += TransferEvent();
-                    itembutton.Rectangle = new Rectangle((int)itemSlot.X, (int)itemSlot.Y, 36, 36);
+                    itembutton.Rectangle = new Rectangle((int)itemSlot.X - cameraOffsetX, (int)itemSlot.Y - cameraOffsetY, 36, 36);
 
 
                     transferButtons.Add(itembutton);
