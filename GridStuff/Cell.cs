@@ -22,8 +22,6 @@ namespace EksamensProjekt2022
         private bool isAreaChangeCell = false;
 
         private Node myNode;
-        private CellType myType = CellType.Empty;
-
         private bool isHovering;
 
         public Vector2 cellVector;    
@@ -31,9 +29,8 @@ namespace EksamensProjekt2022
         public Point Position { get => position; set => position = value; }
         public Node MyNode { get => myNode; set => myNode = value; }
         public Color BackGroundColor { get; set; } = Color.White * 0.1f;
-        public CellType MyType { get { return myType; } }
-        public bool IsWalkable { get; set; } 
-        public bool IsNew { get; set; }
+        public bool IsWalkable { get => isWalkable; set => isWalkable = value ; } 
+        public bool IsNew { get => isNew; set => isNew = value; }
         public bool IsAreaChangeCell { get => isAreaChangeCell; set => isAreaChangeCell = value; }
 
         #region rectangles
@@ -63,6 +60,7 @@ namespace EksamensProjekt2022
             IsWalkable = true;
             cellVector = new Vector2((position.X+1) * width - (width / 2), (position.Y+1) * height - (height));
 
+            #region AreaChangeCells
             if (this.position.X == GameControl.Instance.playing.CellCount/2 && this.position.Y == 0 || this.position.X == GameControl.Instance.playing.CellCount/2+1 && this.position.Y == 0 && IsWalkable)
             { //top
                 isAreaChangeCell = true;
@@ -81,6 +79,7 @@ namespace EksamensProjekt2022
             {//bottom
                 isAreaChangeCell=true;
             }
+            #endregion
         }
         public void Update(GameTime gameTime)
         {
@@ -101,7 +100,6 @@ namespace EksamensProjekt2022
 
         public void LoadContent()
         {
-           // lineSprite = GameWorld.Instance.pixel;
 
 #if DEBUG
             topLine = new Rectangle(Position.X * width, Position.Y * height, width, 1);
@@ -124,8 +122,7 @@ namespace EksamensProjekt2022
             {
                 spriteColor = Color.Black * 0.5f;
             }
-            //bare for at at man kan se hvor man har musen og selve pathen, men pathen er også bare et debug tool
-            //mouseover
+
             if (Sprite != null)
                 spriteBatch.Draw(Sprite, new Vector2(background.X, background.Y), spriteColor);
 

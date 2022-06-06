@@ -32,30 +32,14 @@ namespace EksamensProjekt2022
 
             Inventory inv = (Inventory)gameObject.AddComponent(new Inventory(8)) as Inventory;
 
-            SurvivalAspect sa = (SurvivalAspect)gameObject.AddComponent(new SurvivalAspect(50, 50, 50, 50)) as SurvivalAspect;
-            sa.CurrentHealth = health;
-            sa.CurrentHunger = hunger;
-            sa.CurrentEnergy = energy;
+            SurvivalAspect sa = (SurvivalAspect)gameObject.AddComponent(new SurvivalAspect(health, 50, hunger, energy)) as SurvivalAspect;
             Point position = new Point(x, y);
             p.currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == position);
-
-            if (!p.currentCell.IsWalkable)
-            {
-
-                p.currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == new Point(15,10));
-
-                p.GameObject.Transform.Position = p.currentCell.cellVector;
-            }
-            else
-            {
-                p.GameObject.Transform.Position = p.currentCell.cellVector;
-            }
-          
+            p.GameObject.Transform.Position = p.currentCell.cellVector;
 
 
             GameControl.Instance.playing.timeManager.Time = time;
 
-            // inv.items.Add(new Stone(3));
         }
         private Animation BuildAnimation(string animationName, string spriteName)
         {
