@@ -38,20 +38,20 @@ namespace EksamensProjekt2022
         {
             CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && updated)
+            if (mState.LeftButton == ButtonState.Released && Updated)
             {
                 click = true;
             }
             if (IsSelected)
             {
-                
+                GameObject.Tag = "selectedChest";
                 UpdateButtons();
                 InputHandler.Instance.uiBox = inventoryBox;
 
             }
             if (!IsSelected)
             {
-                
+                GameObject.Tag = "chest";
                 Updated = false;
                 InputHandler.Instance.uiBox = Rectangle.Empty;
             }
@@ -60,7 +60,7 @@ namespace EksamensProjekt2022
                 button.Update(gameTime);
             }
 
-
+           
         }
 
         public void UpdateButtons()
@@ -124,7 +124,7 @@ namespace EksamensProjekt2022
                 playerInv.notAddedAmount = 0;
 
                 GameControl.Instance.playing.userInterface.Updated = false;
-                updated = false;
+                Updated = false;
             }
         }
 

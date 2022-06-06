@@ -8,6 +8,7 @@ namespace EksamensProjekt2022
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Vector2 Origin = Vector2.Zero;
+        public Vector2 Direction;
 
         public Camera()
         {
@@ -19,6 +20,7 @@ namespace EksamensProjekt2022
         public void Move(Vector2 direction)
         {
             Position += direction;
+            Direction = direction;
         }
 
         public Matrix GetTransform()
@@ -27,7 +29,7 @@ namespace EksamensProjekt2022
             var rotationMatrix = Matrix.CreateRotationZ(Rotation);
             var scaleMatrix = Matrix.CreateScale(new Vector3(Zoom, Zoom, 1));
             var originMatrix = Matrix.CreateTranslation(new Vector3(Origin.X, Origin.Y, 0));
-
+            
             return translationMatrix * rotationMatrix * scaleMatrix * originMatrix;
         }
 

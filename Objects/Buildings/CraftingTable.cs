@@ -39,7 +39,7 @@ namespace EksamensProjekt2022
         {
             CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && updated)
+            if (mState.LeftButton == ButtonState.Released && Updated)
             {
                 click = true;
             }
@@ -123,7 +123,7 @@ namespace EksamensProjekt2022
                 playerInv.notAddedAmount = 0;
 
                 GameControl.Instance.playing.userInterface.Updated = false;
-                updated = false;
+                Updated = false;
             }
         }
 

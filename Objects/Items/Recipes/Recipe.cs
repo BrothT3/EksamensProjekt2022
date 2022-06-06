@@ -43,6 +43,7 @@ namespace EksamensProjekt2022
                 inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
                 inv.AddItem(new Fish(1));
                 Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
             }
 
         }
@@ -76,6 +77,7 @@ namespace EksamensProjekt2022
                 inv.RemoveItem(Ingredients[1], Ingredients[1].Quantity);
                 inv.AddItem(new Wood(4));
                 Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
             }
 
         }
@@ -114,9 +116,10 @@ namespace EksamensProjekt2022
                 {
                     cf.Cook();
                     inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+
                 }
-                
-                
+                GameControl.Instance.playing.userInterface.Updated = false;
+
                 Click = false;
             }
 
@@ -127,6 +130,48 @@ namespace EksamensProjekt2022
             Click = true;
             return Craft;
         }
+
+
+    }
+    public class EatFishRecipe : Recipe
+    {
+        public bool toBeCooked;
+
+        public EatFishRecipe()
+        {
+            Name = "EatFish";
+            Ingredients = new List<Item>();
+            Ingredients.Add(new CookedFish(1));
+            Available = new bool[1];
+            AllAvailable = false;
+            RecipeButton = new Button(Name);
+
+        }
+        public override void Craft(object sender, EventArgs e)
+        {
+            if (Click)
+            {
+                Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+                Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
+                GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
+                CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
+                Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
+                inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                //player.hunger gå så op duJAJAJAJAJAJA
+                // HUSK DEN HUNGER DER
+                Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
+            }
+
+        }
+
+        internal override EventHandler Craft()
+        {
+            Click = true;
+            return Craft;
+        }
+
+
     }
 }
 

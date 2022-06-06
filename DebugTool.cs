@@ -76,11 +76,13 @@ namespace EksamensProjekt2022
                 {
                     Stone stone = new Stone(4);
                     inv.AddItem(stone);
+                    GameControl.Instance.playing.userInterface.Updated = false;
                 }
                 if (kState.IsKeyDown(Keys.L) && kState != oldKState)
                 {
                     Wood wood = new Wood(3);
                     inv.AddItem(wood);
+                    GameControl.Instance.playing.userInterface.Updated = false;
                 }
                 if (kState.IsKeyDown(Keys.I) && kState != oldKState)
                 {
@@ -88,6 +90,7 @@ namespace EksamensProjekt2022
                     {
                         Stone stone = new Stone(1);
                         inv.RemoveItem(stone, 3);
+                        GameControl.Instance.playing.userInterface.Updated = false;
                     }
 
                 }
@@ -97,6 +100,7 @@ namespace EksamensProjekt2022
                     {
                         Wood wood = new Wood(1);
                         inv.RemoveItem(wood, 2);
+                        GameControl.Instance.playing.userInterface.Updated = false;
                     }
 
                 }
