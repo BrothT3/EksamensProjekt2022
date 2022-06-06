@@ -32,7 +32,7 @@ namespace EksamensProjekt2022
                 {
                     if (Cells.Exists(x => (x.Position == GameControl.Instance.playing.selectedCell.Position)))   
                     {
-                        buildingTag = "selectedBuilding";
+                        this.buildingTag = "selectedBuilding";
                         return true;
                     }
                     else

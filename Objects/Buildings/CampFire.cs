@@ -54,7 +54,7 @@ namespace EksamensProjekt2022
             }
             if (IsSelected)
             {
-                GameObject.Tag = "selectedCampFire";
+                GameObject.Tag = "selectedBuilding";
                 InputHandler.Instance.uiBox = craftingTableBox;
                 cm.craftingMenu = true;
                 UpdateButtons();

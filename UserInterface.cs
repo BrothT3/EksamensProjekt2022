@@ -100,7 +100,7 @@ namespace EksamensProjekt2022
 
                 }
             }
-            Updated = true;
+            Updated = false;
             
         }
 
