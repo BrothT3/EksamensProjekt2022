@@ -44,14 +44,14 @@ namespace EksamensProjekt2022
             }
             if (IsSelected)
             {
-                
+                GameObject.Tag = "selectedChest";
                 UpdateButtons();
                 InputHandler.Instance.uiBox = inventoryBox;
 
             }
             if (!IsSelected)
             {
-                
+                GameObject.Tag = "chest";
                 Updated = false;
                 InputHandler.Instance.uiBox = Rectangle.Empty;
             }
@@ -60,7 +60,7 @@ namespace EksamensProjekt2022
                 button.Update(gameTime);
             }
 
-
+           
         }
 
         public void UpdateButtons()

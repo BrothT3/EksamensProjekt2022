@@ -15,9 +15,9 @@ namespace EksamensProjekt2022
         private MouseState mState;
         private bool updated;
         private bool click;
-        private bool ifInventoryOpen = true;
+        public bool transferBool;
         private List<Button> transferButtons = new List<Button>();
-        private Rectangle inventoryBox;
+        public Rectangle inventoryBox;
         private int cameraOffsetX;
         private int cameraOffsetY;
 
@@ -32,35 +32,29 @@ namespace EksamensProjekt2022
         {
             cameraOffsetX = (int)GameControl.Instance.camera.Position.X;
             cameraOffsetY = (int)GameControl.Instance.camera.Position.Y;
+
+            if (GameControl.Instance.playing.currentGameObjects.Exists(x => x.Tag == "selectedChest"))
+                InputHandler.Instance.playerInventoryBox = inventoryBox;
+            else
+                InputHandler.Instance.playerInventoryBox = Rectangle.Empty;
+
             if ((GameControl.Instance.playing.currentGameObjects.Exists(x => (x.Tag == "Player"))))
             {
                 UpdateButtons();
             }
-            
+
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && updated)
+            if (mState.LeftButton == ButtonState.Released)
             {
                 click = true;
             }
-            if (ifInventoryOpen)
-            {
 
-                
-                InputHandler.Instance.playerInventoryBox = inventoryBox;
-
-            }
-            if (!ifInventoryOpen)
-            {
-
-               
-                InputHandler.Instance.playerInventoryBox = Rectangle.Empty;
-            }
             foreach (Button button in transferButtons)
             {
                 button.Update(gameTime);
-                if (updated)
+                if (Updated)
                 {
-
+                    
                 }
             }
 
@@ -78,6 +72,7 @@ namespace EksamensProjekt2022
                 int rowNumber = 0;
                 Vector2 itemSlot = firstItemSlot;
                 inventoryBox = new Rectangle((int)itemSlot.X, (int)itemSlot.Y, 40, 40);
+
                 foreach (Item item in inv.items)
                 {
                     Button itembutton = new Button(inv.items[i]);
@@ -101,7 +96,7 @@ namespace EksamensProjekt2022
                 }
             }
             Updated = false;
-            
+
         }
 
         private EventHandler TransferEvent()
@@ -114,40 +109,47 @@ namespace EksamensProjekt2022
         {
             if (click)
             {
-                GameObject selectedBuilding = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
-                click = false;
-                if (selectedBuilding != null)
+
+                if (GameControl.Instance.playing.currentGameObjects.Exists(x => x.Tag == "selectedChest"))
                 {
-                    Button button = (Button)captured_button;
-                    Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-                    Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
-                    Inventory buildingInv = selectedBuilding.GetComponent<Inventory>() as Inventory;
-                    Type type = button.Item.GetType();
-                    Item item1 = (Item)Activator.CreateInstance(type);
-                    Item item2 = (Item)Activator.CreateInstance(type);
-                    item1.Quantity = button.Item.Quantity;
-                    item2.Quantity = button.Item.Quantity;
-                    playerInv.AddItem(item2);
-                    int notRoomFor = playerInv.notAddedAmount;
-                    int toRemove = item1.Quantity - notRoomFor;
-                    buildingInv.RemoveItem(item1, toRemove);
-                    playerInv.notAddedAmount = 0;
+                    GameObject selectedChest = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedChest");
+                    if (selectedChest != null && selectedChest.GetComponent<Inventory>() != null)
+                    {
+                        Button button = (Button)captured_button;
+                        Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+                        Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
+                        Inventory chestInv = selectedChest.GetComponent<Inventory>() as Inventory;
+                        Type type = button.Item.GetType();
+                        Item item1 = (Item)Activator.CreateInstance(type);
+                        Item item2 = (Item)Activator.CreateInstance(type);
+                        item1.Quantity = button.Item.Quantity;
+                        item2.Quantity = button.Item.Quantity;
+                        chestInv.AddItem(item2);
+                        int notRoomFor = chestInv.notAddedAmount;
+                        int toRemove = item1.Quantity - notRoomFor;
+                        playerInv.RemoveItem(item1, toRemove);
+                        chestInv.notAddedAmount = 0;
 
 
-                    updated = false;
+                        updated = false;
+                    }
                 }
                 
+
+                click = false;
+
+
             }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
-            if(player!=null)
+            if (player != null)
             {
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
 
-                
+
                 if (inv != null)
                 {
                     foreach (Button button in transferButtons)
@@ -159,8 +161,8 @@ namespace EksamensProjekt2022
 
                 SurvivalAspect sa = (SurvivalAspect)player.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
 
-                spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(10 - (int)GameControl.Instance.camera.Position.X ,
-                    500- ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentHealth), Color.Green);
+                spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(10 - (int)GameControl.Instance.camera.Position.X,
+                    500 - ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentHealth), Color.Green);
 
                 spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(25 - (int)GameControl.Instance.camera.Position.X,
                    500 - ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentEnergy), Color.Red);
@@ -168,7 +170,7 @@ namespace EksamensProjekt2022
                 spriteBatch.Draw(GameWorld.Instance.pixel, new Rectangle(40 - (int)GameControl.Instance.camera.Position.X,
                    500 - ((int)GameControl.Instance.camera.Position.Y), 10, sa.CurrentHunger), Color.Orange);
             }
-           
+
         }
     }
 }

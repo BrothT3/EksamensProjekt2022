@@ -115,8 +115,8 @@ namespace EksamensProjekt2022
                     cf.Cook();
                     inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
                 }
-                
-                
+
+
                 Click = false;
             }
 
@@ -127,6 +127,47 @@ namespace EksamensProjekt2022
             Click = true;
             return Craft;
         }
+
+
+    }
+    public class EatFishRecipe : Recipe
+    {
+        public bool toBeCooked;
+
+        public EatFishRecipe()
+        {
+            Name = "EatFish";
+            Ingredients = new List<Item>();
+            Ingredients.Add(new CookedFish(1));
+            Available = new bool[1];
+            AllAvailable = false;
+            RecipeButton = new Button(Name);
+
+        }
+        public override void Craft(object sender, EventArgs e)
+        {
+            if (Click)
+            {
+                Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
+                Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
+                GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
+                CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
+                Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
+                inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                //player.hunger gå så op duJAJAJAJAJAJA
+                // HUSK DEN HUNGER DER
+                Click = false;
+            }
+
+        }
+
+        internal override EventHandler Craft()
+        {
+            Click = true;
+            return Craft;
+        }
+
+
     }
 }
 
