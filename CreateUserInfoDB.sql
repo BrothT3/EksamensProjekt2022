@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.3.3 on Fri Jun 3 11:00:16 2022
+-- File generated with SQLiteStudio v3.3.3 on Sun Jun 5 08:06:01 2022
 --
 -- Text encoding used: System
 --
@@ -6165,10 +6165,10 @@ CREATE TABLE objectinventory (ID INTEGER PRIMARY KEY, SaveSlotID INTEGER REFEREN
 
 -- Table: saveslots
 CREATE TABLE saveslots (SaveSlotID INTEGER PRIMARY KEY, Health INTEGER, Energy INTEGER, Hunger INTEGER, PositionX INTEGER, PositionY INTEGER, Time INTEGER);
-INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (0, 50, 50, 50, 5, 5, 200);
-INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (1, 50, 50, 50, 5, 5, 200);
-INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (2, 50, 50, 50, 5, 5, 200);
-INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (3, 50, 50, 50, 5, 5, 200);
+INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (0, 50, 50, 25, 10, 10, 200);
+INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (1, 50, 50, 25, 10, 10, 200);
+INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (2, 50, 50, 25, 10, 10, 200);
+INSERT INTO saveslots (SaveSlotID, Health, Energy, Hunger, PositionX, PositionY, Time) VALUES (3, 50, 50, 25, 10, 10, 200);
 
 COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

@@ -93,7 +93,7 @@ namespace EksamensProjekt2022
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed && !StartScreen.databaseIsLoading || Keyboard.GetState().IsKeyDown(Keys.Escape) && !StartScreen.databaseIsLoading)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed && !StartScreen.databaseIsLoading || Keyboard.GetState().IsKeyDown(Keys.Escape) && !StartScreen.databaseIsLoading && MapCreator.DevMode)
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -177,9 +177,13 @@ namespace EksamensProjekt2022
                 GameControl.Instance.playing.Draw(_spriteBatch);
 
 
-#if DEBUG
-            GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
-#endif
+            if (MapCreator.DevMode)
+            {
+                GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
+
+            }
+          
+
 
             if (GameControl.Instance.playing.timeManager != null)
             {

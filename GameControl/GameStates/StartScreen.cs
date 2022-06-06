@@ -44,7 +44,9 @@ namespace EksamensProjekt2022
             mainMenuExitButtons.Add(NoExitButton);
 
 
-            sprite = GameWorld.Instance.Content.Load<Texture2D>("mainMenuBackground");
+
+
+            sprite = GameWorld.Instance.Content.Load<Texture2D>("StartScreen");
             exitFont = GameWorld.Instance.Content.Load<SpriteFont>("Font");
 
             initializeGameState = false;
@@ -94,7 +96,7 @@ namespace EksamensProjekt2022
             spriteBatch.Draw(sprite, new Vector2(0, 0), Color.White);
             if (startWantToExit && !databaseIsLoading)
             {
-                spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
+                spriteBatch.DrawString(exitFont, "Are you sure you want to exit?", new Vector2(300, 400), Color.White);
             }
             foreach (Button item in GameControl.Instance.startScreen.mainMenuButtons)
             {
@@ -118,7 +120,11 @@ namespace EksamensProjekt2022
                     "The game is currently creating the map\n" +
                     "This text will disappear when it is done", new Vector2(250, 71), Color.White);
             }
-
+            else if (!databaseIsLoading)
+            {
+                spriteBatch.DrawString(exitFont, "Hit D and press play to enter developer mode", new Vector2(250, 50), Color.White);
+            }
+       
 
         }
         private void ClickedPlay(object sender, EventArgs e)
