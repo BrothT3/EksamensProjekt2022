@@ -27,7 +27,7 @@ namespace EksamensProjekt2022
 
         public FermentedBreastMilkRecipe()
         {
-            Name = "fermented breast milk";
+            Name = "fish";
             Ingredients = new List<Item>();
             Ingredients.Add(new Stone(1));
             Available = new bool[1];
@@ -157,6 +157,10 @@ namespace EksamensProjekt2022
                 CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
                 Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
                 inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
+                SurvivalAspect sa = player.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
+                sa.CurrentHunger -= 10;
+                sa.Heal(5);
+
                 //player.hunger gå så op duJAJAJAJAJAJA
                 // HUSK DEN HUNGER DER
                 Click = false;

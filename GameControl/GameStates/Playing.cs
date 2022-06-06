@@ -145,6 +145,7 @@ namespace EksamensProjekt2022
                 CraftingMenu cfcm = new CraftingMenu();
                 cfsr.SetSprite("campFire");
                 cfcm.AddRecipe(new CookedFishRecipe());
+                cfcm.AddRecipe(new EatFishRecipe());
                 campfire.AddComponent(cf);
                 campfire.AddComponent(cfinv);
                 campfire.AddComponent(cfcm);
