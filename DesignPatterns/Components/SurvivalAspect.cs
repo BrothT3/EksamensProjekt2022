@@ -14,7 +14,8 @@ namespace EksamensProjekt2022
         private int maxEnergy = 50;
         private int maxHealth;
         private bool playerAspects;
-
+        private float nungerDamageCountDown = 2;
+        private float hungerCountDown = 10;
         public event EventHandler DeathEvent;
         public int CurrentHealth
         {
@@ -78,7 +79,7 @@ namespace EksamensProjekt2022
                 {
                     hunger = maxHunger;
                 }
-                
+
             }
         }
 
@@ -131,24 +132,27 @@ namespace EksamensProjekt2022
         {
             CurrentHealth -= dmg;
         }
-        float countDown = 2;
+
         public override void Update(GameTime gameTime)
         {
+            nungerDamageCountDown -= GameWorld.DeltaTime;
+            hungerCountDown -= GameWorld.DeltaTime;
 
-
-           
-            countDown -= GameWorld.DeltaTime;
-            if (playerAspects && CurrentHunger == 50)
+     
+            if (playerAspects && CurrentHunger == 50 && hungerCountDown <= 0)
             {
-              
-                if (countDown <= 0)
-                {
-                    TakeDamage(2);
-                    countDown = 20;
-                }
-                    
-                
 
+                TakeDamage(2);
+                nungerDamageCountDown = 20;
+
+
+            }
+           
+            if (playerAspects && CurrentHunger < 50 && hungerCountDown <= 0)
+            {
+
+                hungerCountDown = 20;
+                CurrentHunger++;
             }
 
         }
