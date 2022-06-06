@@ -13,6 +13,7 @@ namespace EksamensProjekt2022
         private Vector2 firstItemSlot = new Vector2(10, 36);
         private SpriteFont font;
         private MouseState mState;
+        private KeyboardState kState;
         private bool updated;
         private bool click;
         public bool transferBool;
@@ -30,8 +31,6 @@ namespace EksamensProjekt2022
 
         public void Update(GameTime gameTime)
         {
-            cameraOffsetX = (int)GameControl.Instance.camera.Position.X;
-            cameraOffsetY = (int)GameControl.Instance.camera.Position.Y;
 
             if (GameControl.Instance.playing.currentGameObjects.Exists(x => x.Tag == "selectedChest"))
                 InputHandler.Instance.playerInventoryBox = inventoryBox;
@@ -44,6 +43,7 @@ namespace EksamensProjekt2022
             }
 
             mState = Mouse.GetState();
+            kState = Keyboard.GetState();
             if (mState.LeftButton == ButtonState.Released)
             {
                 click = true;
@@ -52,10 +52,10 @@ namespace EksamensProjekt2022
             foreach (Button button in transferButtons)
             {
                 button.Update(gameTime);
-                if (Updated)
-                {
-                    
-                }
+                Vector3 cameraVector = GameControl.Instance.camera.GetTransform().Translation;
+                int recX = (int)GameControl.Instance.camera.Position.X;
+                int recY = (int)GameControl.Instance.camera.Position.Y;
+                button.Rectangle = new Rectangle((-recX) + button.RecX, (-recY) + button.RecY, 30, 30);
             }
 
 
@@ -78,8 +78,9 @@ namespace EksamensProjekt2022
                     Button itembutton = new Button(inv.items[i]);
                     Button captured_button = itembutton;
                     itembutton.OnClicking += TransferEvent();
-                    itembutton.Rectangle = new Rectangle((int)itemSlot.X - cameraOffsetX, (int)itemSlot.Y - cameraOffsetY, 36, 36);
-
+                    itembutton.Rectangle = new Rectangle((int)itemSlot.X, (int)itemSlot.Y, 36, 36);
+                    itembutton.RecX = (int)itemSlot.X;
+                    itembutton.RecY = (int)itemSlot.Y;
 
                     transferButtons.Add(itembutton);
                     itemSlot.X += 44;
@@ -92,10 +93,11 @@ namespace EksamensProjekt2022
                         rowNumber = 0;
                     }
                     i++;
-
+                    
                 }
+                
             }
-            Updated = false;
+            Updated = true;
 
         }
 
@@ -115,6 +117,7 @@ namespace EksamensProjekt2022
                     GameObject selectedChest = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedChest");
                     if (selectedChest != null && selectedChest.GetComponent<Inventory>() != null)
                     {
+                        click = false;
                         Button button = (Button)captured_button;
                         Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
                         Inventory playerInv = player.GameObject.GetComponent<Inventory>() as Inventory;
@@ -130,13 +133,15 @@ namespace EksamensProjekt2022
                         playerInv.RemoveItem(item1, toRemove);
                         chestInv.notAddedAmount = 0;
 
-
-                        updated = false;
+                        Chest chestChest = selectedChest.GetComponent<Chest>() as Chest;
+                        chestChest.Updated = false;
+                        Updated = false;
                     }
-                }
-                
 
-                click = false;
+                }
+
+
+
 
 
             }

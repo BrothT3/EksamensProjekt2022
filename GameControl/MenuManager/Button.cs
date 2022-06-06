@@ -21,6 +21,8 @@ namespace EksamensProjekt2022
         private string buttonText;
         private Item item;
         private bool mReleased = true;
+        private int recX;
+        private int recY;
         public event EventHandler OnClicking;
         public Rectangle Rectangle { get => rectangle; set => rectangle = value; }
         public Vector2 DefaultbottonPos { get => defaultbottonPos; set => defaultbottonPos = value; }
@@ -30,8 +32,8 @@ namespace EksamensProjekt2022
         public string ButtonText { get => buttonText; set => buttonText = value; }
         public Item Item { get => item; set => item = value; }
         public bool MReleased { get => mReleased; set => mReleased = value; }
-
-        
+        public int RecX { get => recX; set => recX = value; }
+        public int RecY { get => recY; set => recY = value; }
 
         public Button(Rectangle ButtonRectangle, string buttonText)
         {

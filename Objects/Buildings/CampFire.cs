@@ -48,7 +48,7 @@ namespace EksamensProjekt2022
         {
             CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && updated)
+            if (mState.LeftButton == ButtonState.Released && Updated)
             {
                 click = true;
             }
@@ -138,7 +138,7 @@ namespace EksamensProjekt2022
                 playerInv.notAddedAmount = 0;
 
                 GameControl.Instance.playing.userInterface.Updated = false;
-                updated = false;
+                Updated = false;
             }
         }
 
@@ -158,7 +158,7 @@ namespace EksamensProjekt2022
 
             inv.AddItem(new CookedFish());
             cookingItems.Remove(fish);
-            updated = false;
+            Updated = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

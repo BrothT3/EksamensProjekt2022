@@ -43,6 +43,7 @@ namespace EksamensProjekt2022
                 inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
                 inv.AddItem(new Fish(1));
                 Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
             }
 
         }
@@ -76,6 +77,7 @@ namespace EksamensProjekt2022
                 inv.RemoveItem(Ingredients[1], Ingredients[1].Quantity);
                 inv.AddItem(new Wood(4));
                 Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
             }
 
         }
@@ -114,8 +116,9 @@ namespace EksamensProjekt2022
                 {
                     cf.Cook();
                     inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
-                }
 
+                }
+                GameControl.Instance.playing.userInterface.Updated = false;
 
                 Click = false;
             }
@@ -157,6 +160,7 @@ namespace EksamensProjekt2022
                 //player.hunger gå så op duJAJAJAJAJAJA
                 // HUSK DEN HUNGER DER
                 Click = false;
+                GameControl.Instance.playing.userInterface.Updated = false;
             }
 
         }
