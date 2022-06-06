@@ -187,6 +187,15 @@ namespace EksamensProjekt2022
                 }
             }
 
+            if (MapCreator.DevMode)
+            {
+                spriteBatch.DrawString(font, $"Use the arrow keys to go through objects and sprites.\nHit left alt to save or close program to undo\nPlace with left click, remove with right\n" +
+                    $"You can only remove tiles if you have a tile selected\n same with objects.\nYou can hold P to see Cell points\n" +
+                    $"Change the current area with F1 and F2", new Vector2(-500, 100), Color.Black);
+
+                spriteBatch.DrawString(font, "<- controls", new Vector2(0, 100), Color.Black);
+            }
+
         }
     }
 }

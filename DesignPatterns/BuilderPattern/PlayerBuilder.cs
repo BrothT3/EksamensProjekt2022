@@ -22,7 +22,7 @@ namespace EksamensProjekt2022
             gameObject.AddComponent(new SpriteRenderer());
 
             Collider c = (Collider)gameObject.AddComponent(new Collider());
-     
+
             Animator a = (gameObject).AddComponent(new Animator()) as Animator;
             a.AddAnimation(BuildAnimation("playerWalkUp", "playerWalkUp"));
             a.AddAnimation(BuildAnimation("playerWalkDown", "playerWalkDown"));
@@ -38,10 +38,24 @@ namespace EksamensProjekt2022
             sa.CurrentEnergy = energy;
             Point position = new Point(x, y);
             p.currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == position);
-            p.GameObject.Transform.Position = p.currentCell.cellVector;
+
+            if (!p.currentCell.IsWalkable)
+            {
+
+                p.currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.Position == new Point(15,10));
+
+                p.GameObject.Transform.Position = p.currentCell.cellVector;
+            }
+            else
+            {
+                p.GameObject.Transform.Position = p.currentCell.cellVector;
+            }
+          
+
+
             GameControl.Instance.playing.timeManager.Time = time;
-            
-           // inv.items.Add(new Stone(3));
+
+            // inv.items.Add(new Stone(3));
         }
         private Animation BuildAnimation(string animationName, string spriteName)
         {

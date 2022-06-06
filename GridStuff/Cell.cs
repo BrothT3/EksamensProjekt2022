@@ -19,6 +19,7 @@ namespace EksamensProjekt2022
         private int height;
         private int width;
         public ResourceDepot myResource;
+        private bool isAreaChangeCell = false;
 
         private Node myNode;
         private CellType myType = CellType.Empty;
@@ -33,6 +34,7 @@ namespace EksamensProjekt2022
         public CellType MyType { get { return myType; } }
         public bool IsWalkable { get; set; } 
         public bool IsNew { get; set; }
+        public bool IsAreaChangeCell { get => isAreaChangeCell; set => isAreaChangeCell = value; }
 
         #region rectangles
         private Rectangle topLine;
@@ -60,6 +62,25 @@ namespace EksamensProjekt2022
             this.height = height;
             IsWalkable = true;
             cellVector = new Vector2((position.X+1) * width - (width / 2), (position.Y+1) * height - (height));
+
+            if (this.position.X == GameControl.Instance.playing.CellCount/2 && this.position.Y == 0 || this.position.X == GameControl.Instance.playing.CellCount/2+1 && this.position.Y == 0 && IsWalkable)
+            { //top
+                isAreaChangeCell = true;
+            }
+            else if (this.position.Y == GameControl.Instance.playing.CellCount /2 && this.position.X == 0 || this.position.Y == GameControl.Instance.playing.CellCount/2-1 && this.position.X == 0 && IsWalkable)
+            {//left
+                isAreaChangeCell = true;
+            }
+            else if(this.position.Y == GameControl.Instance.playing.CellCount / 2 && this.position.X == GameControl.Instance.playing.CellCount-1 || 
+                this.position.Y == GameControl.Instance.playing.CellCount / 2 - 1 && this.position.X == GameControl.Instance.playing.CellCount-1 && IsWalkable)
+            {//right
+                isAreaChangeCell =true;
+            }
+            else if (this.position.X == GameControl.Instance.playing.CellCount /2-1 && this.position.Y == GameControl.Instance.playing.CellCount-1 ||
+                this.position.X == GameControl.Instance.playing.CellCount / 2  && this.position.Y == GameControl.Instance.playing.CellCount-1)
+            {//bottom
+                isAreaChangeCell=true;
+            }
         }
         public void Update(GameTime gameTime)
         {
@@ -98,10 +119,15 @@ namespace EksamensProjekt2022
             {
                 color = Color.Green * 0.5f;
             }
+
+            if (isAreaChangeCell)
+            {
+                spriteColor = Color.Black * 0.5f;
+            }
             //bare for at at man kan se hvor man har musen og selve pathen, men pathen er også bare et debug tool
             //mouseover
             if (Sprite != null)
-                spriteBatch.Draw(Sprite, new Vector2(background.X, background.Y), Color.White);
+                spriteBatch.Draw(Sprite, new Vector2(background.X, background.Y), spriteColor);
 
             spriteBatch.Draw(GameWorld.Instance.pixel, background, color);
 

@@ -23,7 +23,7 @@ namespace EksamensProjekt2022
 
 
 
-        
+
 
         public Area MyArea { get => myArea; set => myArea = value; }
 
@@ -39,8 +39,8 @@ namespace EksamensProjekt2022
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             // sr.SetSprite("Insert sprite path here");
             sr.SetSprite("MinerTest");
-        //    currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
-          //  GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
+            //    currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
+            //  GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
 
             survivalAspect = GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
 
@@ -61,7 +61,12 @@ namespace EksamensProjekt2022
             {
                 ResourceGather();
             }
-        
+
+            if (!currentCell.IsWalkable)
+            {
+                GameObject.Transform.Position = GameControl.Instance.playing.currentCells[new Point(15, 10)].cellVector;
+                currentCell = GameControl.Instance.playing.currentGrid.Find(x => x.cellVector == GameObject.Transform.Position);
+            }
         }
 
         private void OnDeathEvent(object sender, EventArgs e)
@@ -155,23 +160,29 @@ namespace EksamensProjekt2022
             countDown -= GameWorld.DeltaTime;
             Inventory inv = GameObject.GetComponent<Inventory>() as Inventory;
 
-            if (selectedCell.myResource is Tree && countDown <= 0 && selectedCell.myResource.Amount > 0)
+            if (Vector2.Distance(selectedCell.cellVector, GameObject.Transform.Position) < 64)
             {
-                
-                GameWorld.Instance.woodChop.Play(0.5f, 0, 0);
-                inv.AddItem(new Wood(2));
-                selectedCell.myResource.Amount -= 2;
-                countDown = 2;
+                if (selectedCell.myResource is Tree && countDown <= 0 && selectedCell.myResource.Amount > 0)
+                {
+
+                    GameWorld.Instance.woodChop.Play(0.5f, 0, 0);
+                    inv.AddItem(new Wood(2));
+                    selectedCell.myResource.Amount -= 2;
+                    countDown = 2;
+                }
+                else if (selectedCell.myResource is Boulder && countDown <= 0 && selectedCell.myResource.Amount > 0)
+                {
+                    GameWorld.Instance.rockHit.Play();
+
+                    inv.AddItem(new Stone(2));
+                    selectedCell.myResource.Amount -= 2;
+                    countDown = 2;
+                }
             }
-            else if (selectedCell.myResource is Boulder && countDown <= 0 && selectedCell.myResource.Amount >0)
-            {
-                GameWorld.Instance.rockHit.Play();
-                
-                inv.AddItem(new Stone(2));
-                selectedCell.myResource.Amount -= 2;
-                countDown = 2;
-            }
+
         }
+
+    
 
 
     }
