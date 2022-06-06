@@ -231,9 +231,10 @@ namespace EksamensProjekt2022
                 if (!MapCreator.DevMode)
                 {
                     timeManager.Update(gameTime);
+                    userInterface.Update(gameTime);
                 }
 
-                userInterface.Update(gameTime);
+               
 
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
