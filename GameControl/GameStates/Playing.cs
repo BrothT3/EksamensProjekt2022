@@ -72,7 +72,7 @@ namespace EksamensProjekt2022
             {
 
 
-               
+
 
                 timeManager = new TimeManager();
                 timeManager.LoadContent();
@@ -89,13 +89,24 @@ namespace EksamensProjekt2022
                 _mapManager.LoadPlayer(_mapManager.CurrentSave);
 
 
-                for (int i = 0; i < _mapManager.areaLoader.currentGameObjects.Length; i++)
+                for (int i = 0; i < _mapManager.areaLoader.currentGameObjects[0].Count; i++)
                 {
                     areaManager.currentGameObjects[i] = _mapManager.areaLoader.currentGameObjects[i];
                     areaManager.currentGrid[i] = _mapManager.areaLoader.currentGrid[i];
 
                 }
 
+                for (int i = 0; i < currentGameObjects.Count; i++)
+                {
+                    currentGameObjects[i].Awake();
+                    currentGameObjects[i].Start();
+                }
+                foreach (Cell cell in currentGrid)
+                {
+                    cell.LoadContent();
+                }
+
+                #region ToBeRemoved
                 userInterface = new UserInterface();
                 GameObject chest = new GameObject();
                 Chest c = new Chest(new Point(7, 7));
@@ -134,12 +145,15 @@ namespace EksamensProjekt2022
                 CraftingMenu cfcm = new CraftingMenu();
                 cfsr.SetSprite("campFire");
                 cfcm.AddRecipe(new CookedFishRecipe());
+                cfcm.AddRecipe(new EatFishRecipe());
                 campfire.AddComponent(cf);
                 campfire.AddComponent(cfinv);
                 campfire.AddComponent(cfcm);
                 campfire.AddComponent(cfsr);
 
                 Instantiate(campfire);
+                #endregion
+
             }
             else
             {
@@ -190,11 +204,11 @@ namespace EksamensProjekt2022
             MainMenuButton.OnClicking += ClickedMainMenu;
             pauseMenuButtons.Add(MainMenuButton);
 
-            Button YesExitButton = new Button(new Rectangle(500, 250, 144, 72), "YES");
+            Button YesExitButton = new Button(new Rectangle(500, 250, 50, 50), "YES");
             YesExitButton.OnClicking += ClickedYesExitGame;
             pauseMenuExitButtons.Add(YesExitButton);
 
-            Button NoExitButton = new Button(new Rectangle(175, 250, 144, 72), "NO");
+            Button NoExitButton = new Button(new Rectangle(500, 320, 50, 50), "NO");
             NoExitButton.OnClicking += ClickedNoExitGame;
             pauseMenuExitButtons.Add(NoExitButton);
 
@@ -218,9 +232,10 @@ namespace EksamensProjekt2022
                 if (!MapCreator.DevMode)
                 {
                     timeManager.Update(gameTime);
+                    userInterface.Update(gameTime);
                 }
 
-                userInterface.Update(gameTime);
+               
 
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
@@ -234,7 +249,7 @@ namespace EksamensProjekt2022
 
                 CleanUp();
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && enterReleased == true)
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && enterReleased == true)
                 {
 
                     enterReleased = false;
@@ -244,10 +259,16 @@ namespace EksamensProjekt2022
                     hasSaved = false;
                 }
                 enterReleased = true;
+                Player p = (Player)GameWorld.Instance.FindObjectOfType<Player>() as Player;
+                if (p != null)
+                {
+                    PlayerChangeArea(p);
+                }
+                hasSaved = false;
             }
             else
             {
-                
+
                 if (offsetPauseButtons)
                 {
 
@@ -268,15 +289,30 @@ namespace EksamensProjekt2022
                     foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
 
+                  
+
+                    
+                
+                    
+
                 //save inventory
                 if (!hasSaved)
                 {
                     Player p = (Player)GameWorld.Instance.FindObjectOfType<Player>() as Player;
-                    Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
-                    hasSaved = true;
-                    _mapManager.SavePlayerInventory(inv.items);
-                    _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
-                    hasSaved = true;
+                    if (p != null)
+                    {
+                        Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
+                        //hasSaved = true;
+                        _mapManager.SavePlayerInventory(inv.items);
+                       // _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
+                       
+                        for (int i = 0; i < areaManager.currentGrid.Length; i++)
+                        {
+                            _mapManager.SaveComponents(areaManager.currentGameObjects[i], areaManager.currentGrid[i], _mapManager.CurrentSave, (Area)i);
+                        }
+                        hasSaved = true;
+                    }
+
                     //GameObject player;
                     //foreach (GameObject go in currentGameObjects)
                     //{
@@ -288,12 +324,12 @@ namespace EksamensProjekt2022
                     //        hasSaved = true;
                     //    }
                     //}
- 
+
 
 
                 }
 
-              
+
 
 
             }
@@ -336,26 +372,73 @@ namespace EksamensProjekt2022
 
             if (pauseWantToExit)
             {
-                spriteBatch.DrawString(exitFont, "ARE U SURE TO WANT TO EXIT NOW!?", new Vector2(300, 400), Color.White);
+                spriteBatch.DrawString(exitFont, "Are you sure you want to exit?", new Vector2(420, 400), Color.White);
             }
-            if (paused)
+            if (paused && !pauseWantToExit)
             {
                 foreach (Button item in GameControl.Instance.playing.pauseMenuButtons)
                 {
                     item.Draw(spriteBatch);
                 }
-                if (pauseWantToExit)
+
+            }
+            if (pauseWantToExit)
+            {
+                foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
                 {
-                    foreach (Button item in GameControl.Instance.playing.pauseMenuExitButtons)
-                    {
-                        item.Draw(spriteBatch);
-                    }
+                    item.Draw(spriteBatch);
                 }
             }
             if (userInterface != null)
                 userInterface.Draw(spriteBatch);
         }
         #endregion
+
+        public void PlayerChangeArea(Player p)
+        {
+
+
+            if (p.currentCell.IsAreaChangeCell)
+            {
+                Cell c = p.currentCell;
+                if (c.Position.X == 0 && c.Position.Y == CellCount / 2 && p.MyArea != Area.River||
+                    c.Position.X == 0 && c.Position.Y == CellCount / 2 -1 && p.MyArea != Area.River)
+                {
+                    currentGameObjects.Remove(p.GameObject);
+                    areaManager.AreaChange(p.MyArea, Area.River);
+                    p.MyArea = Area.River;
+                    currentGameObjects.Add(p.GameObject);
+                }
+
+                if (c.Position.X == CellCount/2 && c.Position.Y == 0 && p.MyArea != Area.Hills||
+                    c.Position.X == CellCount/2 +1 && c.Position.Y == 0 && p.MyArea != Area.Hills)
+                {
+                    currentGameObjects.Remove(p.GameObject);
+                    areaManager.AreaChange(p.MyArea, Area.Hills);
+                    p.MyArea = Area.Hills;
+                    currentGameObjects.Add(p.GameObject);
+                }
+
+                if (c.Position.X == CellCount -1 && c.Position.Y == CellCount /2 && p.MyArea != Area.Camp||
+                    c.Position.X == CellCount -1 && c.Position.Y == CellCount /2 -1 && p.MyArea != Area.Camp)
+                {
+                    currentGameObjects.Remove(p.GameObject);
+                    areaManager.AreaChange(p.MyArea, Area.Camp);
+                    p.MyArea = Area.Camp;
+                    currentGameObjects.Add(p.GameObject);
+                }
+
+                if (c.Position.X == CellCount/2 && c.Position.Y == CellCount-1 && p.MyArea != Area.Desert
+                    || c.Position.X == CellCount/2-1 && c.Position.Y == CellCount-1 && p.MyArea != Area.Desert)
+                {
+                    currentGameObjects.Remove(p.GameObject);
+                    areaManager.AreaChange(p.MyArea, Area.Desert);
+                    p.MyArea = Area.Desert;
+                    currentGameObjects.Add(p.GameObject);
+                }
+            }
+
+        }
 
         public void CleanUp()
         {

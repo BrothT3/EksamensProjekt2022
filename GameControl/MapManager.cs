@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Threading;
 
 namespace EksamensProjekt2022
 {
@@ -19,6 +21,7 @@ namespace EksamensProjekt2022
         public MapManager()
         {
             areaLoader = new AreaManager();
+
         }
 
         /// <summary>
@@ -243,6 +246,7 @@ namespace EksamensProjekt2022
 
             Close();
         }
+
 
         /// <summary>
         /// Opens connection to database. 

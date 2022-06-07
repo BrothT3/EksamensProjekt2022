@@ -106,7 +106,7 @@ namespace EksamensProjekt2022
                 {
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
-                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased)
+                        && mouseState.LeftButton == ButtonState.Pressed && mLeftReleased && !c.IsAreaChangeCell)
                     {
                         cell = c;
                         //Instantiate object
@@ -131,7 +131,7 @@ namespace EksamensProjekt2022
                     }
 
                     if (c.background.Intersects(new Rectangle(mouseState.X - (int)camera.Position.X, mouseState.Y - (int)camera.Position.Y, 10, 10))
-                    && mouseState.RightButton == ButtonState.Pressed && mRightReleased)
+                    && mouseState.RightButton == ButtonState.Pressed && mRightReleased && !c.IsAreaChangeCell)
                     {
 
                         RemoveItem(mouseState, c);
@@ -140,6 +140,8 @@ namespace EksamensProjekt2022
                     {
                         mRightReleased = true;
                     }
+
+
 
                 }
 
