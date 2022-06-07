@@ -112,7 +112,7 @@ namespace EksamensProjekt2022
                 GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
                 CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
                 Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
-                if (cfinv.items.Count + cf.CurrentlyCooking <= cfinv.InventoryMax)
+                if ((cfinv.items.Count + 1) + cf.CurrentlyCooking <= cfinv.InventoryMax)
                 {
                     cf.Cook();
                     inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
@@ -154,15 +154,12 @@ namespace EksamensProjekt2022
                 Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
                 Inventory inv = player.GameObject.GetComponent<Inventory>() as Inventory;
                 GameObject campFire = GameControl.Instance.playing.currentGameObjects.First(x => x.Tag == "selectedBuilding");
-                CampFire cf = campFire.GetComponent<CampFire>() as CampFire;
+                CampFire cf = campFire.GetComponent<CampFire>() as CampFire;               
                 Inventory cfinv = campFire.GetComponent<Inventory>() as Inventory;
                 inv.RemoveItem(Ingredients[0], Ingredients[0].Quantity);
                 SurvivalAspect sa = player.GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
                 sa.CurrentHunger -= 10;
                 sa.Heal(5);
-
-                //player.hunger gå så op duJAJAJAJAJAJA
-                // HUSK DEN HUNGER DER
                 Click = false;
                 GameControl.Instance.playing.userInterface.Updated = false;
             }

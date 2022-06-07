@@ -11,21 +11,21 @@ namespace EksamensProjekt2022
 {
     public class CampFire : Building
     {
-        private Color Color = Color.White;
+        
         private SpriteFont font;
         private Texture2D craftingTableCM;
-        private bool updated = false;
-        private List<Button> transferButtons = new List<Button>();
-        private Rectangle craftingTableBox;
-        private bool click;
-        private MouseState mState;
-        public Thread cookFish;
-        private bool cooking;
         private List<Item> cookingItems = new List<Item>();
-        private Vector2 cookingBox;
+        private List<Button> transferButtons = new List<Button>();
+        private Rectangle craftingTableBox;       
+        private MouseState mState;
+        private Color Color = Color.White;
         private Color cookingColor;
-        private int currentlyCooking = 0;
-
+        private Vector2 cookingBox;
+        private int currentlyCooking = 1;
+        private bool updated = false;
+        private bool cooking;
+        private bool click;
+        public Thread cookFish;
         public bool Updated { get => updated; set => updated = value; }
         public int CurrentlyCooking { get => currentlyCooking; set => currentlyCooking = value; }
 
@@ -48,7 +48,7 @@ namespace EksamensProjekt2022
         {
             CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && Updated)
+            if (mState.LeftButton == ButtonState.Released && updated)
             {
                 click = true;
             }

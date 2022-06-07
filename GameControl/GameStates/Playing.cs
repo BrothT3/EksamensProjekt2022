@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
     public class Playing : GameState
     {
         public UserInterface userInterface;
-        public AreaManager areaManager;
+        public AreaManager areaManager = new AreaManager();
         public TimeManager timeManager;
         public DebugTool _debugTools;
         #region Lists
@@ -37,14 +37,14 @@ namespace EksamensProjekt2022
         public MapManager _mapManager;
         private Vector2 buttonOffset;
         public Cell selectedCell;
-
+        
         public Playing()
         {
             CellCount = 40;
             CellSize = 36;
             grid = new Grid(CellCount, CellSize, CellSize);
             _debugTools = new DebugTool();
-            areaManager = new AreaManager();
+            
 
 
         }
@@ -57,18 +57,31 @@ namespace EksamensProjekt2022
             if (player != null)
                 Destroy(player.GameObject);
 
+
             selectedCell = null;
+
+            if (InputHandler.Instance.finalPath != null)
+            {
+                InputHandler.Instance.finalPath = null;
+            }
+            currentGameObjects.Clear();
+            currentGrid.Clear();
+            areaManager = null;
+                selectedCell = null;
+
             initializeGameState = true;
+
         }
 
 
         public override void Initialize()
         {
             GameControl.Instance.selectedGameState = this;
+            areaManager = new AreaManager();
             areaManager.currentGrid[0] = grid.CreateGrid();
             areaManager.currentCells = grid.CreateCells();
 
-
+            
             if (!MapCreator.DevMode)
             {
 
@@ -105,53 +118,59 @@ namespace EksamensProjekt2022
                 {
                     cell.LoadContent();
                 }
-
-                #region ToBeRemoved
                 userInterface = new UserInterface();
-                GameObject chest = new GameObject();
-                Chest c = new Chest(new Point(7, 7));
-                SpriteRenderer sr = new SpriteRenderer();
-                sr.SetSprite("chest");
-                Inventory inv = new Inventory(10);
-                chest.AddComponent(sr);
-                chest.AddComponent(c);
-                chest.AddComponent(inv);
+                #region temporary implementation of buildings
+                if (!currentGameObjects.Exists(x => (x.Tag == "chest")))
+                {
+                    
+                    GameObject chest = new GameObject();
+                    Chest c = new Chest(new Point(7, 7));
+                    SpriteRenderer sr = new SpriteRenderer();
+                    sr.SetSprite("chest");
+                    Inventory inv = new Inventory(10);
+                    chest.AddComponent(sr);
+                    chest.AddComponent(c);
+                    chest.AddComponent(inv);
+                    Instantiate(chest);
+                }
 
+                if (!currentGameObjects.Exists(x => (x.Tag == "craftingTable")))
+                {
+                    GameObject craftingTable = new GameObject();
+                    SpriteRenderer ctsr = new SpriteRenderer();
+                    CraftingTable ct = new CraftingTable(new Point(11, 11));
+                    CraftingMenu cm = new CraftingMenu();
+                    Inventory ctinv = new Inventory(2);
+                    ctsr.SetSprite("craftingTable");
+                    cm.AddRecipe(new FermentedBreastMilkRecipe());
+                    cm.AddRecipe(new ChestRecipe());
+                    craftingTable.AddComponent(cm);
+                    craftingTable.AddComponent(ct);
+                    craftingTable.AddComponent(ctsr);
+                    craftingTable.AddComponent(ctinv);
+                    ctinv.AddItem(new Wood(8));
+                    ctinv.AddItem(new Stone(3));
+                    Instantiate(craftingTable);
+                }
 
-                Instantiate(chest);
+                if (!currentGameObjects.Exists(x => (x.Tag == "campFire")))
+                {
+                    GameObject campfire = new GameObject();
+                    SpriteRenderer cfsr = new SpriteRenderer();
+                    CampFire cf = new CampFire(new Point(4, 5));
+                    Inventory cfinv = new Inventory(2);
+                    CraftingMenu cfcm = new CraftingMenu();
+                    cfsr.SetSprite("campFire");
+                    cfcm.AddRecipe(new CookedFishRecipe());
+                    cfcm.AddRecipe(new EatFishRecipe());
+                    campfire.AddComponent(cf);
+                    campfire.AddComponent(cfinv);
+                    campfire.AddComponent(cfcm);
+                    campfire.AddComponent(cfsr);
 
-                GameObject craftingTable = new GameObject();
-                SpriteRenderer ctsr = new SpriteRenderer();
-                CraftingTable ct = new CraftingTable(new Point(11, 11));
-                CraftingMenu cm = new CraftingMenu();
-                Inventory ctinv = new Inventory(2);
-                ctsr.SetSprite("craftingTable");
+                    Instantiate(campfire);
+                }
 
-                cm.AddRecipe(new FermentedBreastMilkRecipe());
-                cm.AddRecipe(new ChestRecipe());
-                craftingTable.AddComponent(cm);
-                craftingTable.AddComponent(ct);
-                craftingTable.AddComponent(ctsr);
-                craftingTable.AddComponent(ctinv);
-                ctinv.AddItem(new Wood(8));
-                ctinv.AddItem(new Stone(3));
-
-                Instantiate(craftingTable);
-
-                GameObject campfire = new GameObject();
-                SpriteRenderer cfsr = new SpriteRenderer();
-                CampFire cf = new CampFire(new Point(4, 5));
-                Inventory cfinv = new Inventory(2);
-                CraftingMenu cfcm = new CraftingMenu();
-                cfsr.SetSprite("campFire");
-                cfcm.AddRecipe(new CookedFishRecipe());
-                cfcm.AddRecipe(new EatFishRecipe());
-                campfire.AddComponent(cf);
-                campfire.AddComponent(cfinv);
-                campfire.AddComponent(cfcm);
-                campfire.AddComponent(cfsr);
-
-                Instantiate(campfire);
                 #endregion
 
             }
@@ -234,7 +253,7 @@ namespace EksamensProjekt2022
                     userInterface.Update(gameTime);
                 }
 
-               
+
 
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
@@ -288,11 +307,11 @@ namespace EksamensProjekt2022
                     foreach (Button item in pauseMenuExitButtons)
                         item.Update(gameTime);
 
-                  
 
-                    
-                
-                    
+
+
+
+
 
                 //save inventory
                 if (!hasSaved)
@@ -303,8 +322,8 @@ namespace EksamensProjekt2022
                         Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
                         //hasSaved = true;
                         _mapManager.SavePlayerInventory(inv.items);
-                       // _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
-                       
+                        // _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
+
                         for (int i = 0; i < areaManager.currentGrid.Length; i++)
                         {
                             _mapManager.SaveComponents(areaManager.currentGameObjects[i], areaManager.currentGrid[i], _mapManager.CurrentSave, (Area)i);
@@ -400,8 +419,8 @@ namespace EksamensProjekt2022
             if (p.currentCell.IsAreaChangeCell)
             {
                 Cell c = p.currentCell;
-                if (c.Position.X == 0 && c.Position.Y == CellCount / 2 && p.MyArea != Area.River||
-                    c.Position.X == 0 && c.Position.Y == CellCount / 2 -1 && p.MyArea != Area.River)
+                if (c.Position.X == 0 && c.Position.Y == CellCount / 2 && p.MyArea != Area.River ||
+                    c.Position.X == 0 && c.Position.Y == CellCount / 2 - 1 && p.MyArea != Area.River)
                 {
                     currentGameObjects.Remove(p.GameObject);
                     areaManager.AreaChange(p.MyArea, Area.River);
@@ -409,8 +428,8 @@ namespace EksamensProjekt2022
                     currentGameObjects.Add(p.GameObject);
                 }
 
-                if (c.Position.X == CellCount/2 && c.Position.Y == 0 && p.MyArea != Area.Hills||
-                    c.Position.X == CellCount/2 +1 && c.Position.Y == 0 && p.MyArea != Area.Hills)
+                if (c.Position.X == CellCount / 2 && c.Position.Y == 0 && p.MyArea != Area.Hills ||
+                    c.Position.X == CellCount / 2 + 1 && c.Position.Y == 0 && p.MyArea != Area.Hills)
                 {
                     currentGameObjects.Remove(p.GameObject);
                     areaManager.AreaChange(p.MyArea, Area.Hills);
@@ -418,8 +437,8 @@ namespace EksamensProjekt2022
                     currentGameObjects.Add(p.GameObject);
                 }
 
-                if (c.Position.X == CellCount -1 && c.Position.Y == CellCount /2 && p.MyArea != Area.Camp||
-                    c.Position.X == CellCount -1 && c.Position.Y == CellCount /2 -1 && p.MyArea != Area.Camp)
+                if (c.Position.X == CellCount - 1 && c.Position.Y == CellCount / 2 && p.MyArea != Area.Camp ||
+                    c.Position.X == CellCount - 1 && c.Position.Y == CellCount / 2 - 1 && p.MyArea != Area.Camp)
                 {
                     currentGameObjects.Remove(p.GameObject);
                     areaManager.AreaChange(p.MyArea, Area.Camp);
@@ -427,8 +446,8 @@ namespace EksamensProjekt2022
                     currentGameObjects.Add(p.GameObject);
                 }
 
-                if (c.Position.X == CellCount/2 && c.Position.Y == CellCount-1 && p.MyArea != Area.Desert
-                    || c.Position.X == CellCount/2-1 && c.Position.Y == CellCount-1 && p.MyArea != Area.Desert)
+                if (c.Position.X == CellCount / 2 && c.Position.Y == CellCount - 1 && p.MyArea != Area.Desert
+                    || c.Position.X == CellCount / 2 - 1 && c.Position.Y == CellCount - 1 && p.MyArea != Area.Desert)
                 {
                     currentGameObjects.Remove(p.GameObject);
                     areaManager.AreaChange(p.MyArea, Area.Desert);

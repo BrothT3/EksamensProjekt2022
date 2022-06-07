@@ -45,9 +45,8 @@ namespace EksamensProjekt2022
             if (IsSelected)
             {
                 GameObject.Tag = "selectedChest";
-                UpdateButtons();
+                UpdateButtons();                
                 InputHandler.Instance.uiBox = inventoryBox;
-
             }
             if (!IsSelected)
             {
