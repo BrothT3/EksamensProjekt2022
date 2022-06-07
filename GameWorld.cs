@@ -105,29 +105,6 @@ namespace EksamensProjekt2022
             }
 
 
-            //Eksempel på hvordan man skifter spillerens placering
-            //Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
-            //if (player != null && player.currentCell.Position == currentCells[new Point(1, 1)].Position)
-            //{
-            //    player.MyArea = CurrentArea.River;
-            //    areaManager.ChangeArea(player.MyArea);
-            //    currentGameObjects.Remove(player.GameObject);
-            //    currentCells = areaManager.currentCells[(int)player.MyArea];
-            //    currentGrid = areaManager.currentGrid[(int)player.MyArea];
-            //    currentGameObjects = areaManager.currentGameObjects[(int)player.MyArea];
-            //    currentGameObjects.Add(player.GameObject);
-
-            //    foreach (GameObject go in currentGameObjects)
-            //    {
-            //        if (go.GetComponent<Player>() == null)
-            //        {
-            //            go.Start();
-            //        }
-            //    }
-
-
-            //   }
-
             GameControl.Instance.UpdateGameState(gameTime);
             base.Update(gameTime);
         }
@@ -180,7 +157,7 @@ namespace EksamensProjekt2022
             if (MapCreator.DevMode)
             {
                 GameControl.Instance.playing._debugTools.Draw(_spriteBatch);
-
+                MapCreator.Instance.Draw(_spriteBatch);
             }
           
 
@@ -189,10 +166,7 @@ namespace EksamensProjekt2022
             {
                 GameControl.Instance.playing.timeManager.Draw(_spriteBatch);
             }
-            if (MapCreator.DevMode)
-            {
-                MapCreator.Instance.Draw(_spriteBatch);
-            }
+
 
             _spriteBatch.End();
 

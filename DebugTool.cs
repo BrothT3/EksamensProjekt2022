@@ -182,7 +182,7 @@ namespace EksamensProjekt2022
             {
                 foreach (Cell c in GameControl.Instance.playing.currentGrid)
                 {
-                    spriteBatch.DrawString(font, $"({c.Position.X.ToString()}\n{c.Position.Y.ToString()})", new Vector2(c.background.X, c.background.Y), Color.Black, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(font, $"({c.Position.X}\n{c.Position.Y})", new Vector2(c.background.X, c.background.Y), Color.Black, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
                 }
                 if (ca != null)
                 {
