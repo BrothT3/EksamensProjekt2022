@@ -23,7 +23,6 @@ namespace EksamensProjekt2022
 
         public CraftingMenu()
         {
-            sprite = GameWorld.Instance.Content.Load<Texture2D>("MinerTest");
             redX = GameWorld.Instance.Content.Load<Texture2D>("redX");
         }
         public override void Update(GameTime gameTime)
@@ -118,8 +117,7 @@ namespace EksamensProjekt2022
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {
-            
+        {          
                 foreach (Button button in playerCraftingButtons)
                 {
                     button.Draw(spriteBatch);
@@ -128,8 +126,6 @@ namespace EksamensProjekt2022
                         spriteBatch.Draw(redX, button.Rectangle, Color.White * 0.4f);
                     }
                 }
-            if (craftingMenu)
-                spriteBatch.Draw(sprite, new Vector2(400, 400), Color.White);
         }
     }
 

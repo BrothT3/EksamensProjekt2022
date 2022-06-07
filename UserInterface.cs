@@ -84,11 +84,12 @@ namespace EksamensProjekt2022
 
                     transferButtons.Add(itembutton);
                     itemSlot.X += 44;
-                    inventoryBox.X += 44;
+                    inventoryBox.Width += 44;
                     rowNumber++;
                     if (rowNumber >= 4)
                     {
                         itemSlot.Y += 44;
+                        inventoryBox.Height += 44;
                         itemSlot.X = firstItemSlot.X;
                         rowNumber = 0;
                     }

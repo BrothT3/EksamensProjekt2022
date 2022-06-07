@@ -24,7 +24,7 @@ namespace EksamensProjekt2022
         private List<Item> cookingItems = new List<Item>();
         private Vector2 cookingBox;
         private Color cookingColor;
-        private int currentlyCooking = 0;
+        private int currentlyCooking = 1;
 
         public bool Updated { get => updated; set => updated = value; }
         public int CurrentlyCooking { get => currentlyCooking; set => currentlyCooking = value; }
@@ -48,7 +48,7 @@ namespace EksamensProjekt2022
         {
             CraftingMenu cm = GameObject.GetComponent<CraftingMenu>() as CraftingMenu;
             mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released && Updated)
+            if (mState.LeftButton == ButtonState.Released && updated)
             {
                 click = true;
             }
