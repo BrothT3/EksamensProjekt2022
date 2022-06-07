@@ -23,9 +23,6 @@ namespace EksamensProjekt2022
         public override void Start()
         {
             myArea = Area.Camp;
-          //  SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-           // sr.SetSprite("MinerTest");
-
             survivalAspect = GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
             animator = (Animator)GameObject.GetComponent<Animator>();
             survivalAspect.DeathEvent += OnDeathEvent;

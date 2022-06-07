@@ -28,8 +28,8 @@ namespace EksamensProjekt2022
             Player p = (Player)gameObject.AddComponent(new Player());
             p.MyArea = Area.Camp;
 
-            gameObject.AddComponent(new SpriteRenderer());
-
+            SpriteRenderer sr =  (SpriteRenderer)gameObject.AddComponent(new SpriteRenderer());
+            sr.SetSprite("MinerTest");
             Collider c = (Collider)gameObject.AddComponent(new Collider());
 
             Animator a = (gameObject).AddComponent(new Animator()) as Animator;
