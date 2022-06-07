@@ -10,7 +10,7 @@ namespace EksamensProjekt2022
     public class Playing : GameState
     {
         public UserInterface userInterface;
-        public AreaManager areaManager;
+        public AreaManager areaManager = new AreaManager();
         public TimeManager timeManager;
         public DebugTool _debugTools;
         #region Lists
@@ -37,7 +37,7 @@ namespace EksamensProjekt2022
         public MapManager _mapManager;
         private Vector2 buttonOffset;
         public Cell selectedCell;
-
+        
         public Playing()
         {
             CellCount = 40;
