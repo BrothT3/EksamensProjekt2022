@@ -51,7 +51,7 @@ namespace EksamensProjekt2022
             }
             if (!IsSelected)
             {
-                
+                GameObject.Tag = "craftingTable";
                 cm.endingCraftingMenu = true;
             }
             foreach (Button button in transferButtons)
