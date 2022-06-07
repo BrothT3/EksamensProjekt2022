@@ -7,43 +7,26 @@ namespace EksamensProjekt2022
     public class Player : Component
     {
         private Area myArea;
-
         public Cell currentCell;
         public Cell nextCell;
-        private Vector2 currentVector;
         public Vector2 nextVector;
         private Vector2 moveDir;
         public Cell selectedCell;
         private Animator animator;
         private SurvivalAspect survivalAspect;
-        private Vector2 start = new Vector2(4, 9);
-        private Vector2 end = new Vector2(3, 8);
         public int step = 0;
         public bool readyToMove = false;
-
-
-
-
-
+        private float countDown = 2;
         public Area MyArea { get => myArea; set => myArea = value; }
 
-
-        public override void Awake()
-        {
-
-        }
 
         public override void Start()
         {
             myArea = Area.Camp;
-            SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            // sr.SetSprite("Insert sprite path here");
-            sr.SetSprite("MinerTest");
-            //    currentCell = GameControl.Instance.playing.currentCells[start.ToPoint()];
-            //  GameObject.Transform.Position = new Vector2(currentCell.cellVector.X, currentCell.cellVector.Y);
+          //  SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
+           // sr.SetSprite("MinerTest");
 
             survivalAspect = GameObject.GetComponent<SurvivalAspect>() as SurvivalAspect;
-
             animator = (Animator)GameObject.GetComponent<Animator>();
             survivalAspect.DeathEvent += OnDeathEvent;
 
@@ -154,7 +137,7 @@ namespace EksamensProjekt2022
 
         }
 
-        private float countDown = 2;
+   
         private void ResourceGather()
         {
             countDown -= GameWorld.DeltaTime;

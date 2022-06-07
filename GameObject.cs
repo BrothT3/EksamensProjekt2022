@@ -26,13 +26,6 @@ namespace EksamensProjekt2022
             return components.Find(x => x.GetType() == typeof(T));
         }
 
-        public void Awake()
-        {
-            for (int i = 0; i < components.Count; i++)
-            {
-                components[i].Awake();
-            }
-        }
 
         public void Start()
         {

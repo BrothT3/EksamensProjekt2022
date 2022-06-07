@@ -11,6 +11,7 @@ namespace EksamensProjekt2022
         {
             speed = _speed;
             velocity = new Vector2(_velocity.X, _velocity.Y);
+            //not implemented
         }
     }
 }

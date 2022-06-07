@@ -66,7 +66,7 @@ namespace EksamensProjekt2022
             {
                 if (other != this && other.CollisionBox.Intersects(CollisionBox))
                 {
-                    //do collision thing
+                    //not implemented, collision with enemy would go here
                 }
             }
         }

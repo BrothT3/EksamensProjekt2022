@@ -56,6 +56,10 @@ namespace EksamensProjekt2022
             Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
             if (player != null)
                 Destroy(player.GameObject);
+
+
+            selectedCell = null;
+
             if (InputHandler.Instance.finalPath != null)
             {
                 InputHandler.Instance.finalPath = null;
@@ -64,6 +68,7 @@ namespace EksamensProjekt2022
             currentGrid.Clear();
             areaManager = null;
                 selectedCell = null;
+
             initializeGameState = true;
 
         }
@@ -107,7 +112,6 @@ namespace EksamensProjekt2022
 
                 for (int i = 0; i < currentGameObjects.Count; i++)
                 {
-                    currentGameObjects[i].Awake();
                     currentGameObjects[i].Start();
                 }
                 foreach (Cell cell in currentGrid)
@@ -197,7 +201,6 @@ namespace EksamensProjekt2022
 
             for (int i = 0; i < currentGameObjects.Count; i++)
             {
-                currentGameObjects[i].Awake();
                 currentGameObjects[i].Start();
             }
 
@@ -460,9 +463,7 @@ namespace EksamensProjekt2022
             for (int i = 0; i < newGameObjects.Count; i++)
             {
                 currentGameObjects.Add(newGameObjects[i]);
-                newGameObjects[i].Awake();
                 newGameObjects[i].Start();
-
 
             }
 

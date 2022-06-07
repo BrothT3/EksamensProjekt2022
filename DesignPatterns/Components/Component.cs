@@ -9,11 +9,6 @@ namespace EksamensProjekt2022
         public bool IsEnabled { get; set; }
         public GameObject GameObject { get; set; }
 
-        public virtual void Awake()
-        {
-
-        }
-
         public virtual void Start()
         {
 

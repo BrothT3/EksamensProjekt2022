@@ -13,10 +13,12 @@ namespace EksamensProjekt2022
         private int maxHunger = 50;
         private int maxEnergy = 50;
         private int maxHealth;
+
         private bool playerAspects;
         private float hungerDamageCountDown = 2;
         private float hungerCountDown = 10;
         public event EventHandler DeathEvent;
+
         public int CurrentHealth
         {
             get { return health; }
@@ -59,7 +61,7 @@ namespace EksamensProjekt2022
                 }
                 if (energy == 0)
                 {
-                    //something
+                    //change movespeed or something, not implemented
                 }
             }
         }
