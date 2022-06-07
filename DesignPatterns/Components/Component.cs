@@ -6,7 +6,6 @@ namespace EksamensProjekt2022
 {
     public abstract class Component
     {
-        public bool IsEnabled { get; set; }
         public GameObject GameObject { get; set; }
 
         public virtual void Start()

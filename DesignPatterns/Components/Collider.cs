@@ -62,7 +62,7 @@ namespace EksamensProjekt2022
 
         private void CheckCollision()
         {
-            foreach (Collider other in GameWorld.Instance.Colliders)
+            foreach (Collider other in GameControl.Instance.playing.Colliders)
             {
                 if (other != this && other.CollisionBox.Intersects(CollisionBox))
                 {
