@@ -14,6 +14,15 @@ namespace EksamensProjekt2022
 
         }
 
+        /// <summary>
+        /// Attaches the necessary Components for the player and loads the SurvivalAspect attributes from the database.
+        /// </summary>
+        /// <param name="health"></param>
+        /// <param name="energy"></param>
+        /// <param name="hunger"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="time"></param>
         private void BuildComponents(int health, int energy, int hunger, int x, int y, int time)
         {
             Player p = (Player)gameObject.AddComponent(new Player());
@@ -41,6 +50,13 @@ namespace EksamensProjekt2022
             GameControl.Instance.playing.timeManager.Time = time;
 
         }
+
+        /// <summary>
+        /// Builds an animation by loading the spritesheet
+        /// </summary>
+        /// <param name="animationName"></param>
+        /// <param name="spriteName"></param>
+        /// <returns></returns>
         private Animation BuildAnimation(string animationName, string spriteName)
         {
             Texture2D sprite = GameWorld.Instance.Content.Load<Texture2D>($"{spriteName}");

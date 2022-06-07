@@ -12,6 +12,7 @@ namespace EksamensProjekt2022
         public float Scale { get; set; } = 1f;
         public Rectangle Rectangle { get; set; }
         public SpriteEffects SpriteEffect { get; set; } = SpriteEffects.None;
+
         public override void Start()
         {
             Origin = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
@@ -24,6 +25,7 @@ namespace EksamensProjekt2022
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //if not using spritesheet
             if(Rectangle.IsEmpty)
             spriteBatch.Draw(Sprite, new Vector2(GameObject.Transform.Position.X + OffSetX, GameObject.Transform.Position.Y + OffSetY ), null, Color.White, 0, Origin, Scale, SpriteEffect, 1);
             else

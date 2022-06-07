@@ -7,7 +7,6 @@ namespace EksamensProjekt2022
     public class InputHandler
     {
         private MouseState mouseState;
-        private Point target;
         private static InputHandler instance;
         private Astar pathfinder;
         private Cell start, goal;
@@ -28,21 +27,25 @@ namespace EksamensProjekt2022
                 return instance;
             }
         }
-        //kan bruges til at styre interface måske?
+
         private Dictionary<Keys, ICommand> keybinds = new Dictionary<Keys, ICommand>();
 
         public InputHandler()
         {
-            Player player = (Player)GameWorld.Instance.FindObjectOfType<Player>();
 
             pathfinder = new Astar();
 
+            //Camera controls
             keybinds.Add(Keys.W, new MoveCommand(new Vector2(0, 8)));
             keybinds.Add(Keys.A, new MoveCommand(new Vector2(8, 0)));
             keybinds.Add(Keys.D, new MoveCommand(new Vector2(-8, 0)));
             keybinds.Add(Keys.S, new MoveCommand(new Vector2(0, -8)));
         }
 
+        /// <summary>
+        /// Used to check if you can target the cell and if you can, start the search algorithm
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             if (!MapCreator.DevMode)
@@ -94,6 +97,9 @@ namespace EksamensProjekt2022
 
         }
 
+        /// <summary>
+        /// Returns the result of the A* search algorithm and clears the list if it already exists.
+        /// </summary>
         public void FindPath()
         {
             if (finalPath != null)
@@ -105,11 +111,14 @@ namespace EksamensProjekt2022
             ColorNodes();
 #endif
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="player"></param>
         public void Execute(Player player)
         {
-
             mouseState = Mouse.GetState();
-
             Camera c = GameControl.Instance.camera;
             Execute(c);
         }
@@ -127,7 +136,7 @@ namespace EksamensProjekt2022
 
         }
         /// <summary>
-        /// Colors nodes to display the checked tiles
+        /// Colors nodes to display the checked tiles, is mainly a debug tool
         /// </summary>
         public void ColorNodes()
         {
@@ -150,18 +159,4 @@ namespace EksamensProjekt2022
         }
     }
 
-
-    /// <summary>
-    /// KeyInfo can be used for buttonevent controls
-    /// </summary>
-    public class KeyInfo
-    {
-        public bool IsDown { get; set; }
-        public Keys Key { get; set; }
-
-        public KeyInfo(Keys key)
-        {
-            this.Key = key;
-        }
-    }
 }
