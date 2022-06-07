@@ -88,6 +88,11 @@ namespace EksamensProjekt2022
                     Item itemStack = items.First(x => x.Name == item.Name);
                     amountToRemove--;
                     itemStack.Quantity--;
+
+                    if (itemStack.ToBeRemoved)
+                    {
+                        items.Remove(itemStack);
+                    }
                 }
 
             }
