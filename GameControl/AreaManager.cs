@@ -8,11 +8,7 @@ namespace EksamensProjekt2022
     {
         public List<GameObject>[] currentGameObjects = new List<GameObject>[4];
         public List<Cell>[] currentGrid = new List<Cell>[4];
-
         public Dictionary<Point, Cell> currentCells = new Dictionary<Point, Cell>();
-
-
-        private Area currentArea;
         private Thread loadAreasThread;
         private bool HasRun = false;
 
@@ -20,7 +16,7 @@ namespace EksamensProjekt2022
         public AreaManager()
         {
 
-            currentArea = Area.Camp;
+
             for (int i = 0; i < currentGameObjects.Length; i++)
             {
                 currentGameObjects[i] = new List<GameObject>();
@@ -61,7 +57,7 @@ namespace EksamensProjekt2022
 
                 currentGrid[(int)currentArea] = GameControl.Instance.playing.currentGrid;
                 GameControl.Instance.playing.currentGrid = currentGrid[(int)nextArea];
-                this.currentArea = nextArea;
+
             }
 
 

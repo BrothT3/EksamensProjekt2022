@@ -9,7 +9,6 @@ namespace EksamensProjekt2022
         private Area myArea;
         public Cell currentCell;
         public Cell nextCell;
-        public Vector2 nextVector;
         private Vector2 moveDir;
         public Cell selectedCell;
         private Animator animator;
