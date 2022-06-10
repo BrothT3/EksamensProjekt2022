@@ -320,9 +320,8 @@ namespace EksamensProjekt2022
                     if (p != null)
                     {
                         Inventory inv = p.GameObject.GetComponent<Inventory>() as Inventory;
-                        //hasSaved = true;
                         _mapManager.SavePlayerInventory(inv.items);
-                        // _mapManager.SaveComponents(currentGameObjects, currentGrid, _mapManager.CurrentSave, p.MyArea);
+
 
                         for (int i = 0; i < areaManager.currentGrid.Length; i++)
                         {
@@ -331,17 +330,7 @@ namespace EksamensProjekt2022
                         hasSaved = true;
                     }
 
-                    //GameObject player;
-                    //foreach (GameObject go in currentGameObjects)
-                    //{
-                    //    if (go.GetComponent<Player>() != null)
-                    //    {
-                    //        player = go;
-                    //        Inventory inv = player.GetComponent<Inventory>() as Inventory;
-                    //        _mapManager.SavePlayerInventory(inv.items);
-                    //        hasSaved = true;
-                    //    }
-                    //}
+
 
 
 

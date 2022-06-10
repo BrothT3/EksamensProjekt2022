@@ -42,6 +42,7 @@ namespace EksamensProjekt2022
             f = h + g;
         }
 
+        //part of interface
         public int CompareTo(Node other)
         {
             if (f > other.f)

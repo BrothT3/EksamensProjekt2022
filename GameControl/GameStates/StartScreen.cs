@@ -21,7 +21,7 @@ namespace EksamensProjekt2022
             startWantToExit = false;
             initializeGameState = true;
 
-            //GameControl.Instance.currentGameState = GameControl.Instance.nextGameState;
+
 
         }
         public override void Initialize()

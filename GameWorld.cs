@@ -64,8 +64,12 @@ namespace EksamensProjekt2022
             base.Initialize();
 
         }
+        /// <summary>
+        /// Creates the database if the file doesn't exist.
+        /// </summary>
         private void CreateDB()
         {
+            
             if (File.Exists("userinfo.db") == false)
             {
                 string sqlConnectionString = "Data Source=userinfo.db;new=True;";
@@ -97,7 +101,6 @@ namespace EksamensProjekt2022
                 Exit();
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            KeyboardState keystate = Keyboard.GetState();
 
             if (MapCreator.DevMode && GameControl.Instance.currentGameState == CurrentGameState.Playing)
             {
@@ -114,7 +117,7 @@ namespace EksamensProjekt2022
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             if (MapCreator.DevMode)
-            {
+            {//if in devmode/MapCreation, use the MapCreators camera 
                 var screenScale = MapCreator.Instance.Camera.GetScreenScale();
                 var viewMatrix = MapCreator.Instance.Camera.GetTransform();
                 _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
@@ -122,15 +125,12 @@ namespace EksamensProjekt2022
 
             }
             else
-            {
+            {//use the GameControl camera
                 var screenScale = GameControl.Instance.camera.GetScreenScale();
                 var viewMatrix = GameControl.Instance.camera.GetTransform();
                 _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied,
                null, null, null, null, viewMatrix * Matrix.CreateScale(screenScale));
             }
-
-
-
 
 
             if (GameControl.Instance.playing.currentGrid != null)
@@ -174,7 +174,7 @@ namespace EksamensProjekt2022
         }
 
 
-
+        
         public Component FindObjectOfType<T>() where T : Component
         {
             foreach (GameObject gameObject in GameControl.Instance.playing.currentGameObjects)

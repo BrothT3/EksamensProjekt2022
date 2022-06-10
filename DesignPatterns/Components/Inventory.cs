@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -98,62 +97,7 @@ namespace EksamensProjekt2022
             }
 
         }
-        //public void AddItemTo(Item item, Inventory recipient)
-        //{
-        //    int amountToAdd = item.Quantity;
-        //    Item itemStack = null;
-        //    Item itemStackTake = null;
-        //    while (amountToAdd > 0)
-        //    {
-
-        //        if (items.Exists(x => (x.Name == item.Name) && x.RoomForMore) && itemStack != null)
-        //        {
-        //            itemStack = items.First(x => x.Name == item.Name && x.RoomForMore);
-        //        }
-        //        else if (items.Exists(x => (x.Name == item.Name) && itemStack != null))
-        //        {
-        //            itemStack = items.First(x => x.Name == item.Name);
-        //        }
-
-        //        if (items.Exists(x => (x.Name == item.Name) && x.RoomForMore) && itemStack != null)
-        //        {
-        //            itemStack = items.First(x => x.Name == item.Name && x.RoomForMore);
-        //        }
-        //        else if (items.Exists(x => (x.Name == item.Name) && itemStack != null))
-        //        {
-        //            itemStack = items.First(x => x.Name == item.Name);
-        //        }
-
-        //        {
-
-
-        //            while (itemStack.RoomForMore && amountToAdd > 0)
-        //            {
-        //                amountToAdd--;
-        //                itemStack.Quantity++;
-        //            }
-
-
-        //        }
-        //        else if (items.Count < inventoryMax)
-        //        {
-        //            Item newItem = item;
-        //            newItem.Quantity = 1;
-        //            amountToAdd++;
-        //            items.Add(newItem);
-
-
-
-        //        }
-        //        else if (items.Count == inventoryMax)
-        //            break;
-
-        //        item.Quantity--;
-
-        //    }
-
-        //}
-
+       
         public int GetItemCount<T>() where T : Item
         {
             int sum = 0;
@@ -183,54 +127,6 @@ namespace EksamensProjekt2022
             }
             return sum;
         }
-
-    }
-
-    public class Item
-    {
-        protected string name;
-        private Texture2D sprite;
-
-        public string Name { get => name; set => name = value; }
-
-        protected int maxQuantity;
-        protected int quantity;
-        
-        public Texture2D Sprite { get => sprite; set => sprite = value; }
-
-        public int MaxQuantity { get => maxQuantity; set => maxQuantity = value; }
-        public int Quantity { get => quantity; set => quantity = value; }
-
-        public bool ToBeRemoved
-        {
-            get
-            {
-                if (quantity <= 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        public bool RoomForMore
-        {
-            get
-            {
-                if (Quantity < MaxQuantity)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-        }
-
 
     }
     internal static class Constants

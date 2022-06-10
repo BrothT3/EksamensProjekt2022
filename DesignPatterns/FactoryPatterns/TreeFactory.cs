@@ -21,11 +21,6 @@ namespace EksamensProjekt2022
 
         }
 
-        private TreeFactory()
-        {
-
-
-        }
         public override GameObject CreateGameObject(Cell cell, int resourceAmount, bool isNew)
         {
             GameObject gameObject = new GameObject();

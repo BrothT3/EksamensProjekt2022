@@ -72,7 +72,6 @@ namespace EksamensProjekt2022
         public void LoadArea()
         {
             CreateGrid();
-           // CreateCells();
             LoadGridl();
 
         }
@@ -87,7 +86,7 @@ namespace EksamensProjekt2022
 
         public void CreateCells()
         {
-
+            //ended up only having 1 currentCells so was unnecessary
             currentCells = GameControl.Instance.playing.grid.CreateCells();
 
         }
